@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>仙人</title>
+  
+  <subtitle>活时尽兴，去无所羁</subtitle>
+  <link href="https://xianren-wrd.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://xianren-wrd.github.io/"/>
+  <updated>2023-08-10T08:18:59.009Z</updated>
+  <id>https://xianren-wrd.github.io/</id>
+  
+  <author>
+    <name>wrd</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用拨号上网时，笔记本电脑无法打开热点的解决方法</title>
+    <link href="https://xianren-wrd.github.io/2021/08/09/%E4%BD%BF%E7%94%A8%E6%8B%A8%E5%8F%B7%E4%B8%8A%E7%BD%91%E6%97%B6%EF%BC%8C%E7%AC%94%E8%AE%B0%E6%9C%AC%E7%94%B5%E8%84%91%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E7%83%AD%E7%82%B9%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/"/>
+    <id>https://xianren-wrd.github.io/2021/08/09/%E4%BD%BF%E7%94%A8%E6%8B%A8%E5%8F%B7%E4%B8%8A%E7%BD%91%E6%97%B6%EF%BC%8C%E7%AC%94%E8%AE%B0%E6%9C%AC%E7%94%B5%E8%84%91%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E7%83%AD%E7%82%B9%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/</id>
+    <published>2021-08-09T15:07:05.000Z</published>
+    <updated>2023-08-10T08:18:59.009Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h3 id=&quot;问题背景&quot;&gt;&lt;a href=&quot;#问题背景&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="疑难杂症" scheme="https://xianren-wrd.github.io/tags/%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/"/>
+    
+  </entry>
+  
+</feed>
