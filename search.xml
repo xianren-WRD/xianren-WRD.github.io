@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>S32DS 使用问题汇总</title>
-    <url>/S32DS-Usage-31bfab119a51/</url>
+    <url>/2023/S32DS-Usage-31bfab119a51/</url>
     <content><![CDATA[<h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>记录日常工作中使用S32 Design Studio IDE遇到的问题的解决方法。问题大多比较久远，因此没有附图。</p>
 <h1 id="S32DS安装"><a href="#S32DS安装" class="headerlink" title="S32DS安装"></a>S32DS安装</h1><h2 id="安装出错"><a href="#安装出错" class="headerlink" title="安装出错"></a>安装出错</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">The installation of S32 Design Studio for ARM Version 2018.R1 has been rolle back</span><br></pre></td></tr></table></figure>
 
@@ -35,8 +35,35 @@
       </tags>
   </entry>
   <entry>
+    <title>spreadsheet compare 简单使用说明</title>
+    <url>/2023/spreadsheet-compare-cf954b484b3c/</url>
+    <content><![CDATA[<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>Office2013开始，Office家族增加了Spreadsheet Compare工具，使用这个工具可快速比较识别两个工作簿（或者同一个工作簿的不同版本）来查看不同工作簿之间的差异。Spreadsheet Compare是名符其实的Office官方出品的数据比对神器。</p>
+<p>Beyond Compare 也可以用来对比表格差异，但是只能比较两个Excel的当前工作表，如果每个 Excel 文件中包含多个工作表时就会对比错误的情况，而 <code>Spreadsheet Compare</code> 在这一点上更加优秀，可以对比多个表格数据。</p>
+<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p>打开两份需要比较Excel（注意：两份原文件一定要做备份，Spreadsheet Compare会修改当前文件。）</p>
+<p>点击任意一个文件Exce菜单加载项</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20220220213550.png" alt="image20220220203635055"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20220220213603.png" alt="image20220220204055371"></p>
+<h2 id="Compare-Type设置"><a href="#Compare-Type设置" class="headerlink" title="Compare Type设置"></a>Compare Type设置</h2><p>选择Database Style Compare，Primary KEY Colum选择可作为数据库内主键的列，否则对比的结果会有错乱。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20220220213609.png" alt="image20220220205530434"></p>
+<p>设置Excel工作薄中需要比较的Sheet，两个文件均需要设置具体的Sheet，这边有两步，选择好之后点击Next。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20220220213612.png" alt="image20220220205827545"></p>
+<h2 id="报告查看"><a href="#报告查看" class="headerlink" title="报告查看"></a>报告查看</h2><p>Report详细列出了两份文件的修改情况。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20220220213615.png" alt="image20220220211610710"></p>
+<p>Merged Diffs则把两份合并在一起，列出其差异。同时工具也会修改原文件，把有差异的地方标红，两份文件并排在一起方便对比查看。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20220220213618.png" alt="image20220220212018465"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20220220213622.png" alt="image20220220213418872"></p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>其余选项的说明可以查看帮助文档</p>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>对比工具</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>使用拨号上网时，笔记本电脑无法打开热点的解决方法</title>
-    <url>/%E6%97%A0%E6%B3%95%E5%BC%80%E5%90%AF%E7%83%AD%E7%82%B9%E9%97%AE%E9%A2%98-38d92260e969/</url>
+    <url>/2021/%E6%97%A0%E6%B3%95%E5%BC%80%E5%90%AF%E7%83%AD%E7%82%B9%E9%97%AE%E9%A2%98-38d92260e969/</url>
     <content><![CDATA[<h3 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h3><p>一般情况下，我们是可以正常使用笔记本电脑来开启热点的。但是，在使用拨号的方式上网时，热点无法正常开启。具体表现如下图所示，热点按钮无法点击。当然，你也可以买一个路由器达到曲线救国的目的。在这里，本文给出一种方法，在不用路由器的情况下(<del>绝对不是因为穷</del>😭)开启电脑热点，供其它设备正常连接使用。</p>
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20210809005435.png" alt="image-20210808225118370"></p>
 <h3 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h3><ol>
