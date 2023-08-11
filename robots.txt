@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Allow: /archives/
+Allow: /categories/
+Disallow: /vendors/
+Disallow: /js/
+Disallow: /css/
+Disallow: /fonts/
+Disallow: /fancybox/
+
+Sitemap: https://xianren-wrd.github.io/sitemap.xml
+Sitemap: https://xianren-wrd.github.io/baidusitemap.xml

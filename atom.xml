@@ -6,7 +6,7 @@
   <link href="https://xianren-wrd.github.io/atom.xml" rel="self"/>
   
   <link href="https://xianren-wrd.github.io/"/>
-  <updated>2023-08-10T14:24:04.986Z</updated>
+  <updated>2023-08-11T13:21:55.496Z</updated>
   <id>https://xianren-wrd.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>S32DS 使用问题汇总</title>
+    <link href="https://xianren-wrd.github.io/S32DS-Usage-31bfab119a51/"/>
+    <id>https://xianren-wrd.github.io/S32DS-Usage-31bfab119a51/</id>
+    <published>2023-08-11T04:03:35.000Z</published>
+    <updated>2023-08-11T13:21:55.496Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot; title=&quot;说明&quot;&gt;&lt;/a&gt;说明&lt;/h1&gt;&lt;p&gt;记录日常工作中使用S32 Design Studio IDE遇到的问题的解决方法。问题大多比较久远，因此没有附图。&lt;/p&gt;
+&lt;h1</summary>
+        
+      
+    
+    
+    
+    <category term="技术" scheme="https://xianren-wrd.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+    <category term="S32DS" scheme="https://xianren-wrd.github.io/tags/S32DS/"/>
+    
+  </entry>
   
   <entry>
     <title>使用拨号上网时，笔记本电脑无法打开热点的解决方法</title>
