@@ -6,7 +6,7 @@
   <link href="https://xianren-wrd.github.io/atom.xml" rel="self"/>
   
   <link href="https://xianren-wrd.github.io/"/>
-  <updated>2023-08-11T13:40:58.347Z</updated>
+  <updated>2023-08-12T13:53:28.839Z</updated>
   <id>https://xianren-wrd.github.io/</id>
   
   <author>
@@ -15,6 +15,85 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>PCAN 使用笔记</title>
+    <link href="https://xianren-wrd.github.io/2023/PCAN-Usage-4b8805394c51/"/>
+    <id>https://xianren-wrd.github.io/2023/PCAN-Usage-4b8805394c51/</id>
+    <published>2023-08-12T12:22:29.000Z</published>
+    <updated>2023-08-12T13:53:28.839Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;PCAN-Explorer回放报文&quot;&gt;&lt;a href=&quot;#PCAN-Explorer回放报文&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="技术" scheme="https://xianren-wrd.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+    <category term="PCAN" scheme="https://xianren-wrd.github.io/tags/PCAN/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CANoe 使用问题汇总</title>
+    <link href="https://xianren-wrd.github.io/2023/CANoe-Usage-5b23d9c22076/"/>
+    <id>https://xianren-wrd.github.io/2023/CANoe-Usage-5b23d9c22076/</id>
+    <published>2023-08-12T08:04:07.000Z</published>
+    <updated>2023-08-12T13:57:52.927Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot; title=&quot;说明&quot;&gt;&lt;/a&gt;说明&lt;/h1&gt;&lt;p&gt;记录日常工作中使用CANoe遇到的问题的解决方法。&lt;/p&gt;
+&lt;h1 id=&quot;CANoe安装&quot;&gt;&lt;a href=&quot;#CANoe安装&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="技术" scheme="https://xianren-wrd.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+    <category term="CANoe" scheme="https://xianren-wrd.github.io/tags/CANoe/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Keil 使用问题汇总</title>
+    <link href="https://xianren-wrd.github.io/2023/Keil-Usage-12a1a959c43e/"/>
+    <id>https://xianren-wrd.github.io/2023/Keil-Usage-12a1a959c43e/</id>
+    <published>2023-08-12T06:28:25.000Z</published>
+    <updated>2023-08-12T12:24:26.034Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot; title=&quot;说明&quot;&gt;&lt;/a&gt;说明&lt;/h1&gt;&lt;p&gt;记录日常工作中使用Keil遇到的问题的解决方法。&lt;/p&gt;
+&lt;h1 id=&quot;keil仿真相关&quot;&gt;&lt;a href=&quot;#keil仿真相关&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="技术" scheme="https://xianren-wrd.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    
+    
+    <category term="Keil" scheme="https://xianren-wrd.github.io/tags/Keil/"/>
+    
+    <category term="JLink" scheme="https://xianren-wrd.github.io/tags/JLink/"/>
+    
+  </entry>
   
   <entry>
     <title>spreadsheet compare 简单使用说明</title>
@@ -46,7 +125,7 @@
     <link href="https://xianren-wrd.github.io/2023/S32DS-Usage-31bfab119a51/"/>
     <id>https://xianren-wrd.github.io/2023/S32DS-Usage-31bfab119a51/</id>
     <published>2023-08-11T04:03:35.000Z</published>
-    <updated>2023-08-11T13:21:55.496Z</updated>
+    <updated>2023-08-12T08:57:47.219Z</updated>
     
     
       

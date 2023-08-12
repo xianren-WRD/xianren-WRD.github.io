@@ -2,9 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://xianren-wrd.github.io/2023/spreadsheet-compare-cf954b484b3c/</loc>
+    <loc>https://xianren-wrd.github.io/2023/CANoe-Usage-5b23d9c22076/</loc>
     
-    <lastmod>2023-08-11</lastmod>
+    <lastmod>2023-08-12</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://xianren-wrd.github.io/2023/PCAN-Usage-4b8805394c51/</loc>
+    
+    <lastmod>2023-08-12</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://xianren-wrd.github.io/2023/Keil-Usage-12a1a959c43e/</loc>
+    
+    <lastmod>2023-08-12</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -12,6 +30,15 @@
   
   <url>
     <loc>https://xianren-wrd.github.io/2023/S32DS-Usage-31bfab119a51/</loc>
+    
+    <lastmod>2023-08-12</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://xianren-wrd.github.io/2023/spreadsheet-compare-cf954b484b3c/</loc>
     
     <lastmod>2023-08-11</lastmod>
     
@@ -49,29 +76,57 @@
 
   <url>
     <loc>https://xianren-wrd.github.io/</loc>
-    <lastmod>2023-08-11</lastmod>
+    <lastmod>2023-08-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   
   <url>
+    <loc>https://xianren-wrd.github.io/tags/CANoe/</loc>
+    <lastmod>2023-08-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://xianren-wrd.github.io/tags/Keil/</loc>
+    <lastmod>2023-08-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://xianren-wrd.github.io/tags/JLink/</loc>
+    <lastmod>2023-08-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://xianren-wrd.github.io/tags/S32DS/</loc>
-    <lastmod>2023-08-11</lastmod>
+    <lastmod>2023-08-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://xianren-wrd.github.io/tags/PCAN/</loc>
+    <lastmod>2023-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xianren-wrd.github.io/tags/%E5%AF%B9%E6%AF%94%E5%B7%A5%E5%85%B7/</loc>
-    <lastmod>2023-08-11</lastmod>
+    <lastmod>2023-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xianren-wrd.github.io/tags/%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/</loc>
-    <lastmod>2023-08-11</lastmod>
+    <lastmod>2023-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -80,14 +135,14 @@
   
   <url>
     <loc>https://xianren-wrd.github.io/categories/%E6%8A%80%E6%9C%AF/</loc>
-    <lastmod>2023-08-11</lastmod>
+    <lastmod>2023-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://xianren-wrd.github.io/categories/%E5%85%B6%E4%BB%96/</loc>
-    <lastmod>2023-08-11</lastmod>
+    <lastmod>2023-08-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
