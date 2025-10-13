@@ -187,4 +187,449 @@
         <tag>疑难杂症</tag>
       </tags>
   </entry>
+  <entry>
+    <title>J1939设计注意点</title>
+    <url>/2025/prefix%20remember%20to%20change!!!-9a9c4e5c1e4f/</url>
+    <content><![CDATA[<h1 id="需求规范检查"><a href="#需求规范检查" class="headerlink" title="需求规范检查"></a>需求规范检查</h1><h2 id="标准规范"><a href="#标准规范" class="headerlink" title="标准规范"></a>标准规范</h2><p><strong>OSI层级</strong></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251013203758.png"></p>
+<table>
+<thead>
+<tr>
+<th align="left">规范类别</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">J1939-Year</td>
+<td>Year指特定的版本，比如：J1939-2005。描述了网络的概况 、OSI分层结构、下属文档结构，并为所有预分配的值和名称提供管控。</td>
+</tr>
+<tr>
+<td align="left">J1939-0x</td>
+<td>⼀个应用文档，其中 x 指代网络的特定网络&#x2F;应用版本。该文档将说明其适用的行业或应用，并列出了构成此网络的各层的具体版本。 <br/>• J1939&#x2F;01: 卡车和客车控制与通信网络 (Truck and Bus Control and Communications Network)。<br/>• J1939&#x2F;02 (草案): 农业设备控制与通信网络 (Agricultural Equipment Control and Communications Network)。</td>
+</tr>
+<tr>
+<td align="left">J1939-1x</td>
+<td>物理层文档，其中 x 指特定的物理层不同内容。<br/>• J1939&#x2F;11：物理层，250K 比特&#x2F;秒，屏蔽双绞线。<br/>• J1939&#x2F;16：自动选择波特率<br/>• J1939&#x2F;17：CAN FD-500 kbit&#x2F;s | 2 Mbit&#x2F;s</td>
+</tr>
+<tr>
+<td align="left">J1939-2x</td>
+<td>详细规定数据链路层的具体实现。<br/>• J1939&#x2F;21：Data Link Layer on Classic CAN<br/>• J1939&#x2F;22：Data Link Layer on CAN FD</td>
+</tr>
+<tr>
+<td align="left">J1939-31</td>
+<td>网络层：定义了在更复杂的网络拓扑中（如多个网段通过网桥&#x2F;网关连接）如何路由J1939消息</td>
+</tr>
+<tr>
+<td align="left">J1939-7x</td>
+<td>应用层文档，其中 x 指代应用层的特定版本。<br/>• 1939&#x2F;71: 车辆应用层。定义了车辆中各种具体功能所需的数据参数、消息（PGN）及其格式、语义和传输要求。<br/>• J1939&#x2F;73: 应用层 - 诊断</td>
+</tr>
+<tr>
+<td align="left">J1939-81</td>
+<td>网络管理 - 地址配置与参数配置</td>
+</tr>
+</tbody></table>
+<h2 id="客户规范"><a href="#客户规范" class="headerlink" title="客户规范"></a>客户规范</h2><ul>
+<li><p>明确客户参考的标准规范版本 ，OEM规范引用的J1939⼀般都很旧</p>
+</li>
+<li><p>明确实施J1939规范的适用内容&#x2F;范围，定义在OEM规范</p>
+</li>
+<li><p>确认Vector协议栈⽀持的OEM规范和J1939版本及对应的OEM功能</p>
+</li>
+</ul>
+<h1 id="SAE分层设计考虑"><a href="#SAE分层设计考虑" class="headerlink" title="SAE分层设计考虑"></a>SAE分层设计考虑</h1><h2 id="J1939-11"><a href="#J1939-11" class="headerlink" title="J1939-11"></a>J1939-11</h2><p>规定了最常用的J1939物理层实现标准。</p>
+<ul>
+<li>关键点： 基于ISO 11898-2 (高速CAN) 的电气特性（电压电平、阻抗、终端电阻）、电缆要求（屏蔽双绞线）、连接器（推荐9针Deutsch DT或等效）、总线拓扑（主干线-支线结构）、最大线缆长度（40米 250kbps）、通信速率（250 kbps）。</li>
+</ul>
+<p><strong><mark>设计考虑</mark></strong></p>
+<ol>
+<li>需要考虑波特率和采样点的配置。</li>
+</ol>
+<h2 id="J1939-16"><a href="#J1939-16" class="headerlink" title="J1939-16"></a>J1939-16</h2><p>介绍了车辆通信网络中自动波特率检测的流程。该流程使网络设备能够自动识别并适应 SAE J1939- 11、SAE J1939-14 或 SAE J1939-15 物理层标准所指定的 CAN 经典网络的通信速率（波特率）。</p>
+<p>其核心目的是实现设备间无需预先配置波特率即可互联互通，从而提升通信的灵活性和效率，并最大限度地减少或消除因波特率不匹配对现有网络设备造成的通信中断。</p>
+<p>标准里面提到两种实现，大致如下：</p>
+<ul>
+<li><p>设置某个波特率，如果发送报文时，检测到总线上有错误，⼀段时间后切到另⼀个波特率，重复这个过程。</p>
+</li>
+<li><p>CAN控制器设置为监听模式，只接收，不发送报文，如果检测到总线上有错误，⼀段时间后切到另⼀个波特率，重复这个过程。</p>
+</li>
+</ul>
+<p><strong><mark>设计考虑</mark></strong></p>
+<ol>
+<li>需要明确的是，此流程仅适用于使用ISO 11898-1:2015 定义的经典基本帧格式 (CBFF) 和经典扩展帧格式 (CEFF) 数据帧的 CAN 经典网络。基于 SAE J1939-17 物理层（唯⼀⽀持的 SAE J1939 CAN FD 物理层选项）的 SAE J1939 CAN FD 网络不在此流程适用范围内，因为该标准仅指定了⼀种波特率组合（500 kbit&#x2F;s 仲裁段+2000 kbit&#x2F;s 数据段）。</li>
+</ol>
+<h2 id="J1939-21"><a href="#J1939-21" class="headerlink" title="J1939-21"></a>J1939-21</h2><p>详细规定了J1939协议栈中数据链路层的具体实现。定义了数据如何在物理层之上可靠地打包、寻址、传输和接收，是通信可靠性的核心保障。</p>
+<h3 id="帧格式"><a href="#帧格式" class="headerlink" title="帧格式"></a>帧格式</h3><p>协议数据单元PDU格式：优先级、保留位、数据页、PDU格式PF、PDU特定PS、源地址SA。 </p>
+<p><strong>PGN的定义</strong></p>
+<p>PGN是24位，⼀共三个字节，第⼀个字节高六位都是0填充。PGN是唯⼀的。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251013210628.png"></p>
+<p><strong>PDU的详细解析规则</strong></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251013210755.png"></p>
+<p>扩展CAN ID是29位标识符，各部分含义如下：</p>
+<table>
+<thead>
+<tr>
+<th>CAN ID域</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P</td>
+<td>优先级。用来优化报文延迟，所有控制报文缺省优先级是3。其他所有报文、专用、请求和ACK 报文的缺省优先级是6。</td>
+</tr>
+<tr>
+<td>EDP</td>
+<td>扩展数据页</td>
+</tr>
+<tr>
+<td>DP</td>
+<td>数据页</td>
+</tr>
+<tr>
+<td>PF</td>
+<td>PDU格式段（0-239：PDU1格式；240-255：PDU2格式）</td>
+</tr>
+<tr>
+<td>PS</td>
+<td>PDU特定域（PDU1格式：DA 目的地址；PDU2格式：GE 群扩展）</td>
+</tr>
+<tr>
+<td>SA</td>
+<td>源地址。网络中⼀个特定源地址只能匹配⼀个设备</td>
+</tr>
+</tbody></table>
+<p><strong>CanId解析举例</strong></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251013211018.png"></p>
+<p><strong><mark>设计考虑</mark></strong></p>
+<p>需要检查AUTOSAR过滤器的配置，包括<u>硬件过滤（Can）和软件过滤（CanIf）</u>。</p>
+<p>目前购买的vector AUTOSAR的硬件过滤会自动mask掉优先级，要自己检查filter是否正确，并且在实际项目还是需要自测不同优先级是否能接收。</p>
+<p>确保：</p>
+<p><strong>PDU2格式和PDU1格式</strong></p>
+<ul>
+<li><p>相同PGN和相同SA，不同优先级，能被正常接收（即，优先级位必须被接收器屏蔽）。</p>
+</li>
+<li><p>相同PGN和不同SA，不同优先级，是否要被正常接收取决于客户需求。比如：DAF要求源地址位不应被接收器屏蔽。（其他国内有遇到过，不同车型会发送不同的SA，通过PGN区分）-&gt; 确认vector是否支持mask SA</p>
+</li>
+</ul>
+<p>如果不同的SA要被支持，硬件过滤需要mask SA！</p>
+<p><strong>PDU1格式特有</strong></p>
+<ul>
+<li>相同PGN，不同优先级，只接收报文DA与自己DA⼀致的报文。</li>
+</ul>
+<p><strong>UDS DTC</strong></p>
+<p>DTC timeout检测要考虑mask优先级，避免DBC定义之外的报文优先级没有考虑，导致误报</p>
+<p>timeout DTC；</p>
+<h3 id="传输协议"><a href="#传输协议" class="headerlink" title="传输协议"></a>传输协议</h3><p>多包报文在连接管理报文（TP.CM）的协调下进行多帧传输。它可再细分为两个主要功能：消息的拆装和重组； 和连接管理。</p>
+<p>连接管理是用于处理在特定目标地址传输时，节点间虚拟连接的打开、使用和关闭。虚拟连接，是指在 SAE J1939 的网络环境中，为了传送⼀条由⼀个单独的PGN描述的长消息，在两个节点间建立的临时连接。</p>
+<p>在连接是⼀点到多点的情况下(广播)，不提供数据流控制和关闭的管理功能。</p>
+<p><strong>广播BAM</strong></p>
+<p>TP.CM_BAM和TP.DT。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251013213749.png"></p>
+<p><strong>RTS&#x2F;CTS</strong></p>
+<p>TP.CM_RTS和TP.CM_CTS。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251013213842.png"></p>
+<p>需要注意：RTS&#x2F;CTS是有错误处理和重传机制的。</p>
+<p><strong><mark>设计考虑</mark></strong></p>
+<ul>
+<li><p>需要考虑数据包DT的传输间隔，默认是50ms。</p>
+</li>
+<li><p>⼀些特定的报文当它们≤ 8 个字节时，会使用非TP的形式来发送，而当它们＞8个字节时，则使用TP的形式来发送。这两种形式可能同时进行发送。</p>
+</li>
+<li><p>PGN TP形式长数据正在发送(使用TP PGN)，此时PGN的数据长度更新为≤ 8 个字节需要非TP形式发送(本身报文的PGN)，非TP形式不能打断前面的TP发送，理论上因为使用不同的PGN在发送，所以无影响。但是需要考虑这种发送是否会影响到应用逻辑或时序。比如应用先发送长数据，再发送短数据，接收端可能会先收到短数据，再收到长数据！</p>
+</li>
+<li><p>发送&gt;1785字节数据，验证：发送端是否拒绝；接收端是否丢弃并报错。</p>
+</li>
+</ul>
+<h3 id="消息类型"><a href="#消息类型" class="headerlink" title="消息类型"></a>消息类型</h3><p>J1939⽀持五种类型的报文，分别为：命令、请求、广播&#x2F;响应、确认和群扩展。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251013214226.png"></p>
+<ol>
+<li><p>命令报文：从某个源地址向特定目标地址或全局目标地址发送命令的参数组。PDU1 格式和PDU2格式都能用作命令。命令类型的消息可能包括传动控制、地址请求、扭矩&#x2F;速度控制等等。</p>
+</li>
+<li><p>请求报文：从全局范围或从特定目标地址请求信息。最典型的⼀个报文是请求PGN报文。</p>
+</li>
+<li><p>广播&#x2F;响应报文：此消息类型可能是某设备主动提供的消息广播，也可能是命令或请求的响应，总线上的数据交换大多采用这类报文。</p>
+</li>
+<li><p>确认报文：对于特定命令、请求的“普通广播”或“ACK” 或“NACK”响应。</p>
+</li>
+<li><p>群扩展：这种类型报文用于⼀组特殊功能(如专用功能、网络管理功能、多包传输功能等)。</p>
+</li>
+</ol>
+<p><strong><mark>设计考虑</mark></strong></p>
+<p>确认DaVinci中五种报文的PGN范围配置正确（如命令PGN: 0-57343，请求PGN: 59904）。</p>
+<p>对于请求报文：</p>
+<ul>
+<li>根据需求，在DaVinci中注册本节点需要响应的PGN列表，避免响应非法PGN请求。如果发送未注册PGN的请求，需要返回NACK。对于要支持的PGN需要勾选，默认发送的都需要：</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251013214834.png"></p>
+<ul>
+<li><p>仅对点对点请求发送ACK（校验目标地址DA 匹配本机地址），全局广播报文不响应ACK(vector协议栈已处理)。</p>
+</li>
+<li><p>需要考虑ACK超时时间（默认200ms），实现重传机制（≤3次），vector可配置。</p>
+</li>
+<li><p>请求发送需要管理⼀个队列，队列大小需要确保所有需要发送的确认PG都可以按照顺序排队等待发送，vector可配置。</p>
+</li>
+</ul>
+<h2 id="J1939-31"><a href="#J1939-31" class="headerlink" title="J1939-31"></a>J1939-31</h2><p>定义了在更复杂的网络拓扑中（如多个网段通过网桥&#x2F;网关连接）如何路由J1939消息。</p>
+<ul>
+<li><p>关键点：网桥&#x2F;网关的功能要求、网络分段原则、基于目标地址的路由规则、报文过滤、地址管理（网桥自身的地址声明）、网络层协议NLP（用于网桥间通信）。</p>
+</li>
+<li><p>重要性：使J1939网络能够扩展到大型或复杂的车辆架构（如带挂车的牵引车、大型工程机械），实现不同网段间的通信。</p>
+</li>
+</ul>
+<p>仅适用于旨在提供网络服务的 ECU。</p>
+<h2 id="J1939-71"><a href="#J1939-71" class="headerlink" title="J1939-71"></a>J1939-71</h2><p>定义了车辆中各种具体功能所需的数据参数、消息（PGN）及其格式、语义和传输要求。</p>
+<ul>
+<li><p>关键点： 包含海量的标准PGN定义（如发动机转速、车速、油压、故障码DTC、巡航控制状态、变速箱档位等）、每个PGN包含哪些SPN（具体参数）、每个SPN的数据长度、分辨率、偏移量、单位、范围、数据更新周期或传输触发条件。这是内容最庞大且不断更新的部分。</p>
+</li>
+<li><p>重要性： 规定了车辆各ECU之间交换的具体数据内容及其含义，是实现互操作性的关键。仪表显示、控制逻辑、诊断信息都依赖于此。</p>
+</li>
+</ul>
+<p>SAE J1939 的报文格式使用PGN作为⼀组参数的标号。⼀组参数称为“参数组”，PGN是其唯⼀的标识号。参数组内有⼀个或多个具体的参数，每个具体参数都有⼀个唯⼀的标号，称为“可疑参数编号”，即SPN。PGN类似于报文ID，SPN则类似于信号ID。</p>
+<h3 id="信号参数值范围"><a href="#信号参数值范围" class="headerlink" title="信号参数值范围"></a>信号参数值范围</h3><p>标准的参数值范围定义如下，包括：有效值，错误值，无效值等。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251013215516.png"></p>
+<h3 id="标准PGN定义"><a href="#标准PGN定义" class="headerlink" title="标准PGN定义"></a>标准PGN定义</h3><p>有些时候客户只提供某个具体的PGN&#x2F;SPN，而不提供信号的layout以及属性定义。</p>
+<p>如果PGN是标准PGN（不属于自定义PGN范围）的情况下，我们就可以在 J1939.dbc 里面找到对应的layout定义。</p>
+<p>注意： J1939.dbc 在安装CANoe的时候就会携带，或者在SIP包里面也可以找到。查看J1939网络的属性，可以看到引用的版本。也可以在J1939-Year的规范里面找到标准PGN定义。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251013215710.png"></p>
+<h3 id="自定义报文原则"><a href="#自定义报文原则" class="headerlink" title="自定义报文原则"></a>自定义报文原则</h3><p>自定义报文通过选定SAE J1939协议中预留的PDU2格式中的“<u>私有(专用)B段</u>”，即 PF&#x3D;255， PS&#x3D;0~255 来编制PGN。</p>
+<p>参数组定义的原则：</p>
+<ol>
+<li><p>按照参数的功能分组而不是按照参数的类型分组</p>
+</li>
+<li><p>按照参数的刷新频率分组</p>
+</li>
+<li><p>按照参数所属的子系统</p>
+</li>
+</ol>
+<p>所以，同⼀子系统的相同功能的刷新率接近的若干参数可以构成⼀个参数组。</p>
+<p>SPN选择SAE J1939 在预留段 520192~524287 中定义，并从520192开始顺序地为每个参数分配SPN。</p>
+<h2 id="J1939-73"><a href="#J1939-73" class="headerlink" title="J1939-73"></a>J1939-73</h2><p>定义车辆诊断相关的消息、参数和流程。在商用车网络设计领域，诊断常用组合如下：J1939-73的DM报文或DM1报文+UDS的组合。</p>
+<p>关键内容：</p>
+<ol>
+<li><p>诊断故障码 (DTC - Diagnostic Trouble Code)：</p>
+<ul>
+<li><p>定义了 DTC 的结构：由 SPN (可疑参数编号) + FMI (故障模式标识符) + OC (发生次数) 组成。</p>
+</li>
+<li><p>规定了如何报告、存储和清除 DTC。</p>
+</li>
+</ul>
+</li>
+<li><p>诊断消息 (Diagnostic Messages - DM)：</p>
+<ul>
+<li><p>提供了⼀系列标准化的 PGN (参数组编号) 用于诊断通信：</p>
+<ul>
+<li><p>DM1: 报告当前检测到并激活的故障。</p>
+</li>
+<li><p>DM13: 停止&#x2F;启动广播消息 (比如DM1)。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="DM1"><a href="#DM1" class="headerlink" title="DM1"></a>DM1</h3><p>作用：报告当前检测到并激活的故障。</p>
+<p><strong>发送方式</strong></p>
+<ul>
+<li><p>故障首次激活（持续 ≥ 1秒）：</p>
+<ul>
+<li><p>⼀旦某个 DTC 从“不激活”变成“激活”状态，并且这个激活状态持续了 1 秒或更⻓时间，ECU 会立即开始传输 DM1 报文。</p>
+</li>
+<li><p>之后，只要该故障（或其它故障）仍处于激活状态，DM1 报文就以每秒⼀次的速率持续更新。</p>
+</li>
+</ul>
+</li>
+<li><p>故障从不激活变为激活（短于1秒）：</p>
+<ul>
+<li>如果故障激活的时间非常短（少于 1 秒），然后立刻又变回不激活，这种情况可能不会触发⼀次单独的 DM1 传输来报告“激活”，因为它没有持续到触发传输的最小时间（1秒）。</li>
+</ul>
+</li>
+<li><p>故障从激活变为不激活：</p>
+<ul>
+<li>如果⼀个激活状态持续了 1 秒或更长的故障，随后变为不激活状态，那么 ECU 必须在状态改变后的下⼀个传输机会（即下⼀次正常的每秒更新点）发送⼀个新的 DM1 报文，以表明这个DTC 不再处于激活状态。</li>
+</ul>
+</li>
+<li><p>同⼀秒内发生多次状态变化（防抖&#x2F;限流）：（DM1本身是固定1S周期，本身就已经防抖）</p>
+<ul>
+<li><p>为了防止某个 DTC 在极短时间内（比如 1 秒内）反复在激活和不激活状态之间快速切换，导致DM1 报文发送过于频繁（高传输率），引入了⼀个限制规则：每个 DTC 每秒最多只报告⼀次状态改变。</p>
+</li>
+<li><p>具体处理：</p>
+<ul>
+<li><p>如果某个 DTC 在 1 秒内发生了两次状态改变（例如：先激活，然后在不激活），ECU 会：</p>
+<ol>
+<li><p>在检测到第⼀次状态改变（激活） 后的下⼀个传输机会（T1 时刻）发送 DM1，报告该DTC为激活状态。</p>
+</li>
+<li><p>在下⼀秒的传输机会（T2 时刻），再发送⼀个 DM1，报告该 DTC 为不激活状态。</p>
+</li>
+</ol>
+</li>
+<li><p>这样，无论 1 秒内实际状态切换了多少次，对于网络来说，每个 DTC 每秒最多只看到⼀次状态变化报告（要么激活，要么不激活），降低了传输负载。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>无激活故障时不主动发送：</p>
+<ul>
+<li><p>当没有任何 DTC 处于激活状态时，ECU 不会主动发送 DM1 报文。</p>
+</li>
+<li><p>例外：当诊断工具主动请求 DM1 信息时，即使没有激活故障，ECU 也必须响应这个请求并发送 DM1 报文（通常报告无激活故障或包含历史故障信息）。</p>
+</li>
+</ul>
+</li>
+<li><p>多故障处理（多包传输）：</p>
+<ul>
+<li><p>如果同时有多个激活的 DTC 需要报告，单个标准的 DM1 报文无法容纳所有信息。</p>
+</li>
+<li><p>此时，ECU 必须使用 “多包传输” 机制（例如 J1939 的传输协议功能 TP，使用 BAM ）。这意味着 DM1 的信息会被拆分成多个数据包（帧）在总线上传输。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><mark><strong>设计考虑</strong></mark></p>
+<p>UDS 28服务不能关闭DM1，DM1不在BSWM规则里面控制，DM1只受控于DM13控制。</p>
+<p>BSWM的 J1939规则，只判断网络状态，控制整个J1939 DCM和J1939 RM模块通信。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251013222021.png"></p>
+<h3 id="DM13"><a href="#DM13" class="headerlink" title="DM13"></a>DM13</h3><p>停止&#x2F;启动广播消息 (比如DM1)。每当需要停止或开始广播事件时发送。</p>
+<p><strong><mark>设计考虑</mark></strong></p>
+<p>需要确认DM13影响的bus类型。一般，只需要支持current data link。</p>
+<p>Autosar配置必须要选择⼀种，下图选择NETWORK_1，所以最终current data link(AUTOSAR没有选项，静态代码默认支持)或NETWORK_1都会生效：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251013222345.png"></p>
+<h4 id="Hold-signal"><a href="#Hold-signal" class="headerlink" title="Hold signal"></a>Hold signal</h4><p>指示所有节点，DM13操作过的通信端口保持在修改状态。为了维持车辆网络的修改状态，保持信号必须每5秒广播⼀次，允许±1s的误差。请求停止广播的设备必须每5秒发送⼀次保持信号，如果在6秒内未收到该消息，则所有相关节点将恢复到其正常状态。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251013222602.png"></p>
+<p>保持信号允许DM13消息的发送者不必将DM13发送到特定地址，而是发送给已修改的控制器组或所有设备。这减少了需要发送的消息数量，从而使每个单独控制器的修改广播状态保持有效。</p>
+<h4 id="Suspend-signal"><a href="#Suspend-signal" class="headerlink" title="Suspend signal"></a>Suspend signal</h4><p>向所有节点发出指示，当前J1939数据链路上的广播消息由于除了J1939 DM13之外的命令（比如： UDS 28）而被暂停。因此，接收节点应暂停对来自发送设备的所有消息的超时诊断。</p>
+<p>暂停信号应广播⼀次，但发送设备可以选择重复发送（如果其具备该能力），以增加正确接收的机会，可以在暂停的第⼀秒内重复发送⼀到两次。如果发送设备发送⼀条将暂停信号设置为“1110”的DM13消息，则指示其正在恢复到完整的广播状态。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251013222851.png"></p>
+<p><strong><mark>设计考虑</mark></strong></p>
+<p>Vector AUTOSAR包不支持suspend signal配置，静态代码也没有。</p>
+<p>因为这个规范已经过时，目前接触的项目不要求实施，可以和客户确认是否需要实施。</p>
+<h2 id="J1939-81"><a href="#J1939-81" class="headerlink" title="J1939-81"></a>J1939-81</h2><p>定义了如何为ECU分配网络地址以及如何配置ECU内部参数的标准化方法。不定义网络唤醒和休眠，网络管理机制采用OSEK或AUTOSAR NM。</p>
+<ul>
+<li><p>关键点：地址配置协议（通过专用工具或特定ECU）、参数配置协议（读取&#x2F;写入配置参数）、服务工具到ECU的通信机制。</p>
+</li>
+<li><p>重要性：简化了车辆生产线上ECU的初始化和维修过程中的ECU更换、参数调整，确保ECU能在网络上正确工作（获得地址）并按需设置（如车辆VIN号、轮胎尺寸、后桥速比等）</p>
+</li>
+</ul>
+<p>控制器应用程序（CA）的基本概念：控制器由硬件和软件组成，其中软件叫作CA。⼀个ECU可以有多个CA，每个CA都有可以唯⼀识别的名字（称为CA NAME）和地址。</p>
+<h3 id="地址的配置和作用"><a href="#地址的配置和作用" class="headerlink" title="地址的配置和作用"></a>地址的配置和作用</h3><p>地址的配置，定义了⼀个 ECU如何获得并保留它的源地址。地址配置与地址声明程序不同，后者是 ECU 想要使用某个地址时进行广播声明的程序。有四种不同地址配置可供 ECU使用。</p>
+<ul>
+<li><p>Non-Configurable Address CA&#x2F;固定地址配置</p>
+<p>不可配置地址的ECU，是指那些已由OEM提供了源地址的ECU。在地址域中，包括服务工具在内的任何方法都不可改变它的地址。</p>
+</li>
+<li><p>Service Configurable Address CA&#x2F;服务可配置地址</p>
+<p>可由维护人员配置地址的ECU，是指那些在地址域中源地址可以由维护的技术人员进行更改的ECU。这种 ECU 的 CA 可以在车辆下线时或维修时，使用外部的诊断工具（Service Tool） 通过 J1939 定义的诊断服务（通常是 DM15 - DTC Configuration，或者 DM16 - Binary Data Transfer）来进行更改或配置。</p>
+<p>地址更改机制：</p>
+<ul>
+<li><p>需要离线或在特定配置模式下进行（通常车辆点火开关在 OFF 或 ACC 状态）。</p>
+</li>
+<li><p>诊断工具发送特定的 J1939 诊断服务报文到 ECU。</p>
+</li>
+<li><p>ECU 接收并验证请求后，将新的值存储到非易失性存储器（NVRAM）中。</p>
+</li>
+<li><p>下次启动时，ECU 使用新配置的值。</p>
+</li>
+</ul>
+</li>
+<li><p>Command Configurable Address CA&#x2F;J1939 Command修改地址</p>
+<p>命令配置地址的ECU，是指那些在正常操作模式（相对于维护操作模式）下，可以通过命令地址报文（ PGN 65240 (0xFEC8)）来更改源地址的ECU。在上电时改变地址，不需要服务工具或者运行于特殊模式。实现运行时、自动化的地址分配和冲突解决，无需人工干预或诊断工具。</p>
+<p>地址更改机制：</p>
+<ul>
+<li><p>⼀个具有地址分配权限的 ECU在网络上广播 Commanded Address 消息。</p>
+</li>
+<li><p>消息指定目标 ECU 的 NAME 和要分配给它的新 CA。</p>
+</li>
+<li><p>目标 ECU 接收到该命令（匹配其 NAME），验证命令合法性后，立即或在下⼀个启动周期使用新的 CA。</p>
+</li>
+<li><p>更改通常需要存储到 NVRAM。</p>
+</li>
+</ul>
+</li>
+<li><p>Self-Configurable Address CA&#x2F;动态地址配置</p>
+<p>可自配置地址的ECU，是指那些根据内部计算确定它的源地址并自己声明该地址的ECU。如果可自配置地址的ECU在声明第⼀个计算出来的地址时失败，那么ECU会重新计算并声明另⼀地址。实现 ECU的“即插即用”，最大程度减少人工配置需求。ECU 自己负责在网络上找到⼀个不冲突的地址。</p>
+<p>地址更改机制：</p>
+<ul>
+<li><p>ECU 启动时，检查其存储的 CA。</p>
+</li>
+<li><p>如果无效或冲突，它广播 Request for Address Claim (PGN 59904 &#x2F; 0xEA00) 或直接参与 Address Claim 过程。</p>
+</li>
+<li><p>在 Address Claim 过程中，ECU 广播其 NAME 和它希望使用的 CA（通常是之前存储的或⼀个默认值）。</p>
+</li>
+<li><p>如果发生冲突（有另⼀个 ECU 声明了相同 CA 且 NAME 优先级更高），该 ECU 会尝试选择另⼀个 CA，并重新声明，直到找到⼀个不冲突的 CA 或者尝试失败。</p>
+</li>
+<li><p>成功获取的 CA 会存储到 NVRAM 供下次使用。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong><mark>关于地址</mark></strong></p>
+<p>大部分基于 SAE J1939 网络的 ECU 都将拥有⼀个设置好的首选地址（参阅 SAE J1939， 表B2到B9），ECU 必须尝试首先使用。</p>
+<h3 id="NAME"><a href="#NAME" class="headerlink" title="NAME"></a>NAME</h3><p>J1939定义了⼀套ECU命名方法，用于地址管理、网络出错管理等功能。</p>
+<p>在J1939网络中，每个ECU都必须声明⼀个唯⼀的地址，以便其他节点能够准确地识别和与其通信。地址的声明过程涉及到在总线上广播声明消息，其中包含ECU的唯⼀地址。</p>
+<p>地址声明消息包含⼀个源地址和⼀个NAME，可在网络中用于把⼀个NAME和⼀个特定的地址关联起来，也使地址和功能关联起来。</p>
+<p>在 SAE J1939 网络中，传输消息的ECU需要⼀个NAME，作用有两个：</p>
+<ul>
+<li><p>为模块提供⼀个功能描述；</p>
+</li>
+<li><p>提供⼀个编号值用于地址仲裁(当ECU有出现使用相同地址时仲裁)。编号越小，优先级越高。</p>
+</li>
+</ul>
+<p>从左到右的优先次序排列如下：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251013224404.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251013224509.png"></p>
+<table>
+<thead>
+<tr>
+<th>NAME 域</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>仲裁地址能力域</td>
+<td>这个 1 位的域表示⼀个 ECU是否可自配置地址，声明地址发生冲突时，可以在可仲裁的源地址（128~ 247）范围中选择⼀个地址将其声明为其源地址。如果这位被设为“1”，那么当该 ECU 与⼀个具有较高优先级（编号值较小）标称符的 ECU发生地址声明冲突时，它可以通过采用⼀个新的源地址来解决。如果⼀个 ECU 计算它的地址后，只能声明某个特定的地址，那么这个 ECU并不具有仲裁地址能力。</td>
+</tr>
+<tr>
+<td>产业类群域</td>
+<td>由SAE定义并分配的⼀个 3 位的域。其定义可以在 SAE J1939 基础文档的附录B.7 中找到。</td>
+</tr>
+<tr>
+<td>汽车系统实例域</td>
+<td>是⼀个 4 位的域，用来区别某汽车系统中的子系统，例如，0表示第⼀个子系统。注意，如果是网络中唯⼀⼀个或第⼀个特定的汽车系统域，则要把实例域置为零，以表示这是第⼀个实例。</td>
+</tr>
+<tr>
+<td>汽车系统域</td>
+<td>是由SAE定义和设置的⼀个 7 位的域，它和产业类群域组合起来， 可以和⼀个共用名相关联。这样，汽车系统域在网络中为⼀系列功能提供了共用名。</td>
+</tr>
+<tr>
+<td>保留域</td>
+<td>这是 SAE 为以后的定义保留的。保留位应置为零。</td>
+</tr>
+<tr>
+<td>功能域</td>
+<td>功能实例域是⼀个 5 位的域。表示⼀个具体的功能实例，例如，0表示第⼀个功能实例。</td>
+</tr>
+<tr>
+<td>ECU实例域</td>
+<td>是⼀个 3 位的域，它可以显示同特定功能域相关联的⼀组电子控制模块中哪⼀个被引用了。即用来区别相同功能域中的⼀组电控单元。例如，当两个分开的控制单元去控制同⼀台发动机时，每个控制单元都附属于相同的 SAE J1939 网络，这时对于第⼀个ECU，ECU 实例域的值设为0；对于第⼆个ECU, 设为1。注意，如果是网络中唯⼀⼀个或第⼀个特定的 ECU，则要把实例域置为零，以表示这是第⼀个实例。</td>
+</tr>
+<tr>
+<td>制造商代码域</td>
+<td>是⼀个 11 位的域，它可以显示哪⼀家公司对使用这种标称符的电子控制模块产品承担责任。制造商代码是由SAE设置的，并可以在 SAE J1939 基础文档中找到。</td>
+</tr>
+<tr>
+<td>⾝份编号域</td>
+<td>其值由ECU 制造商设置，当名字不唯⼀时，必须使用ID编号，这个域必须是唯⼀的，并且在断电的情况下保持不变。</td>
+</tr>
+</tbody></table>
+<p>除了仲裁地址能力域以外，如果任⼀标称符域的数据不可知或不可用，那么该域将被设为⼆进制1，表示不可知或不可用。仲裁地址能力域应该被设置为适当的值。</p>
+<h3 id="地址声明消息"><a href="#地址声明消息" class="headerlink" title="地址声明消息"></a>地址声明消息</h3><p>任何⼀种 ECU 都可以使用地址声明请求消息，来请求NAME，以及同一个网络下，其他ECU的地址。每个ECU都可以发送⼀个包含了它的地址和NAME的地址声明消息，来响应这个请求。如果 ECU 不能够声明地址，那它就会响应⼀条“不能声明地址”的消息。</p>
+<p>还没有尝试声明地址的 ECU 要等到这个尝试声明地址为止，然后才能够参与网络通讯，才能够发送不能够声明地址消息或者其他任何的消息。</p>
+<p>ECU 还可以通过向全局目标地址（255）发送地址声明请求并检验响应，从而确定在网络上其他正在工作的 ECU。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251013224648.png"></p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>J1939</tag>
+      </tags>
+  </entry>
 </search>
