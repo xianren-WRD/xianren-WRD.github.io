@@ -31,163 +31,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Keil 使用问题汇总</title>
-    <url>/2023/Keil-Usage-12a1a959c43e/</url>
-    <content><![CDATA[<h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>记录日常工作中使用Keil遇到的问题的解决方法。</p>
-<h1 id="keil仿真相关"><a href="#keil仿真相关" class="headerlink" title="keil仿真相关"></a>keil仿真相关</h1><h2 id="添加芯片flash型号"><a href="#添加芯片flash型号" class="headerlink" title="添加芯片flash型号"></a>添加芯片flash型号</h2><p>在用仿真器烧录时，需要在flash download列表下，选择待烧写设备的芯片对应的flash型号。如果flash download添加列表中，没有我们要的芯片flash型号，则需要去官网下载相应系列的芯片包，如STM32F4xx_DFP。这里面会包含我们需要的FLM文件，将FLM文件复制到<code>keil安装路径\ARM\flash</code>目录下即可。</p>
-<h2 id="烧录异常"><a href="#烧录异常" class="headerlink" title="烧录异常"></a>烧录异常</h2><p>在安装JLink驱动时，最后一步会检测本地电脑中，使用 JLinkARM.dll 的第三方应用程序，并提示是否要将它们使用的dll替换为当前安装的版本，详见下图。</p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812152342.png" alt="jLink.png"></p>
-<p>如果错误的替换了dll，则可能导致第三方应用程序使用异常，比如：keil烧录、仿真异常。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">The firmware of the connected J-link does not support the following memory access(Cannot load driver \ARM\Segger\JL2CM3.dll)。</span><br></pre></td></tr></table></figure>
-
-<p>解决方法：进入<code>Keil安装目录下的\ARM\Segger</code>，将里面的JLinkARM.dll用合适的JLinkARM.dll替换即可。如：JLink驱动安装目录下，或者从其他正常使用keil的电脑，在同样的路径里面找到dll，复制出来替换。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">JLink Warning: Mis-aligned memory write: Address: 0x20000000, NumBytes: 2, Alignment: 2 (Halfword-aligned)</span><br></pre></td></tr></table></figure>
-
-<p>这个是JL2CM3.dll的问题，把它换成其他版本的（版本不要过低），也可以安装MDK其他的低版本解决，或者同上一个问题一样复制替换。</p>
-<h2 id="编译报错"><a href="#编译报错" class="headerlink" title="编译报错"></a>编译报错</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.\Output\Stm32_MCU_FBL.axf: error: L6050U: The code size of this image (42994 bytes) exceeds the maximum allowed for this version of the linker.</span><br></pre></td></tr></table></figure>
-
-<p>原因是没有注册，还是试用版，对编译文件的大小有限制。解决方法：keil注册（破解）</p>
-<h1 id="Keil工程相关"><a href="#Keil工程相关" class="headerlink" title="Keil工程相关"></a>Keil工程相关</h1><p>当电脑安装了Keil4与Keil5两个软件时，打开工程文件会默认选择Keil5打开，而用Keil4创建的工程，用keil5打开会崩溃。通过修改注册表可以实现，不同的工程文件类型用指定的Keil版本打开。即Keil4建立的工程用Keil4打开，Keil5建立的工程用Keil5打开。</p>
-<p>打开注册表，展开<code>HKEY_CLASSER_ROOT</code>，找到<code>UVPROJFILE</code>目录（Keil4工程文件类型）和<code>UVPROJXFILE</code>目录（Keil5工程文件类型）。在右侧窗口双击名称下面的条目，出现编辑框后，将数值数据填写为对应的Keil应用程序路径即可。</p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812145104.png" alt="keil注册表.png"></p>
-<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>之前遇到过一个问题，在win10环境下，Keil4启动时会有类型闪退的现象，卡在启动界面一段时间后会自动退出。调出任务管理器，查看程序的运行状态，发现启动时会自动被挂起。后续，安装高版本的keil4之后不再出现。</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>Keil</tag>
-        <tag>JLink</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>PCAN 使用笔记</title>
-    <url>/2023/PCAN-Usage-4b8805394c51/</url>
-    <content><![CDATA[<h1 id="PCAN-Explorer回放报文"><a href="#PCAN-Explorer回放报文" class="headerlink" title="PCAN-Explorer回放报文"></a>PCAN-Explorer回放报文</h1><ol>
-<li><p>打开工程，如何新建工程详见<a href="https://peak-system.com.cn/wp-content/uploads/2022/06/PCAN-Explorer6%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95.pdf">PCAN-Explorer6基本使用方法.pdf</a></p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812204403.png" alt="工程文件.png"></p>
-</li>
-<li><p>添加连接，如何新建连接详见说明文档</p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812204754.png" alt="添加连接.png"></p>
-</li>
-<li><p>导入DBC，双击打开，全选并Apply</p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812204904.png" alt="导入DBC.png"></p>
-</li>
-<li><p>打开Plotter插件，并导入报文。Plotter插件中显示的是具体的信号值，所以在工程中必须有相应的解析文件如：sym、dbc，把CAN报文解析为具体的信号值才能正常把trc文件导入到Plotter插件。</p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812205653.png" alt="import from tracer.png"></p>
-</li>
-<li><p>选择信号。导入报文后选择要查看的信号，提供选择的信号是导入的报文所包含的信号，可以一次选择多个。</p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812210321.png" alt="选择信号.png"></p>
-</li>
-<li><p>调整样式</p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812210420.png" alt="样式调整.png"></p>
-</li>
-<li><p>回放查看</p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812210535.png" alt="报文查看.png"></p>
-</li>
-</ol>
-<h2 id="补充说明"><a href="#补充说明" class="headerlink" title="补充说明"></a>补充说明</h2><p>PCAN-Explorer打开PCAN-View录制的trc格式报文，显示出来的内容为空；Plotter插件导入同一份报文，提示无信号。</p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812210836.png" alt="no signal.png"></p>
-<p>原因为两者的文件版本不一致，解析错误。我用的PCAN-Explorer文件版本为1.3，PCAN-View文件版本为2.0。</p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812211812.png" alt="PCAN-Explorer Version.png"></p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812211826.png" alt="PCAN-View Version.png"></p>
-<p>解决方法：使用PEAK-Converter，将PCAN-View导出的trc报文转为1.3版本，格式不变，这样可以继续导入到Plotter插件中，进行后续回放。</p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812212213.png" alt="Format.png"></p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812212222.png" alt="Target Version.png"></p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>PCAN</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>S32DS 使用问题汇总</title>
-    <url>/2023/S32DS-Usage-31bfab119a51/</url>
-    <content><![CDATA[<h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>记录日常工作中使用S32 Design Studio IDE遇到的问题的解决方法。问题大多比较久远，因此没有附图。</p>
-<h1 id="S32DS安装"><a href="#S32DS安装" class="headerlink" title="S32DS安装"></a>S32DS安装</h1><h2 id="安装出错"><a href="#安装出错" class="headerlink" title="安装出错"></a>安装出错</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">The installation of S32 Design Studio for ARM Version 2018.R1 has been rolle back</span><br></pre></td></tr></table></figure>
-
-<p>原因：没有安装权限，以管理身份重新安装即可解决。</p>
-<h2 id="离线激活"><a href="#离线激活" class="headerlink" title="离线激活"></a>离线激活</h2><ol>
-<li><p>在官网下载需要的安装包，点击下载需要注册账号，根据提示注册即可。然后在下载界面找到License Keys，记录下Activation code，安装过程要用到；</p>
-</li>
-<li><p>安装过程会要求输入Activation code，激活类型选择offline。生成request.xml，然后将该文件上传到<a href="https://nxp.flexnetoperations.com/control/frse/offlineActivation">链接</a>，点击process生成activation.xml，通过安装指导上传activation.xml后，继续后续的安装。</p>
-</li>
-</ol>
-<h1 id="S32DS仿真报错"><a href="#S32DS仿真报错" class="headerlink" title="S32DS仿真报错"></a>S32DS仿真报错</h1><h2 id="JLinkGDBServerCL-exe"><a href="#JLinkGDBServerCL-exe" class="headerlink" title="JLinkGDBServerCL.exe"></a>JLinkGDBServerCL.exe</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Error in services launch sequence</span><br><span class="line">Launching command [C:/NXP/S32DS_ARM_v2.0/Drivers/Segger/JLinkGDBServerCL.exe -if swd -device S32K144 -endian little -speed auto -port 2331 -swoport 2332 -telnetport 2333 -vd -ir -localhostonly 1 -singlerun -strict -timeout 0 -nogui] failed.</span><br><span class="line">Cannot run program &quot;C:/NXP/S32DS_ARM_v2.0/Drivers/Segger/JLinkGDBServerCL.exe&quot;: Launching failed。</span><br></pre></td></tr></table></figure>
-
-<p>从报错提示来看应该是JLinkGDBServerCL.exe出现错误了，查看之后发现本地并没有这个路径。</p>
-<p>解决方法如下：进入S32DS对应的Debug配置界面，在executable设置中点击Variables，修改里面的<code>$&#123;jlink_path&#125;</code>（Path to J-Link installation folder），可以选择为S32DS安装路径下的<code>\Drivers\Segger\</code>路径，这样一来Launching command里面的可执行程序的路径就变为我们所设置的路径了。</p>
-<h2 id="PEmicro-GDB-Launch-Failure"><a href="#PEmicro-GDB-Launch-Failure" class="headerlink" title="PEmicro GDB Launch Failure"></a>PEmicro GDB Launch Failure</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Another GDB Server debug session is alreadyusing the same Server Port number. To run simultaneous debug sessions, please specify a unique Server Port and GDBMI Port in the Debug Configuration for each project. If another session is not running simultaneously, make sure that the pegdbserver_console and the arm-none-eabi-gdb processes have terminated.</span><br></pre></td></tr></table></figure>
-
-<p>解决如下：通过任务管理器，关闭pegdbserver_console.exe进程。</p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230811202451.png" alt="pegdb.png"></p>
-<h2 id="J-Link-GDB-Server-failed"><a href="#J-Link-GDB-Server-failed" class="headerlink" title="J-Link GDB Server failed"></a>J-Link GDB Server failed</h2><p><img title="" src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230811203342.png" alt="could not connect to J-Link.png" width="329"><img title="" src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230811203351.png" alt="could not connect to target.png" width="320"></p>
-<p>出现这个问题原因有很多，包括但不限于：待烧录设备未供电、JLink未连接、待烧录设备芯片型号选择错误、S32DS安装目录下的Segger目录文件被替换。</p>
-<h1 id="S32DS工程相关"><a href="#S32DS工程相关" class="headerlink" title="S32DS工程相关"></a>S32DS工程相关</h1><p>在切换不同项目时，我习惯先在Project Explorer框中，右键选中并删除当前项目的工程文件夹，然后，再右键导入工程来打开另外一个项目。在选择要导入的工程路径时，IDE会记忆之前选择过的路径，这样的话切换起来比较方便。但是，有些项目已经移动或者删除了，这样一来，这些路径就是无效的。但是，IDE的下拉框还是会显示这些无效的路径。于是，可以通过下面的方式，来修改历史选择过的路径。导入的工程路径保存在：<br><code>工作目录\.metadata\.plugins\org.eclipse.ui.ide\dialog_settings.xml</code></p>
-<p>具体操作时，<strong>首先要退出S32DS软件</strong>，然后找到上面这个xml文件，修改文件内容，也就是删除不需要的路径。这样的话，下次重新启动S32DS时，下拉提示框显示的内容就会做出相应改变了。</p>
-<p>顺便一提，每次切换工程后，建议先make clean，再make编译。</p>
-]]></content>
-      <categories>
-        <category>技术</category>
-      </categories>
-      <tags>
-        <tag>S32DS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>spreadsheet compare 简单使用说明</title>
-    <url>/2023/spreadsheet-compare-cf954b484b3c/</url>
-    <content><![CDATA[<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>Office2013开始，Office家族增加了Spreadsheet Compare工具，使用这个工具可快速比较识别两个工作簿（或者同一个工作簿的不同版本）来查看不同工作簿之间的差异。Spreadsheet Compare是名符其实的Office官方出品的数据比对神器。</p>
-<p>Beyond Compare 也可以用来对比表格差异，但是只能比较两个Excel的当前工作表，如果每个 Excel 文件中包含多个工作表时就会对比错误的情况，而 <code>Spreadsheet Compare</code> 在这一点上更加优秀，可以对比多个表格数据。</p>
-<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p>打开两份需要比较Excel（注意：两份原文件一定要做备份，Spreadsheet Compare会修改当前文件。）</p>
-<p>点击任意一个文件Exce菜单加载项</p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20220220213550.png" alt="image20220220203635055"></p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20220220213603.png" alt="image20220220204055371"></p>
-<h2 id="Compare-Type设置"><a href="#Compare-Type设置" class="headerlink" title="Compare Type设置"></a>Compare Type设置</h2><p>选择Database Style Compare，Primary KEY Colum选择可作为数据库内主键的列，否则对比的结果会有错乱。</p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20220220213609.png" alt="image20220220205530434"></p>
-<p>设置Excel工作薄中需要比较的Sheet，两个文件均需要设置具体的Sheet，这边有两步，选择好之后点击Next。</p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20220220213612.png" alt="image20220220205827545"></p>
-<h2 id="报告查看"><a href="#报告查看" class="headerlink" title="报告查看"></a>报告查看</h2><p>Report详细列出了两份文件的修改情况。</p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20220220213615.png" alt="image20220220211610710"></p>
-<p>Merged Diffs则把两份合并在一起，列出其差异。同时工具也会修改原文件，把有差异的地方标红，两份文件并排在一起方便对比查看。</p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20220220213618.png" alt="image20220220212018465"></p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20220220213622.png" alt="image20220220213418872"></p>
-<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>其余选项的说明可以查看帮助文档</p>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>对比工具</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>使用拨号上网时，笔记本电脑无法打开热点的解决方法</title>
-    <url>/2021/%E6%97%A0%E6%B3%95%E5%BC%80%E5%90%AF%E7%83%AD%E7%82%B9%E9%97%AE%E9%A2%98-38d92260e969/</url>
-    <content><![CDATA[<h3 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h3><p>一般情况下，我们是可以正常使用笔记本电脑来开启热点的。但是，在使用拨号的方式上网时，热点无法正常开启。具体表现如下图所示，热点按钮无法点击。当然，你也可以买一个路由器达到曲线救国的目的。在这里，本文给出一种方法，在不用路由器的情况下(<del>绝对不是因为穷</del>😭)开启电脑热点，供其它设备正常连接使用。</p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20210809005435.png" alt="image-20210808225118370"></p>
-<h3 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h3><ol>
-<li>先不要拨号上网，如果连上了就先断开连接，然后手机开启热点</li>
-<li>电脑连接手机开启的热点，这时电脑的热点按钮是可以点击开启的。我们开启电脑的热点功能，然后手机关掉热点（这里注意：是关闭手机的，电脑不要把热点关了）。完成之后，依次点击<code>网络和Internet设置--&gt;更改适配器选项</code>，我们可以看到有一个叫本地连接*2之类的适配器（后面的数字不重要），这个对应的就是电脑开启的热点。<br><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20210809005442.png" alt="image-20210808223329092"></li>
-<li>电脑正常拨号上网，然后按照下图的操作，共享给上一步的本地连接*2即可。<br><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20210809005448.png" alt="image-20210808224205345"></li>
-<li>以上的操作，网上已有不少的博客介绍了。但是，这里面存在一个问题，这样操作之后的电脑热点用不了多久就会自动关闭。我上网找了一下，没有相应的解决方法。下面本文将会给出一种解决方法，也算是有一点原创的内容了。</li>
-</ol>
-<h3 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h3><p>通过上面设置后，电脑热点只能使用20分钟左右，就会自动关闭，并且无法通过右下角的任务栏来再次打开。</p>
-<p>这里我猜测自动关闭是因为步骤2中，手机突然关闭了热点，但是电脑的热点功能还开启着（这时候其它的设备连上这个电脑热点也是无法上网的，因为手机的热点关闭了。当然，完成步骤3后是可以上网的，只不过会自动关闭），没有实时的对手机热点的关闭做出响应，会有一段时间的延迟，也就是20分钟左右，才会对手机热点的关闭做出响应，响应的具体表现就是电脑热点的自动关闭。</p>
-<p><strong>解决方法</strong>就是完成上面的一系列操作后，进入热点的设置界面（图一中的热点按钮右键点击设置，即可打开），<mark>不要关闭这个界面</mark>，可以将界面最小化，一直等到热点自动关闭后，我们再点击这个热点设置界面的开启按钮即可。这样处理一次之后，电脑热点就会一直保持开启了，这个时候就可以关闭热点的设置界面了。</p>
-<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20210809005454.png" alt="image-20210809004547802"></p>
-<p>当然，如果重启电脑的话，又得按照上面的步骤来一遍。虽说会有点繁琐，不过熟练操作以后，也花不了太多的时间。这里提一下，重启电脑后如果完成了上面的操作，手机连接上电脑的热点，提示<code>已连接，但无法访问互联网</code>，这时我们只需要将步骤3的宽带连接先取消共享（取消勾选），然后再次共享即可。</p>
-]]></content>
-      <categories>
-        <category>其他</category>
-      </categories>
-      <tags>
-        <tag>疑难杂症</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>J1939设计注意点</title>
     <url>/2025/prefix%20remember%20to%20change!!!-9a9c4e5c1e4f/</url>
     <content><![CDATA[<h1 id="需求规范检查"><a href="#需求规范检查" class="headerlink" title="需求规范检查"></a>需求规范检查</h1><h2 id="标准规范"><a href="#标准规范" class="headerlink" title="标准规范"></a>标准规范</h2><p><strong>OSI层级</strong></p>
@@ -630,6 +473,163 @@
       </categories>
       <tags>
         <tag>J1939</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Keil 使用问题汇总</title>
+    <url>/2023/Keil-Usage-12a1a959c43e/</url>
+    <content><![CDATA[<h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>记录日常工作中使用Keil遇到的问题的解决方法。</p>
+<h1 id="keil仿真相关"><a href="#keil仿真相关" class="headerlink" title="keil仿真相关"></a>keil仿真相关</h1><h2 id="添加芯片flash型号"><a href="#添加芯片flash型号" class="headerlink" title="添加芯片flash型号"></a>添加芯片flash型号</h2><p>在用仿真器烧录时，需要在flash download列表下，选择待烧写设备的芯片对应的flash型号。如果flash download添加列表中，没有我们要的芯片flash型号，则需要去官网下载相应系列的芯片包，如STM32F4xx_DFP。这里面会包含我们需要的FLM文件，将FLM文件复制到<code>keil安装路径\ARM\flash</code>目录下即可。</p>
+<h2 id="烧录异常"><a href="#烧录异常" class="headerlink" title="烧录异常"></a>烧录异常</h2><p>在安装JLink驱动时，最后一步会检测本地电脑中，使用 JLinkARM.dll 的第三方应用程序，并提示是否要将它们使用的dll替换为当前安装的版本，详见下图。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812152342.png" alt="jLink.png"></p>
+<p>如果错误的替换了dll，则可能导致第三方应用程序使用异常，比如：keil烧录、仿真异常。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">The firmware of the connected J-link does not support the following memory access(Cannot load driver \ARM\Segger\JL2CM3.dll)。</span><br></pre></td></tr></table></figure>
+
+<p>解决方法：进入<code>Keil安装目录下的\ARM\Segger</code>，将里面的JLinkARM.dll用合适的JLinkARM.dll替换即可。如：JLink驱动安装目录下，或者从其他正常使用keil的电脑，在同样的路径里面找到dll，复制出来替换。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">JLink Warning: Mis-aligned memory write: Address: 0x20000000, NumBytes: 2, Alignment: 2 (Halfword-aligned)</span><br></pre></td></tr></table></figure>
+
+<p>这个是JL2CM3.dll的问题，把它换成其他版本的（版本不要过低），也可以安装MDK其他的低版本解决，或者同上一个问题一样复制替换。</p>
+<h2 id="编译报错"><a href="#编译报错" class="headerlink" title="编译报错"></a>编译报错</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.\Output\Stm32_MCU_FBL.axf: error: L6050U: The code size of this image (42994 bytes) exceeds the maximum allowed for this version of the linker.</span><br></pre></td></tr></table></figure>
+
+<p>原因是没有注册，还是试用版，对编译文件的大小有限制。解决方法：keil注册（破解）</p>
+<h1 id="Keil工程相关"><a href="#Keil工程相关" class="headerlink" title="Keil工程相关"></a>Keil工程相关</h1><p>当电脑安装了Keil4与Keil5两个软件时，打开工程文件会默认选择Keil5打开，而用Keil4创建的工程，用keil5打开会崩溃。通过修改注册表可以实现，不同的工程文件类型用指定的Keil版本打开。即Keil4建立的工程用Keil4打开，Keil5建立的工程用Keil5打开。</p>
+<p>打开注册表，展开<code>HKEY_CLASSER_ROOT</code>，找到<code>UVPROJFILE</code>目录（Keil4工程文件类型）和<code>UVPROJXFILE</code>目录（Keil5工程文件类型）。在右侧窗口双击名称下面的条目，出现编辑框后，将数值数据填写为对应的Keil应用程序路径即可。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812145104.png" alt="keil注册表.png"></p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>之前遇到过一个问题，在win10环境下，Keil4启动时会有类型闪退的现象，卡在启动界面一段时间后会自动退出。调出任务管理器，查看程序的运行状态，发现启动时会自动被挂起。后续，安装高版本的keil4之后不再出现。</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>Keil</tag>
+        <tag>JLink</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PCAN 使用笔记</title>
+    <url>/2023/PCAN-Usage-4b8805394c51/</url>
+    <content><![CDATA[<h1 id="PCAN-Explorer回放报文"><a href="#PCAN-Explorer回放报文" class="headerlink" title="PCAN-Explorer回放报文"></a>PCAN-Explorer回放报文</h1><ol>
+<li><p>打开工程，如何新建工程详见<a href="https://peak-system.com.cn/wp-content/uploads/2022/06/PCAN-Explorer6%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95.pdf">PCAN-Explorer6基本使用方法.pdf</a></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812204403.png" alt="工程文件.png"></p>
+</li>
+<li><p>添加连接，如何新建连接详见说明文档</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812204754.png" alt="添加连接.png"></p>
+</li>
+<li><p>导入DBC，双击打开，全选并Apply</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812204904.png" alt="导入DBC.png"></p>
+</li>
+<li><p>打开Plotter插件，并导入报文。Plotter插件中显示的是具体的信号值，所以在工程中必须有相应的解析文件如：sym、dbc，把CAN报文解析为具体的信号值才能正常把trc文件导入到Plotter插件。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812205653.png" alt="import from tracer.png"></p>
+</li>
+<li><p>选择信号。导入报文后选择要查看的信号，提供选择的信号是导入的报文所包含的信号，可以一次选择多个。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812210321.png" alt="选择信号.png"></p>
+</li>
+<li><p>调整样式</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812210420.png" alt="样式调整.png"></p>
+</li>
+<li><p>回放查看</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812210535.png" alt="报文查看.png"></p>
+</li>
+</ol>
+<h2 id="补充说明"><a href="#补充说明" class="headerlink" title="补充说明"></a>补充说明</h2><p>PCAN-Explorer打开PCAN-View录制的trc格式报文，显示出来的内容为空；Plotter插件导入同一份报文，提示无信号。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812210836.png" alt="no signal.png"></p>
+<p>原因为两者的文件版本不一致，解析错误。我用的PCAN-Explorer文件版本为1.3，PCAN-View文件版本为2.0。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812211812.png" alt="PCAN-Explorer Version.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812211826.png" alt="PCAN-View Version.png"></p>
+<p>解决方法：使用PEAK-Converter，将PCAN-View导出的trc报文转为1.3版本，格式不变，这样可以继续导入到Plotter插件中，进行后续回放。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812212213.png" alt="Format.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812212222.png" alt="Target Version.png"></p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>PCAN</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>S32DS 使用问题汇总</title>
+    <url>/2023/S32DS-Usage-31bfab119a51/</url>
+    <content><![CDATA[<h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>记录日常工作中使用S32 Design Studio IDE遇到的问题的解决方法。问题大多比较久远，因此没有附图。</p>
+<h1 id="S32DS安装"><a href="#S32DS安装" class="headerlink" title="S32DS安装"></a>S32DS安装</h1><h2 id="安装出错"><a href="#安装出错" class="headerlink" title="安装出错"></a>安装出错</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">The installation of S32 Design Studio for ARM Version 2018.R1 has been rolle back</span><br></pre></td></tr></table></figure>
+
+<p>原因：没有安装权限，以管理身份重新安装即可解决。</p>
+<h2 id="离线激活"><a href="#离线激活" class="headerlink" title="离线激活"></a>离线激活</h2><ol>
+<li><p>在官网下载需要的安装包，点击下载需要注册账号，根据提示注册即可。然后在下载界面找到License Keys，记录下Activation code，安装过程要用到；</p>
+</li>
+<li><p>安装过程会要求输入Activation code，激活类型选择offline。生成request.xml，然后将该文件上传到<a href="https://nxp.flexnetoperations.com/control/frse/offlineActivation">链接</a>，点击process生成activation.xml，通过安装指导上传activation.xml后，继续后续的安装。</p>
+</li>
+</ol>
+<h1 id="S32DS仿真报错"><a href="#S32DS仿真报错" class="headerlink" title="S32DS仿真报错"></a>S32DS仿真报错</h1><h2 id="JLinkGDBServerCL-exe"><a href="#JLinkGDBServerCL-exe" class="headerlink" title="JLinkGDBServerCL.exe"></a>JLinkGDBServerCL.exe</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Error in services launch sequence</span><br><span class="line">Launching command [C:/NXP/S32DS_ARM_v2.0/Drivers/Segger/JLinkGDBServerCL.exe -if swd -device S32K144 -endian little -speed auto -port 2331 -swoport 2332 -telnetport 2333 -vd -ir -localhostonly 1 -singlerun -strict -timeout 0 -nogui] failed.</span><br><span class="line">Cannot run program &quot;C:/NXP/S32DS_ARM_v2.0/Drivers/Segger/JLinkGDBServerCL.exe&quot;: Launching failed。</span><br></pre></td></tr></table></figure>
+
+<p>从报错提示来看应该是JLinkGDBServerCL.exe出现错误了，查看之后发现本地并没有这个路径。</p>
+<p>解决方法如下：进入S32DS对应的Debug配置界面，在executable设置中点击Variables，修改里面的<code>$&#123;jlink_path&#125;</code>（Path to J-Link installation folder），可以选择为S32DS安装路径下的<code>\Drivers\Segger\</code>路径，这样一来Launching command里面的可执行程序的路径就变为我们所设置的路径了。</p>
+<h2 id="PEmicro-GDB-Launch-Failure"><a href="#PEmicro-GDB-Launch-Failure" class="headerlink" title="PEmicro GDB Launch Failure"></a>PEmicro GDB Launch Failure</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Another GDB Server debug session is alreadyusing the same Server Port number. To run simultaneous debug sessions, please specify a unique Server Port and GDBMI Port in the Debug Configuration for each project. If another session is not running simultaneously, make sure that the pegdbserver_console and the arm-none-eabi-gdb processes have terminated.</span><br></pre></td></tr></table></figure>
+
+<p>解决如下：通过任务管理器，关闭pegdbserver_console.exe进程。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230811202451.png" alt="pegdb.png"></p>
+<h2 id="J-Link-GDB-Server-failed"><a href="#J-Link-GDB-Server-failed" class="headerlink" title="J-Link GDB Server failed"></a>J-Link GDB Server failed</h2><p><img title="" src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230811203342.png" alt="could not connect to J-Link.png" width="329"><img title="" src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230811203351.png" alt="could not connect to target.png" width="320"></p>
+<p>出现这个问题原因有很多，包括但不限于：待烧录设备未供电、JLink未连接、待烧录设备芯片型号选择错误、S32DS安装目录下的Segger目录文件被替换。</p>
+<h1 id="S32DS工程相关"><a href="#S32DS工程相关" class="headerlink" title="S32DS工程相关"></a>S32DS工程相关</h1><p>在切换不同项目时，我习惯先在Project Explorer框中，右键选中并删除当前项目的工程文件夹，然后，再右键导入工程来打开另外一个项目。在选择要导入的工程路径时，IDE会记忆之前选择过的路径，这样的话切换起来比较方便。但是，有些项目已经移动或者删除了，这样一来，这些路径就是无效的。但是，IDE的下拉框还是会显示这些无效的路径。于是，可以通过下面的方式，来修改历史选择过的路径。导入的工程路径保存在：<br><code>工作目录\.metadata\.plugins\org.eclipse.ui.ide\dialog_settings.xml</code></p>
+<p>具体操作时，<strong>首先要退出S32DS软件</strong>，然后找到上面这个xml文件，修改文件内容，也就是删除不需要的路径。这样的话，下次重新启动S32DS时，下拉提示框显示的内容就会做出相应改变了。</p>
+<p>顺便一提，每次切换工程后，建议先make clean，再make编译。</p>
+]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>S32DS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>spreadsheet compare 简单使用说明</title>
+    <url>/2023/spreadsheet-compare-cf954b484b3c/</url>
+    <content><![CDATA[<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>Office2013开始，Office家族增加了Spreadsheet Compare工具，使用这个工具可快速比较识别两个工作簿（或者同一个工作簿的不同版本）来查看不同工作簿之间的差异。Spreadsheet Compare是名符其实的Office官方出品的数据比对神器。</p>
+<p>Beyond Compare 也可以用来对比表格差异，但是只能比较两个Excel的当前工作表，如果每个 Excel 文件中包含多个工作表时就会对比错误的情况，而 <code>Spreadsheet Compare</code> 在这一点上更加优秀，可以对比多个表格数据。</p>
+<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><p>打开两份需要比较Excel（注意：两份原文件一定要做备份，Spreadsheet Compare会修改当前文件。）</p>
+<p>点击任意一个文件Exce菜单加载项</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20220220213550.png" alt="image20220220203635055"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20220220213603.png" alt="image20220220204055371"></p>
+<h2 id="Compare-Type设置"><a href="#Compare-Type设置" class="headerlink" title="Compare Type设置"></a>Compare Type设置</h2><p>选择Database Style Compare，Primary KEY Colum选择可作为数据库内主键的列，否则对比的结果会有错乱。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20220220213609.png" alt="image20220220205530434"></p>
+<p>设置Excel工作薄中需要比较的Sheet，两个文件均需要设置具体的Sheet，这边有两步，选择好之后点击Next。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20220220213612.png" alt="image20220220205827545"></p>
+<h2 id="报告查看"><a href="#报告查看" class="headerlink" title="报告查看"></a>报告查看</h2><p>Report详细列出了两份文件的修改情况。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20220220213615.png" alt="image20220220211610710"></p>
+<p>Merged Diffs则把两份合并在一起，列出其差异。同时工具也会修改原文件，把有差异的地方标红，两份文件并排在一起方便对比查看。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20220220213618.png" alt="image20220220212018465"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20220220213622.png" alt="image20220220213418872"></p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>其余选项的说明可以查看帮助文档</p>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>对比工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用拨号上网时，笔记本电脑无法打开热点的解决方法</title>
+    <url>/2021/%E6%97%A0%E6%B3%95%E5%BC%80%E5%90%AF%E7%83%AD%E7%82%B9%E9%97%AE%E9%A2%98-38d92260e969/</url>
+    <content><![CDATA[<h3 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h3><p>一般情况下，我们是可以正常使用笔记本电脑来开启热点的。但是，在使用拨号的方式上网时，热点无法正常开启。具体表现如下图所示，热点按钮无法点击。当然，你也可以买一个路由器达到曲线救国的目的。在这里，本文给出一种方法，在不用路由器的情况下(<del>绝对不是因为穷</del>😭)开启电脑热点，供其它设备正常连接使用。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20210809005435.png" alt="image-20210808225118370"></p>
+<h3 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h3><ol>
+<li>先不要拨号上网，如果连上了就先断开连接，然后手机开启热点</li>
+<li>电脑连接手机开启的热点，这时电脑的热点按钮是可以点击开启的。我们开启电脑的热点功能，然后手机关掉热点（这里注意：是关闭手机的，电脑不要把热点关了）。完成之后，依次点击<code>网络和Internet设置--&gt;更改适配器选项</code>，我们可以看到有一个叫本地连接*2之类的适配器（后面的数字不重要），这个对应的就是电脑开启的热点。<br><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20210809005442.png" alt="image-20210808223329092"></li>
+<li>电脑正常拨号上网，然后按照下图的操作，共享给上一步的本地连接*2即可。<br><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20210809005448.png" alt="image-20210808224205345"></li>
+<li>以上的操作，网上已有不少的博客介绍了。但是，这里面存在一个问题，这样操作之后的电脑热点用不了多久就会自动关闭。我上网找了一下，没有相应的解决方法。下面本文将会给出一种解决方法，也算是有一点原创的内容了。</li>
+</ol>
+<h3 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h3><p>通过上面设置后，电脑热点只能使用20分钟左右，就会自动关闭，并且无法通过右下角的任务栏来再次打开。</p>
+<p>这里我猜测自动关闭是因为步骤2中，手机突然关闭了热点，但是电脑的热点功能还开启着（这时候其它的设备连上这个电脑热点也是无法上网的，因为手机的热点关闭了。当然，完成步骤3后是可以上网的，只不过会自动关闭），没有实时的对手机热点的关闭做出响应，会有一段时间的延迟，也就是20分钟左右，才会对手机热点的关闭做出响应，响应的具体表现就是电脑热点的自动关闭。</p>
+<p><strong>解决方法</strong>就是完成上面的一系列操作后，进入热点的设置界面（图一中的热点按钮右键点击设置，即可打开），<mark>不要关闭这个界面</mark>，可以将界面最小化，一直等到热点自动关闭后，我们再点击这个热点设置界面的开启按钮即可。这样处理一次之后，电脑热点就会一直保持开启了，这个时候就可以关闭热点的设置界面了。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20210809005454.png" alt="image-20210809004547802"></p>
+<p>当然，如果重启电脑的话，又得按照上面的步骤来一遍。虽说会有点繁琐，不过熟练操作以后，也花不了太多的时间。这里提一下，重启电脑后如果完成了上面的操作，手机连接上电脑的热点，提示<code>已连接，但无法访问互联网</code>，这时我们只需要将步骤3的宽带连接先取消共享（取消勾选），然后再次共享即可。</p>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>疑难杂症</tag>
       </tags>
   </entry>
 </search>
