@@ -6,7 +6,7 @@
   <link href="https://xianren-wrd.github.io/atom.xml" rel="self"/>
   
   <link href="https://xianren-wrd.github.io/"/>
-  <updated>2025-10-16T09:50:14.305Z</updated>
+  <updated>2025-10-16T15:21:54.344Z</updated>
   <id>https://xianren-wrd.github.io/</id>
   
   <author>
@@ -15,6 +15,81 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>报文回放</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-76f0d30e8b43/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-76f0d30e8b43/</id>
+    <published>2025-10-16T14:33:42.000Z</published>
+    <updated>2025-10-16T15:21:54.344Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;在线回放&quot;&gt;&lt;a href=&quot;#在线回放&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="CAN总线工具" scheme="https://xianren-wrd.github.io/categories/CAN%E6%80%BB%E7%BA%BF%E5%B7%A5%E5%85%B7/"/>
+    
+    
+    <category term="报文分析与回放" scheme="https://xianren-wrd.github.io/tags/%E6%8A%A5%E6%96%87%E5%88%86%E6%9E%90%E4%B8%8E%E5%9B%9E%E6%94%BE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>同星UDS刷写工程搭建</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-68598371f033/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-68598371f033/</id>
+    <published>2025-10-16T10:53:59.000Z</published>
+    <updated>2025-10-16T15:14:30.178Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="CAN总线工具" scheme="https://xianren-wrd.github.io/categories/CAN%E6%80%BB%E7%BA%BF%E5%B7%A5%E5%85%B7/"/>
+    
+    
+    <category term="TSMaster" scheme="https://xianren-wrd.github.io/tags/TSMaster/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用Curl排查HTTP问题的经历</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-92342a72fd01/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-92342a72fd01/</id>
+    <published>2025-10-16T10:16:05.000Z</published>
+    <updated>2025-10-16T15:19:03.400Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="其他" scheme="https://xianren-wrd.github.io/categories/%E5%85%B6%E4%BB%96/"/>
+    
+    
+    <category term="Curl" scheme="https://xianren-wrd.github.io/tags/Curl/"/>
+    
+  </entry>
   
   <entry>
     <title>CCS使用笔记</title>
@@ -150,7 +225,7 @@
     <link href="https://xianren-wrd.github.io/2023/spreadsheet-compare-cf954b484b3c/"/>
     <id>https://xianren-wrd.github.io/2023/spreadsheet-compare-cf954b484b3c/</id>
     <published>2023-08-11T13:33:51.000Z</published>
-    <updated>2025-10-16T08:42:39.197Z</updated>
+    <updated>2025-10-16T10:19:42.603Z</updated>
     
     
       
@@ -163,7 +238,7 @@
     
     
     
-    <category term="office" scheme="https://xianren-wrd.github.io/categories/office/"/>
+    <category term="Office" scheme="https://xianren-wrd.github.io/categories/Office/"/>
     
     
     <category term="对比工具" scheme="https://xianren-wrd.github.io/tags/%E5%AF%B9%E6%AF%94%E5%B7%A5%E5%85%B7/"/>

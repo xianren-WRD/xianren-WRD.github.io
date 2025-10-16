@@ -602,7 +602,7 @@
 <h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>其余选项的说明可以查看帮助文档</p>
 ]]></content>
       <categories>
-        <category>office</category>
+        <category>Office</category>
       </categories>
       <tags>
         <tag>对比工具</tag>
@@ -770,6 +770,219 @@
       </categories>
       <tags>
         <tag>Code Composer Studio</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用Curl排查HTTP问题的经历</title>
+    <url>/2025/prefix%20remember%20to%20change!!!-92342a72fd01/</url>
+    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>我的核心职责是MCU侧的CAN总线开发。在联调过程中，Soc端需依赖一个专用Box来生成第三方算法的运行License。联调期间，该Box无法生成License，严重阻碍了联调进度。本文记录了本人协助Soc同事定位并解决此问题的全过程。</p>
+<h1 id="Box策略分析"><a href="#Box策略分析" class="headerlink" title="Box策略分析"></a>Box策略分析</h1><blockquote>
+<p>因为不清楚Box的策略，以下分析都是主观的，不⼀定准确。</p>
+</blockquote>
+<p>Box有⼀个默认的网址，用于查看当前的状态信息。这个网址内容数据来源于Box的固件，存储在Box的非易失性存储器中。当Box启动后，收到请求时，固件会加载相关文件，然后通过http协议传输内容给PC，使得我们可以在本地浏览器查看信息。</p>
+<p>PC不联网也可以生成license，这是因为当通过网线连接PC和Box时，PC和Box之间形成了⼀个本地网络，数据访问和设置过程都是在本地网络内进行的，不需要互联网连接。</p>
+<h1 id="http连接异常分析"><a href="#http连接异常分析" class="headerlink" title="http连接异常分析"></a>http连接异常分析</h1><p><strong>错误信息</strong></p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line">D:\share&gt;python .\main_create_license.py</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">File <span class="string">&quot;D:\software\Python\lib\site-packages\urllib3\connection.py&quot;</span>, line</span><br><span class="line"><span class="number">207</span>, <span class="keyword">in</span> _new_conn</span><br><span class="line">socket_options=self.socket_options,</span><br><span class="line">File <span class="string">&quot;D:\software\Python\lib\site-packages\urllib3\util\connection.py&quot;</span>,</span><br><span class="line">line <span class="number">60</span>, <span class="keyword">in</span> create_connection</span><br><span class="line"><span class="keyword">for</span> res <span class="keyword">in</span> socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):</span><br><span class="line">File <span class="string">&quot;D:\software\Python\lib\socket.py&quot;</span>, line <span class="number">752</span>, <span class="keyword">in</span> getaddrinfo</span><br><span class="line"><span class="keyword">for</span> res <span class="keyword">in</span> _socket.getaddrinfo(host, port, family, <span class="built_in">type</span>, proto, flags):</span><br><span class="line">socket.gaierror: [Errno <span class="number">11001</span>] getaddrinfo failed</span><br></pre></td></tr></table></figure>
+
+<p>根据错误信息， <code>socket.gaierror: [Errno 11001] getaddrinfo failed </code>这个错误⼀般是尝试解析主机名以获取地址信息时失败了。</p>
+<p><strong>测试网络连接</strong></p>
+<p>PC和Box，通过网线连接，Box对应网络适配器是<code>#2</code>，使用 <code>ipconfig</code> 查看Box的IP地址。</p>
+<p>地址是可以ping通的，可以说明：</p>
+<ol>
+<li><p>设备能够通过网络到达目标地址，说明至少在网络层面上，设备和目标地址之间的路径是通的。</p>
+</li>
+<li><p>目标地址上的设备或服务处于开机状态，并响应了ICMP请求。</p>
+</li>
+<li><p>目标地址的防火墙和路由器配置允许ICMP包通过，没有被阻止。</p>
+</li>
+</ol>
+<p>即使地址可以ping通，也不能保证所有的网络服务都能正常工作，因为ping命令通常只检测ICMP协议的响应。</p>
+<p><strong>测试HTTP的连通性</strong></p>
+<p>对于HTTP，因为”ping”不支持HTTP协议，可以通过以下方法来测试：</p>
+<ol>
+<li>使用浏览器访问： 直接在浏览器地址栏输入HTTP地址，如果服务器响应，说明是可访问的。(如下图)</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016183351.png"></p>
+<ol start="2">
+<li><p>在命令行中，可以使用 <code>curl </code>命令来测试HTTP地址。例如： curl <a href="http://xxx.local:3000/">http://xxx.local:3000/</a> ，这将发送⼀个HTTP GET请求，并显示响应内容。(如下所示)</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">C:\Users\uidq9792&gt;curl http://xxx.local:3000/</span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span><span class="tag">&lt;<span class="name">html</span>&gt;</span><span class="tag">&lt;<span class="name">head</span>&gt;</span><span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span></span></span><br><span class="line"><span class="tag"><span class="attr">href</span>=<span class="string">&quot;/stylesheets/style.css&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="问题一：浏览器无法访问Box网址"><a href="#问题一：浏览器无法访问Box网址" class="headerlink" title="问题一：浏览器无法访问Box网址"></a>问题一：浏览器无法访问Box网址</h1><p>PC连接WiFi，浏览器无法访问Box网址，但<code>curl</code>可以获取到内容。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016183808.png"></p>
+<p>这种情况http是通的，不影响license生成，不过也可以解决。从错误码<code>DNS_PROBE_FINISHED_NXDOMAIN </code>来看，是域名解析问题。</p>
+<p><strong>方法⼀：</strong></p>
+<p>修改hosts文件(需要权限)，绕过DNS解析。文件通常位于</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">C:\Windows\System32\drivers\etc\</span><br></pre></td></tr></table></figure>
+
+<p>如果域名对应的IP地址发生变化，需要手动更新 hosts 文件。</p>
+<blockquote>
+<p>hosts文件是⼀个系统文件，用于将域名映射到IP地址。这个文件主要用于将特定的域名与IP地址关联起来，使得计算机可以直接通过这个映射关系来访问网络资源，而不需要通过DNS服务器进行域名解析</p>
+</blockquote>
+<p><strong>方法⼆：</strong></p>
+<p>断开PC的WiFi连接，然后重置适配器，刷新网页就行了。</p>
+<h1 id="问题二：Curl-无法解析主机名"><a href="#问题二：Curl-无法解析主机名" class="headerlink" title="问题二：Curl 无法解析主机名"></a>问题二：Curl 无法解析主机名</h1><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">curl: (6) Could not resolve host: xxx</span><br></pre></td></tr></table></figure>
+
+<p>出现这种情况，可以右键对应的网络适配器，然后点击诊断，这个过程会重置适配器(不用关心诊断的结果)，然后重新执行curl命令，看是否可以获取到响应内容。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016184052.png"></p>
+<p>当可以获取到响应内容时，执行license生成脚本，成功执行的结果如下：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016184153.png"></p>
+]]></content>
+      <categories>
+        <category>其他</category>
+      </categories>
+      <tags>
+        <tag>Curl</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>同星UDS刷写工程搭建</title>
+    <url>/2025/prefix%20remember%20to%20change!!!-68598371f033/</url>
+    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>之前做的升级工程是基于CANoe的，但是CANoe工具数量有限，且价格昂贵，在没有CANoe的情况下，可以使用同星的自动诊断流程来升级ECU。SOC的同事也可以使用同星，自行验证升级的功能。</p>
+<h1 id="同星UDS刷写工程搭建"><a href="#同星UDS刷写工程搭建" class="headerlink" title="同星UDS刷写工程搭建"></a>同星UDS刷写工程搭建</h1><h2 id="软件版本"><a href="#软件版本" class="headerlink" title="软件版本"></a>软件版本</h2><p>同星硬件配套的TSMaster软件：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016214458.png"></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://www.tosunai.com/tosun-ecu-diagnostic-flashing-solution-reduce-difficulty-developing-ecu-flashing-software-2/">解决方案 | 同星ECU诊断与刷写解决方案：降低了开发ECU刷写软件的难度！ - 上海同星智能科技有限公司</a></p>
+<p>官方文档：<code>TSMaster的UDS刷写流程.pdf</code></p>
+<h2 id="工程配置流程"><a href="#工程配置流程" class="headerlink" title="工程配置流程"></a>工程配置流程</h2><ol>
+<li><p>创建一个UDS诊断和刷写工程。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016214802.png"><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016214822.png"><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016214852.png"></p>
+</li>
+<li><p>配置通道和波特率，这里不介绍。</p>
+</li>
+<li><p>导入DBC文件。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016214934.png"></p>
+</li>
+<li><p>增加必要的模拟发送报文（网络、点火、车速报文）。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016215212.png"></p>
+</li>
+<li><p>添加一个基础诊断模块，修改诊断传输层配置，主要是CANID。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016215348.png"></p>
+<p>修改诊断服务层配置如下：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016215426.png"></p>
+</li>
+<li><p>配置34，36，37组合服务。</p>
+<p><strong>基本诊断配置提供组合服务，该服务能够根据加载的数据文件自动生成0x34,0x36,0x37服务步骤流程，支持加载多种主流的数据格式（hex，bin，s19，vbf），支持多种校验方式。</strong></p>
+<p><strong>通用配置（校验和配置不用关注）</strong></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016222957.png"></p>
+<p><strong>擦除flash配置</strong></p>
+<p>可以不用配置，在自动诊断流程增加。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016215746.png"></p>
+<p><strong>请求和传输数据配置</strong></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016215813.png"><strong>传输退出配置</strong></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016215851.png"></p>
+</li>
+<li><p>增加自动诊断流程</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016220125.png"><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016220246.png"></p>
+</li>
+</ol>
+<h2 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h2><ol>
+<li><p>支持文件格式（hex，bin，s19，vbf），不支持zip文件，但是可以手动修改待升级文件的扩展名，也就是把扩展名从zip改成bin。</p>
+</li>
+<li><p>启动流程的时候也要选择对应的流程。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016220653.png"><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016220749.png"></p>
+</li>
+</ol>
+<p><mark>所有步骤都按照预期回复的话，会显示绿色，如果有异常会显示红色&#x2F;⻩色。</mark></p>
+<p>下面是一个升级成功的截图：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016221034.png"></p>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p><mark>报错：”从系统变量转化为字节数组失败”。</mark></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016221240.png"></p>
+<p><mark>原因：出现这个报错是因为没有识别到升级文件。</mark></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016221344.png"></p>
+<p>正常识别到升级文件，是会显示文件名的。如下图：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016221459.png"></p>
+<p>解决方法：重新配置（需要先解锁编辑器），然后选择需要的组合服务，如下图所示。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016221844.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016220246.png"></p>
+]]></content>
+      <categories>
+        <category>CAN总线工具</category>
+      </categories>
+      <tags>
+        <tag>TSMaster</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>报文回放</title>
+    <url>/2025/prefix%20remember%20to%20change!!!-76f0d30e8b43/</url>
+    <content><![CDATA[<h1 id="在线回放"><a href="#在线回放" class="headerlink" title="在线回放"></a>在线回放</h1><p><strong>为什么需要在线回放报文？</strong></p>
+<ol>
+<li><p>复现问题场景</p>
+<p>在网络通信系统（如CAN总线）中，某些问题可能只在特定的报文交互场景下才会出现。通过在线回放报文，可以将之前记录的报文重新发送到总线上，从而精确地复现问题发生的场景，便于定位和解决问题。</p>
+<p>例如，某些偶现的故障可能与特定的报文序列有关，通过在线回放可以重现这些报文序列，帮助快速找到问题。因为偶发性故障很难在实时环境中捕捉，通过在线回放报文，可以在离线环境中反复重现故障场景，从而更高效地排查问题。</p>
+</li>
+<li><p>模拟真实网络环境</p>
+<p>在线回放报文可以模拟真实的网络通信环境，包括报文的发送时间间隔、报文内容等。支持基于时间戳的报文发送，可以按照实际记录的时间顺序和间隔发送报文，从而更真实地模拟真实环境。这对于测试网络设备、协议栈或软件在实际运行中的表现非常重要。</p>
+<p>例如，通过在线回放可以模拟高负载的网络环境，测试系统在极端条件下的稳定性和性能。</p>
+</li>
+<li><p>优化开发和测试流程</p>
+<p>在线回放提供了一种灵活的测试手段，可以快速切换不同的报文序列和测试场景，减少测试准备时间。</p>
+<p>例如，通过脚本和通道映射功能，可以灵活地选择需要回放的报文和发送通道，甚⾄可以屏蔽某些不需要的报文。</p>
+</li>
+</ol>
+<p><strong>如何在线回放报文？</strong></p>
+<ol>
+<li><p>以同星工具为例，打开同星工程，找到总线回放的选项卡，选择在线回放。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016223753.png"></p>
+</li>
+<li><p>选择要回放的文件。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016223819.png"></p>
+</li>
+<li><p>报文回放设置。</p>
+<p>根据需要修改配置，下图只是一个示例配置（只修改了红框的配置，其他都是默认的）。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016224008.png"></p>
+</li>
+<li><p>开始回放。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016224300.png"><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016224318.png"></p>
+</li>
+</ol>
+<p><strong>关于通道映射</strong></p>
+<p>我的工程只用了一个通道，如果是台架测试的报文，默认也是通道1，所以通道映射不用修改。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016224107.png"></p>
+<p>如果要回放实车报文，需要知道ECU所在的通道，假设ECU所在通道是通道8，就需要将通道8映射到通道1。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016224209.png"></p>
+<h1 id="离线回放"><a href="#离线回放" class="headerlink" title="离线回放"></a>离线回放</h1><p>以CANoe工具为例，其他工具的方法大同小异。</p>
+<ol>
+<li><p>导入DBC文件。</p>
+<p>DBC文件是用于描述和解释车辆中CAN网络上传输的数据的数据库文件。主要用来做数据解析：DBC文件包含有关CAN总线上各个信号的信息，例如每个信号的比特位置、长度、比例因子、偏移量等。这些信息使得接收报文的电子控制单元（ECU）或分析人员能够理解报文中的各个数据位代表的物理或逻辑含义。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016224556.png"></p>
+</li>
+<li><p>导入要回放的文件。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016224654.png"></p>
+</li>
+<li><p>确定CAN报文中，我们要看的是哪个通道的报文。</p>
+<p>可以根据ECU的网络管理报文确认通道，先点start运行，在Trace窗口过滤网络报文ID。确认通道后，要在simulation里面设置，确保通道一致。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016224846.png"></p>
+</li>
+<li><p>添加想要分析的信号，添加完后，再点一次Start运行。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016225144.png"></p>
+</li>
+<li><p>设置图形样式，方便查看。按照个人习惯设置即可，一般设置如下：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016225222.png"></p>
+<p>1：选中，用来显示信号图例。</p>
+<p>2&#x2F;3：设置光标。</p>
+<p>4：不选择，关掉。</p>
+<p>5：Start运行后，选择Fit All Signals Y。</p>
+<p>6：选择Show Signals in Separate Diagrams（分离显示）。</p>
+<p>7：如下图，网格，采样点，纵坐标，都打开。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016225250.png"></p>
+</li>
+</ol>
+<h1 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h1><p>CAN报文时间查看方式：</p>
+<ol>
+<li><p>在Graphics窗口里面配置；<img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016225605.png"></p>
+</li>
+<li><p>查看时间报文。一般会有ECU节点发送时间报文，时间数据可能来源于GPS，如果没有GPS，则数据不准确。注意：如果是UTC时间，小时的数据会存在相差8小时的情况。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016225731.png"></p>
+</li>
+</ol>
+<h1 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h1><p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016225440.png"></p>
+<p>如果导入回放文件出现上面这种红色感叹号的图标，那么有可能回放出来的报文，在Trace窗口什么都看不到，但是把文件拖拽到Trace窗口又是有报文的。而且，用notepad++打开也是有数据的。这种情况把文件拖拽到Trace窗口，然后右键export，重新导出asc&#x2F;blf格式，然后保存。再用这个新保存的文件去回放就可以了。</p>
+]]></content>
+      <categories>
+        <category>CAN总线工具</category>
+      </categories>
+      <tags>
+        <tag>报文分析与回放</tag>
       </tags>
   </entry>
 </search>
