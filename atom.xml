@@ -6,7 +6,7 @@
   <link href="https://xianren-wrd.github.io/atom.xml" rel="self"/>
   
   <link href="https://xianren-wrd.github.io/"/>
-  <updated>2025-10-13T15:02:38.595Z</updated>
+  <updated>2025-10-16T09:50:14.305Z</updated>
   <id>https://xianren-wrd.github.io/</id>
   
   <author>
@@ -17,11 +17,36 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>CCS使用笔记</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-0d2b6ccd334f/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-0d2b6ccd334f/</id>
+    <published>2025-10-16T08:53:03.000Z</published>
+    <updated>2025-10-16T09:50:14.305Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;文档&quot;&gt;&lt;a href=&quot;#文档&quot; class=&quot;headerlink&quot; title=&quot;文档&quot;&gt;&lt;/a&gt;文档&lt;/h1&gt;&lt;p&gt;TI 官方文档：&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="嵌入式IDE" scheme="https://xianren-wrd.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8FIDE/"/>
+    
+    
+    <category term="Code Composer Studio" scheme="https://xianren-wrd.github.io/tags/Code-Composer-Studio/"/>
+    
+  </entry>
+  
+  <entry>
     <title>J1939设计注意点</title>
     <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-9a9c4e5c1e4f/"/>
     <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-9a9c4e5c1e4f/</id>
     <published>2025-10-13T11:41:58.000Z</published>
-    <updated>2025-10-13T15:02:38.595Z</updated>
+    <updated>2025-10-16T08:37:21.610Z</updated>
     
     
       
@@ -34,7 +59,7 @@
     
     
     
-    <category term="技术" scheme="https://xianren-wrd.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="汽车与工业网络" scheme="https://xianren-wrd.github.io/categories/%E6%B1%BD%E8%BD%A6%E4%B8%8E%E5%B7%A5%E4%B8%9A%E7%BD%91%E7%BB%9C/"/>
     
     
     <category term="J1939" scheme="https://xianren-wrd.github.io/tags/J1939/"/>
@@ -46,7 +71,7 @@
     <link href="https://xianren-wrd.github.io/2023/PCAN-Usage-4b8805394c51/"/>
     <id>https://xianren-wrd.github.io/2023/PCAN-Usage-4b8805394c51/</id>
     <published>2023-08-12T12:22:29.000Z</published>
-    <updated>2023-08-20T13:44:12.244Z</updated>
+    <updated>2025-10-16T08:44:44.031Z</updated>
     
     
       
@@ -59,7 +84,7 @@
     
     
     
-    <category term="技术" scheme="https://xianren-wrd.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="CAN总线工具" scheme="https://xianren-wrd.github.io/categories/CAN%E6%80%BB%E7%BA%BF%E5%B7%A5%E5%85%B7/"/>
     
     
     <category term="PCAN" scheme="https://xianren-wrd.github.io/tags/PCAN/"/>
@@ -71,7 +96,7 @@
     <link href="https://xianren-wrd.github.io/2023/CANoe-Usage-5b23d9c22076/"/>
     <id>https://xianren-wrd.github.io/2023/CANoe-Usage-5b23d9c22076/</id>
     <published>2023-08-12T08:04:07.000Z</published>
-    <updated>2023-08-12T13:57:52.927Z</updated>
+    <updated>2025-10-16T08:44:35.119Z</updated>
     
     
       
@@ -85,7 +110,7 @@
     
     
     
-    <category term="技术" scheme="https://xianren-wrd.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="CAN总线工具" scheme="https://xianren-wrd.github.io/categories/CAN%E6%80%BB%E7%BA%BF%E5%B7%A5%E5%85%B7/"/>
     
     
     <category term="CANoe" scheme="https://xianren-wrd.github.io/tags/CANoe/"/>
@@ -97,7 +122,7 @@
     <link href="https://xianren-wrd.github.io/2023/Keil-Usage-12a1a959c43e/"/>
     <id>https://xianren-wrd.github.io/2023/Keil-Usage-12a1a959c43e/</id>
     <published>2023-08-12T06:28:25.000Z</published>
-    <updated>2023-08-12T12:24:26.034Z</updated>
+    <updated>2025-10-16T08:43:30.064Z</updated>
     
     
       
@@ -111,7 +136,7 @@
     
     
     
-    <category term="技术" scheme="https://xianren-wrd.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="嵌入式IDE" scheme="https://xianren-wrd.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8FIDE/"/>
     
     
     <category term="Keil" scheme="https://xianren-wrd.github.io/tags/Keil/"/>
@@ -125,7 +150,7 @@
     <link href="https://xianren-wrd.github.io/2023/spreadsheet-compare-cf954b484b3c/"/>
     <id>https://xianren-wrd.github.io/2023/spreadsheet-compare-cf954b484b3c/</id>
     <published>2023-08-11T13:33:51.000Z</published>
-    <updated>2023-08-11T13:40:58.347Z</updated>
+    <updated>2025-10-16T08:42:39.197Z</updated>
     
     
       
@@ -138,7 +163,7 @@
     
     
     
-    <category term="其他" scheme="https://xianren-wrd.github.io/categories/%E5%85%B6%E4%BB%96/"/>
+    <category term="office" scheme="https://xianren-wrd.github.io/categories/office/"/>
     
     
     <category term="对比工具" scheme="https://xianren-wrd.github.io/tags/%E5%AF%B9%E6%AF%94%E5%B7%A5%E5%85%B7/"/>
@@ -150,7 +175,7 @@
     <link href="https://xianren-wrd.github.io/2023/S32DS-Usage-31bfab119a51/"/>
     <id>https://xianren-wrd.github.io/2023/S32DS-Usage-31bfab119a51/</id>
     <published>2023-08-11T04:03:35.000Z</published>
-    <updated>2023-08-12T08:57:47.219Z</updated>
+    <updated>2025-10-16T08:43:16.187Z</updated>
     
     
       
@@ -164,7 +189,7 @@
     
     
     
-    <category term="技术" scheme="https://xianren-wrd.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="嵌入式IDE" scheme="https://xianren-wrd.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8FIDE/"/>
     
     
     <category term="S32DS" scheme="https://xianren-wrd.github.io/tags/S32DS/"/>

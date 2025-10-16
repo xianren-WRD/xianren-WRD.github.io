@@ -24,7 +24,7 @@
 <h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>依次点击<code>CANoe Options--General--License</code>，即可设置，在打开CANoe时，显示license检查对话框。</p>
 ]]></content>
       <categories>
-        <category>技术</category>
+        <category>CAN总线工具</category>
       </categories>
       <tags>
         <tag>CANoe</tag>
@@ -469,7 +469,7 @@
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251013224648.png"></p>
 ]]></content>
       <categories>
-        <category>技术</category>
+        <category>汽车与工业网络</category>
       </categories>
       <tags>
         <tag>J1939</tag>
@@ -498,7 +498,7 @@
 <h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>之前遇到过一个问题，在win10环境下，Keil4启动时会有类型闪退的现象，卡在启动界面一段时间后会自动退出。调出任务管理器，查看程序的运行状态，发现启动时会自动被挂起。后续，安装高版本的keil4之后不再出现。</p>
 ]]></content>
       <categories>
-        <category>技术</category>
+        <category>嵌入式IDE</category>
       </categories>
       <tags>
         <tag>Keil</tag>
@@ -541,7 +541,7 @@
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20230812212222.png" alt="Target Version.png"></p>
 ]]></content>
       <categories>
-        <category>技术</category>
+        <category>CAN总线工具</category>
       </categories>
       <tags>
         <tag>PCAN</tag>
@@ -575,7 +575,7 @@
 <p>顺便一提，每次切换工程后，建议先make clean，再make编译。</p>
 ]]></content>
       <categories>
-        <category>技术</category>
+        <category>嵌入式IDE</category>
       </categories>
       <tags>
         <tag>S32DS</tag>
@@ -602,7 +602,7 @@
 <h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>其余选项的说明可以查看帮助文档</p>
 ]]></content>
       <categories>
-        <category>其他</category>
+        <category>office</category>
       </categories>
       <tags>
         <tag>对比工具</tag>
@@ -630,6 +630,146 @@
       </categories>
       <tags>
         <tag>疑难杂症</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CCS使用笔记</title>
+    <url>/2025/prefix%20remember%20to%20change!!!-0d2b6ccd334f/</url>
+    <content><![CDATA[<h1 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h1><p>TI 官方文档：<a href="https://software-dl.ti.com/ccs/esd/documents/users_guide_ccs_20.1.0/index.html">Code Composer Studio™ User Guide</a></p>
+<h1 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h1><p><strong>CCS下载链接：</strong><a href="https://www.ti.com/tool/download/CCSTUDIO/20.1.0">CCSTUDIO IDE, configuration, compiler or debugger | TI.com</a></p>
+<p><strong>SDK下载链接：</strong><a href="https://www.ti.com.cn/tool/cn/download/MCU-PLUS-SDK-AM62A">MCU-PLUS-SDK-AM62A 软件开发套件 (SDK) | 德州仪器 TI.com.cn</a></p>
+<ul>
+<li>SDK安装完成后，如果需要用CCS编译，则需要做如下配置：</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016165912.png"></p>
+<p><strong>SysConfig下载链接：</strong><a href="https://www.ti.com.cn/tool/cn/download/SYSCONFIG/1.20.0.3587">SYSCONFIG IDE、配置、编译器或调试器 | 德州仪器 TI.com.cn</a></p>
+<p><strong>编译器下载链接：</strong><a href="https://www.ti.com/tool/download/ARM-CGT-CLANG/3.2.2.LTS">ARM-CGT-CLANG IDE, configuration, compiler or debugger | TI.com</a></p>
+<p><strong>MCAL SDK：</strong></p>
+<ol>
+<li><p>使用以下链接申请</p>
+<p><a href="https://www.ti.com/licreg/docs/swlicexportcontrol.tsp?form_id=337627&prod_no=PROCESSORSDK-MCAL-AM62X&ref_url=EP-Proc-Sitara-MPU">https://www.ti.com/licreg/docs/swlicexportcontrol.tsp?form_id=337627&amp;prod_no=PROCESSORSDK-MCAL-AM62X&amp;ref_url=EP-Proc-Sitara-MPU</a></p>
+</li>
+<li><p>获得批准后，从以下链接下载 MCAL SDK：</p>
+<p><a href="https://www.ti.com/securesoftware/docs/autopagepreview.tsp?opnId=27760">https://www.ti.com/securesoftware/docs/autopagepreview.tsp?opnId=27760</a></p>
+</li>
+<li><p>文档</p>
+<p><a href="https://software-dl.ti.com/mcu-plussdk/esd/PLATFORM_SW_MCAL/AM62Ax/09.00.00.01/mcusw_c_ug_top.html">https://software-dl.ti.com/mcu-plussdk/esd/PLATFORM_SW_MCAL/AM62Ax/09.00.00.01/mcusw_c_ug_top.html</a></p>
+</li>
+</ol>
+<h1 id="CCT"><a href="#CCT" class="headerlink" title="CCT"></a>CCT</h1><p>CTT：Clock Tree Tool，适用于TI处理器的时钟树工具，直观的显示系统时钟。</p>
+<p>根据用户定义的时钟源（晶振、PLL等）、分频系数、输出频率等参数，工具可自动生成时钟寄存器配置。</p>
+<h2 id="在线使用"><a href="#在线使用" class="headerlink" title="在线使用"></a>在线使用</h2><p>TI官网上针对AM62AX的CCT工具是在线的：<a href="https://login.ti.com/as/authorization.oauth2?client_id=DCIT_ALL_LOGIN_CALLOUT&redirect_uri=https://auth.ti.com/davinci/oauth2/callback&response_type=code&state=c83e81af5f0a3fc11b3bc04088891eb635189b744e3294e9668b677ebf88d5b9&scope=openid%20profile%20email">Log in</a></p>
+<p>其他在线工具：<a href="https://dev.ti.com/">TI Developer Zone</a></p>
+<p>在线的CCT版本是1.1.4。</p>
+<h2 id="本地安装"><a href="#本地安装" class="headerlink" title="本地安装"></a>本地安装</h2><p>在链接里面可以找到CCT的安装包：<a href="https://dev.ti.com/tirex/explore">TI Resource Explorer</a></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016170637.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016170655.png"></p>
+<ol>
+<li><p>解压下载好的压缩包</p>
+</li>
+<li><p>CCS里面需要导入CCT</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016170819.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016171023.png" title="" alt="" width="715"><strong>可能会有版本不匹配的问题，按照提示解决。</strong><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016171118.png"></p>
+</li>
+<li><p>找到sysconfig的安装路径，双击打开</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016171205.png"></p>
+<p>按照如下配置，点击start，会创建cfg文件。save的时候会保存相关的寄存器配置文件。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016171238.png"></p>
+</li>
+</ol>
+<h2 id="生成物"><a href="#生成物" class="headerlink" title="生成物"></a>生成物</h2><p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016171309.png"></p>
+<p>生成文件说明</p>
+<ul>
+<li><p><code>.syscfg</code> 文件：是ClockTree生成的配置文件，可在TI的开发环境中导入使用(目前无法打开，会报错，可能和CCS 的版本有关系)。</p>
+</li>
+<li><p><code>.gel</code> 文件：是用于CCS的脚本文件，可在调试时加载，用于打印时钟寄存器值。</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016171545.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016171604.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016171757.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016172103.png"></p>
+<ul>
+<li><p><code>.py</code> 文件：在Linux环境下，使用<code>k3conf</code>打印时钟寄存器值的Python文件。和gel作用一样，也是打印寄存器的值。打印的结果可以保存到txt，然后再导入CCT里面。</p>
+</li>
+<li><p><code> .rd1</code> 、<code>.rd2</code> 寄存器转储文件：记录寄存器的值，用于调试和验证配置是否正确。</p>
+</li>
+</ul>
+<h1 id="编译报错"><a href="#编译报错" class="headerlink" title="编译报错"></a>编译报错</h1><h2 id="SDK和sysconfig版本不匹配报错"><a href="#SDK和sysconfig版本不匹配报错" class="headerlink" title="SDK和sysconfig版本不匹配报错"></a>SDK和sysconfig版本不匹配报错</h2><p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016172230.png"></p>
+<p>sysconfig版本需要和SDK版本匹配，如果不匹配需要自己在TI官网下载并安装SDK以及sysconfig。 修改版本方法见下图，SDK和sysconfig设置方法一致。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016172257.png"></p>
+<p>如果选择的版本不匹配，会有报错提示</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016172327.png"></p>
+<h2 id="Norflash相关函数链接报错"><a href="#Norflash相关函数链接报错" class="headerlink" title="Norflash相关函数链接报错"></a>Norflash相关函数链接报错</h2><p>MCU R5F核添加了norflash驱动，据说是TI修改了SDK，改完的SDK用CCS去编译会出现如下错误：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016172408.png"></p>
+<p>从上面这个报错，可以推测有一些文件使用了其他C文件的函数，但是编译这个库的时候，没有包含对应文件去编译，导入我们自己的工程后，找不到对应的函数实现，导致链接报错。</p>
+<p><mark>MCU+SDK v10.01已经解决了这个问题。</mark></p>
+<h3 id="解决方法一：添加缺失的文件"><a href="#解决方法一：添加缺失的文件" class="headerlink" title="解决方法一：添加缺失的文件"></a>解决方法一：添加缺失的文件</h3><p>去SDK里面找到缺少的函数定义，找到对应的C文件，添加到我们自己的工程里面。</p>
+<h3 id="解决方法二：切换成Release编译"><a href="#解决方法二：切换成Release编译" class="headerlink" title="解决方法二：切换成Release编译"></a>解决方法二：切换成Release编译</h3><p>用makefile编译是ok的，CCS编译不行，对比了一下发现makefile是Release的配置，用的库也是release，所以尝试把CCS改为Release，测试是可行的。</p>
+<ol>
+<li><p>选择Release</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016172616.png"></p>
+</li>
+<li><p>修改完后，发现没有添加对应的头文件，需要手动添加。修改工程文件，添加头文件路径如下</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">//找到Release标签</span><br><span class="line"><span class="tag">&lt;<span class="name">cconfiguration</span></span></span><br><span class="line"><span class="tag"><span class="attr">id</span>=<span class="string">&quot;com.ti.ccstudio.buildDefinitions.TMS470.Release.1770007231&quot;</span>&gt;</span></span><br><span class="line">//添加如下内容 主要就是头文件路径</span><br><span class="line"><span class="tag">&lt;<span class="name">listOptionValue</span> <span class="attr">builtIn</span>=<span class="string">&quot;false&quot;</span></span></span><br><span class="line"><span class="tag"><span class="attr">value</span>=<span class="string">&quot;$&#123;workspace_loc:/$&#123;ProjName&#125;/xxx/inc&#125;&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">listOptionValue</span> <span class="attr">builtIn</span>=<span class="string">&quot;false&quot;</span></span></span><br><span class="line"><span class="tag"></span></span><br><span class="line"><span class="tag"><span class="attr">...</span></span></span><br><span class="line"><span class="tag"></span></span><br><span class="line"><span class="tag"></span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="fatal-error-‘xxx-h’-file-not-found"><a href="#fatal-error-‘xxx-h’-file-not-found" class="headerlink" title="fatal error: ‘xxx.h’ file not found"></a>fatal error: ‘xxx.h’ file not found</h2><p>前提：<code>xxx.c</code>包含了<code>xxx.h</code>文件。</p>
+<p><strong>问题的根本原因</strong></p>
+<p>在编译命令中，通过 <code>-I</code> 参数指定了多个头文件搜索路径，但这些路径中没有包含 <code>xxx.h</code> 的实际位置。</p>
+<p><code>subdir_rules.mk</code> 的编译命令没有这个路径，因此，编译器无法自动搜索到 <code>xxx.h</code> ，导致报错。</p>
+<p>解决方法：</p>
+<ol>
+<li>改为相对路径</li>
+</ol>
+<ul>
+<li><p>相对路径是相对于当前源文件（ <code>xxx.c</code> ）的位置解析的。编译器会从<code>xxx.c </code>所在目录出发，按照相对路径找到 <code>xxx.h</code> 。</p>
+</li>
+<li><p>相对路径绕过了编译器默认的搜索路径机制，直接指定了文件的实际位置，因此不再依赖 <code>-I </code>参数。</p>
+</li>
+</ul>
+<ol start="2">
+<li>修改 .<code>cproject </code>文件</li>
+</ol>
+<p>由于 <code>subdir_rules.mk </code>是自动生成的，而且在项目配置中也添加了头文件路径，但是还是出现了这个错误。于是想到查看 <code>.cproject</code> 文件：</p>
+<p>问题在于 <code>xxx.c </code>文件有一段单独的配置，但是这段配置没有包含对应的头文件路径。</p>
+<ul>
+<li><p>可以增加<code>xxx.h</code>实际所在的路径</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;listOptionValue builtIn=&quot;false&quot; value=&quot;$&#123;workspace_loc:/$&#123;ProjName&#125;/xxx/inc&#125;&quot;/&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>或者直接把这个单独的配置整个删掉（推荐）</p>
+</li>
+</ul>
+<h2 id="current-parser-token-‘include’-xxx-h"><a href="#current-parser-token-‘include’-xxx-h" class="headerlink" title="current parser token ‘include’ xxx.h"></a>current parser token ‘include’ xxx.h</h2><p>解决方法：再编译一次。</p>
+<p>编译命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&quot;D:\\ti\\ccs1240\\ccs\\utils\\bin\\gmake&quot; -k -j 16 all -O</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>-j 16 </code>是明确的并行编译标志，表示允许同时运行 16 个编译任务。</p>
+</li>
+<li><p><code>-O </code>选项表示输出同步（<code> --output-sync</code> ），确保不同线程的编译日志不会交错显示。</p>
+</li>
+</ul>
+<p>可能的原因：</p>
+<ol>
+<li><p>首次编译：如果某些生成的代码（如 xxx.h ）尚未完成生成，而其他线程已经开始编译依赖它的文件（如 xxx.c ），会导致头文件缺失错误。</p>
+</li>
+<li><p>第⼆次编译：生成的文件已经存在（如 xxx.h ），竞态条件消失，编译成功。</p>
+</li>
+</ol>
+<p><strong>降低并行度测试</strong></p>
+<p>可以使用单线程编译验证是否为竞态问题，如果单线程编译始终成功，则可确认是并行竞态问题。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016173942.png"></p>
+<h2 id="“-linker-cmd”-line-53-error-10099-D-program-will-not-fit-into-available-memory"><a href="#“-linker-cmd”-line-53-error-10099-D-program-will-not-fit-into-available-memory" class="headerlink" title="“..&#x2F;linker.cmd”, line 53: error #10099-D: program will not fit into available memory,"></a>“..&#x2F;linker.cmd”, line 53: error #10099-D: program will not fit into available memory,</h2><p>按照ti demo工程替换linker.cmd文件后，使用ccs编译报错，原因是内存不⾜。</p>
+<p>查看map文件发现，ccs debug模式下，没有编译优化，编译出来的文件text段比较⼤。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016174057.png"></p>
+<p>解决方法：可以和makefile文件使用相同的编译优化参数</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016174123.png"></p>
+]]></content>
+      <categories>
+        <category>嵌入式IDE</category>
+      </categories>
+      <tags>
+        <tag>Code Composer Studio</tag>
       </tags>
   </entry>
 </search>
