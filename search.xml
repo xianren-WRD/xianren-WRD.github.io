@@ -985,4 +985,465 @@
         <tag>报文分析与回放</tag>
       </tags>
   </entry>
+  <entry>
+    <title>ASPICE文档编写笔记</title>
+    <url>/2025/prefix%20remember%20to%20change!!!-728c68a67aa9/</url>
+    <content><![CDATA[<h1 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h1><p>在软件工程中，有如下的术语定义和关系：</p>
+<p><strong>软件单元（Software Unit）</strong>：软件单元是最小的功能单元，通常由一个或几个源代码文件组成。它是系统中最小的测试和维护单元，通常可以单独编译和测试。软件单元在某些上下文中也可以指具体的类、函数、或方法等。</p>
+<p><strong>组件（Component）</strong>：组件是由多个软件单元组成的功能模块。组件可以是一个较大的、具有独立功能的软件部分，通常包含多个软件单元。组件可以被多个系统或子系统复用，并且有定义良好的接口与其他组件进行交互。</p>
+<p><strong>子系统（Subsystem）</strong>：子系统是由多个组件组成的较大功能模块，通常代表系统中的一个主要功能区域。子系统将组件组织起来，提供更高级别的功能和服务，并可能包括多个组件之间的协作。</p>
+<p><strong>模块（Module）</strong>：模块是一个广泛使用的术语，通常指软件系统中的一个独立功能部分，可以是软件单元、组件、子系统等的集合。模块通常用于描述系统的结构和组织，关注于如何将系统分解为多个部分以便于管理和维护。</p>
+<p><strong>关系总结：</strong></p>
+<ul>
+<li><p>软件单元是最小的构建块。</p>
+</li>
+<li><p>组件由一个或多个软件单元组成。</p>
+</li>
+<li><p>子系统由多个组件组成。</p>
+</li>
+<li><p>模块可以是软件单元、组件、子系统等的集合，作为系统的一个功能区块来考虑。</p>
+</li>
+</ul>
+<p>这些术语在不同的上下文中可能会有不同的具体含义，但通常它们都围绕着软件系统的组织和结构进行描述。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017213628.png"></p>
+<h1 id="软件需求"><a href="#软件需求" class="headerlink" title="软件需求"></a>软件需求</h1><p>软件需求通常可以分为以下几类：</p>
+<p><strong>功能性需求（Functional Requirements）</strong>：描述系统应该执行的功能或服务，包括输入、处理和输出。它们定义了系统应如何响应特定输入或条件。</p>
+<p><strong>非功能性需求（Non-Functional Requirements）</strong>：描述系统的性能标准和质量属性，包括：</p>
+<ul>
+<li><p>性能需求：响应时间、吞吐量等。</p>
+</li>
+<li><p>安全性需求：数据加密、用户认证等。</p>
+</li>
+<li><p>可用性需求：系统的可用性和可靠性。</p>
+</li>
+<li><p>可维护性需求：系统的可维护性和可扩展性。</p>
+</li>
+</ul>
+<p><strong>接口需求（Interface Requirements）</strong>：描述系统与其他系统或组件之间的交互要求，包括API、用户界面和外部系统的通信协议等。</p>
+<p><strong>系统需求（System Requirements）</strong>：描述系统内部和外部的需求，包括硬件、软件和网络环境的需求。</p>
+<p><strong>约束需求（Constraint Requirements）</strong>：描述在开发和实现过程中需要遵循的限制条件，如法律法规、标准和技术限制。</p>
+<p><strong>用户需求（User Requirements）</strong>：描述用户的期望和需求，包括用户体验和交互流程。关注最终用户的需求和使用场景。</p>
+<p><strong>业务需求（Business Requirements）</strong>：描述对软件系统的高层期望和目标，通常与商业价值和战略目标相关。</p>
+<h1 id="SW-RD"><a href="#SW-RD" class="headerlink" title="SW RD"></a>SW RD</h1><p>软件需求分析，该过程的目的是：将系统需求中与软件相关的部分转化为一组软件需求。</p>
+<ol>
+<li><p><strong>需求分析</strong>：首先，需要对系统的功能和非功能需求进行彻底分析。这包括理解用户需求和期望，以及分析需求的可行性、正确性、可验证性和对运行环境的影响 。</p>
+</li>
+<li><p><strong>需求结构化</strong>：将需求进行结构化，以便于管理和跟踪。这包括将需求分类和分组，以及建立需求的层次结构 。</p>
+</li>
+</ol>
+<hr>
+<p><strong>定义需求</strong>：在需求分析的基础上，明确和定义软件需求。这包括需求的详细描述、优先级和需求之间的依赖关系 。</p>
+<ul>
+<li><p>描述需求：</p>
+<ul>
+<li><p>对每个需求进行详细描述，包括需求编号、需求名称、需求描述、验收标准等。</p>
+</li>
+<li><p>确保需求是明确、可测试、可追踪的，并且符合SMART原则（具体的、可测量的、可实现的、相关的、有时限的）。</p>
+</li>
+</ul>
+</li>
+<li><p>定义功能需求：描述系统应具备的具体功能，包括每个功能的输入、处理和输出。</p>
+</li>
+<li><p>定义非功能需求：说明性能、可靠性、兼容性、安全性、可维护性、可扩展性等方面的需求。</p>
+</li>
+<li><p>编写接口需求：描述系统与其他系统或组件之间的接口，包括数据交换格式、通信协议等。</p>
+</li>
+</ul>
+<p><strong>文档管理</strong>：确保文档版本控制，记录修改历史。</p>
+<hr>
+<ol>
+<li><p><strong>需求追溯性</strong>：确保需求具有双向可追溯性，建立系统需求与软件需求之间的双向追溯性，建立系统架构设计与软件需求之间的双向追溯性。即从需求到设计、实现和测试的可追溯性，以及从这些活动回溯到需求的能力。</p>
+</li>
+<li><p><strong>需求评审</strong>：组织需求评审会议，邀请相关利益相关者参与，确保需求的明确性和无歧义性，并收集反馈进行需求的迭代和改进 。</p>
+</li>
+<li><p><strong>需求管理计划</strong>：制定需求管理计划，包括需求变更的控制流程、需求状态跟踪和需求的版本控制 。</p>
+</li>
+<li><p><strong>持续监控和维护</strong>：在软件开发过程中持续监控需求的状态，对需求变更进行管理，并根据需要更新需求文档。</p>
+</li>
+</ol>
+<h1 id="SW-AD"><a href="#SW-AD" class="headerlink" title="SW AD"></a>SW AD</h1><p>软件架构设计，该过程的目的是：建立软件架构设计，识别将哪些软件需求分配给软件的哪些组件，并依照定义的准则来评估软件架构设计。</p>
+<ol>
+<li><p><strong>需求分析</strong>：了解系统需求和软件需求。</p>
+</li>
+<li><p><strong>高层架构设计</strong>：描述系统的总体架构，定义系统的子系统&#x2F;主要模块及其之间的交互和依赖关系。</p>
+</li>
+<li><p><strong>设计决策</strong>：记录架构设计中的关键决策和选择，论述并比较系统中使用的重要技术方案，分析其优缺点。</p>
+</li>
+<li><p><strong>定义软件架构目标</strong>：明确软件架构设计的目标和约束条件，以及需要满足的关键质量属性（如性能、可维护性、可扩展性等）。</p>
+</li>
+</ol>
+<hr>
+<p><strong>子系统&#x2F;模块架构设计</strong>：详细描述子系统&#x2F;模块的内部结构(组件)及其交互方式。</p>
+<p><strong>组件定义和描述</strong>：定义并详细描述每个组件的功能和相互关系。</p>
+<p><strong>分配软件需求</strong>：将软件需求分配到子系统&#x2F;模块架构设计的组件。</p>
+<p><strong>接口定义</strong>：定义组件之间的接口，包括接口功能、输入&#x2F;输出数据(参数和返回值)和通信协议。</p>
+<p><strong>描述动态行为</strong>：展示组件间的时序和动态交互，以满足系统所需的动态行为。 动态行为取决于运行模式（例如：启动、关机、正常模式、标定、诊断等）、进程及进程间相互通信、任务、线程、时间片、中断等。</p>
+<p><strong>定义资源消耗目标</strong>：资源消耗如：内存(ROM、RAM、外部内部 EEPROM 或 数据闪存）、CPU 负载等。</p>
+<hr>
+<ol>
+<li><p><strong>溯源</strong>：建立软件需求与软件架构设计要素之间的双向可追溯性。</p>
+</li>
+<li><p><strong>评审</strong>：对架构设计进行内部评审，确保设计符合需求和标准。</p>
+</li>
+<li><p><strong>文档修订</strong>：根据评审反馈修订文档，完善设计细节。</p>
+</li>
+<li><p><strong>发布与维护</strong>：发布最终版本的文档，并确保文档在软件开发过程中的持续更新和维护。</p>
+</li>
+</ol>
+<h1 id="SW-DD"><a href="#SW-DD" class="headerlink" title="SW DD"></a>SW DD</h1><p>软件详细设计和单元构建，该过程的目的是：为软件组件提供经过评估的详细设计，并定义和生成软件单元。</p>
+<ol>
+<li><p><strong>理解需求和架构设计</strong>：在开始详细设计之前，需要对软件的需求有深入的理解，并分析系统架构设计，确保详细设计能够满足这些需求 。</p>
+</li>
+<li><p><strong>定义软件单元</strong>：根据软件架构设计划分的组件，并进一步将组件划分为可以独立开发和测试的软件单元 。</p>
+</li>
+</ol>
+<hr>
+<p><strong>设计概述</strong>：简要描述组件功能，设计方针。</p>
+<p><strong>开发详细设计</strong>：具体说明<strong>组件</strong>的内部设计，包括软件单元的接口、数据结构、内部逻辑以及与其他单元的交互等（<mark>每个组件的详细设计都如此，设计完一个组件就继续设计下一个</mark>）</p>
+<ul>
+<li><p>每个软件<strong>单元</strong>的功能描述</p>
+</li>
+<li><p>每个软件<strong>单元</strong>的接口设计（包括数据结构、算法和流程图）</p>
+<ul>
+<li><p>设计外部接口（单元之间的接口也是）</p>
+</li>
+<li><p>设计内部接口（只在单元内使用的接口）</p>
+</li>
+</ul>
+</li>
+<li><p>动态行为</p>
+<ul>
+<li><p>外部接口：描述软件组件和其他组件的处理时序，如果AD有明确清晰设计，则省略。</p>
+</li>
+<li><p>内部接口：描述软件<strong>单元之间</strong>的动态行为和交互，使用时序图、状态迁移图等来展示。</p>
+</li>
+</ul>
+</li>
+<li><p>状态机图（如适用）</p>
+</li>
+<li><p>错误处理机制</p>
+</li>
+</ul>
+<p><strong>明确非功能需求</strong>：如性能、资源消耗、安全性等。</p>
+<p><strong>评价软件详细设计</strong>：从互操作性、交互、关键性、技术复杂性、风险和可测试性等方面对软件详细设计进行评价 。</p>
+<hr>
+<ol>
+<li><p><strong>溯源</strong>：建立软件需求与软件单元之间的双向可追溯性。建立软件架构设计与软件详细设计之间的双向可追溯性。</p>
+</li>
+<li><p><strong>评审&#x2F;发布等</strong>：同RD&#x2F;AD。</p>
+</li>
+</ol>
+<h1 id="SW-UT"><a href="#SW-UT" class="headerlink" title="SW UT"></a>SW UT</h1><p>软件单元验证，该过程的目的是：验证软件单元，以提供软件单元符合软件详细设计和非功能性软件需求的证据。</p>
+<p>需要对DD文档中的所有 <code>modify/new</code> 函数做单元测试。</p>
+<p>输出物：UTS–&gt;UT code –&gt;UTR。</p>
+<p><strong>UTS</strong></p>
+<p>UTS是做单元验证的指导书，通过UTS可以确定如何做单元测试，需要多少个测试case。</p>
+<p>根据函数的圈复杂度来确定被测函数需要多少个测试case，测试case总是要大于等于圈复杂度。</p>
+<p><strong>UT code</strong></p>
+<p>做单元测试的测试代码。可以使用<code>tessy</code>或<code>googletest</code>进行验证。</p>
+<p><strong>UTR</strong></p>
+<p>单元测试报告，将测试结果补充到UTS中就是UTR。</p>
+<h1 id="SW-IT"><a href="#SW-IT" class="headerlink" title="SW IT"></a>SW IT</h1><p>软件集成及集成测试的核心目的是：通过逐步将软件单元组合成更大的功能模块，最终形成符合架构设计的完整系统，同时在集成过程中对各组件间的接口及整体功能进行验证，确保系统实现与设计规范（特别是模块间接口）的高度一致性。</p>
+<h1 id="文档发布流程"><a href="#文档发布流程" class="headerlink" title="文档发布流程"></a>文档发布流程</h1><p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017214234.png"></p>
+<h1 id="溯源"><a href="#溯源" class="headerlink" title="溯源"></a>溯源</h1><p>溯源需在文档评审前完成，评审时需要关注上下游溯源和一致性。</p>
+<p>溯源需输出溯源报告，未溯源的要分析原因并备注原因。</p>
+]]></content>
+      <categories>
+        <category>ASPICE</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LIN总线介绍</title>
+    <url>/2025/prefix%20remember%20to%20change!!!-bf0b42ffbba4/</url>
+    <content><![CDATA[<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>LIN（Local Interconnect Network）总线是在汽车内广泛应用的串行通信协议，它的第一个完整版本 V1.3 发布于 2002 年，在 2016 年LIN总线被正式列为国际标准（ISO 17987）。</p>
+<p>LIN总线是针对汽车分布式电子系统而定义的一种低成本的低速串行通讯网络，是对控制器区域网络(CAN)等其它汽车多路网络的一种补充，适用于对网络的带宽、性能或容错功能没有过高要求的应用。</p>
+<p>LIN适用于节点数目小于等于 16 个，数据速率 20Kbps 以内的应用场合。</p>
+<p>LIN总线相对于CAN的成本节省主要是由于采用单线传输、硅片中硬件或软件的低实现成本和无需在从属节点中使用石英或陶瓷谐振器。这些优点是以较低的带宽和受局限的单宿主总线访问方法为代价的。</p>
+<p>LIN总线是基于SCI(UART)数据格式，采用单主控制器&#x2F;多从设备的模式，是UART中的一种特殊情况。</p>
+<p>LIN总线上的所有通讯都由主机节点中的主机任务发起，主机任务根据调度表来确定当前的通讯内容，发送相应的帧头，并为报文帧分配帧通道。总线上的从机节点接收帧头之后，通过解读标识符来确定自己是否应该对当前通讯做出响应、做出何种响应。基于这种报文滤波方式，LIN可实现多种数据传输模式，且一个报文帧可以同时被多个节点接收利用。</p>
+<h1 id="开发流程"><a href="#开发流程" class="headerlink" title="开发流程"></a>开发流程</h1><p>开发流程中的核心组件为描述网络特征的 LDF（LIN Description File），LDF定义LIN网络的所有通信特征，通信主机基于LDF可以自动生成通信过程的所有软件组件。同时，LDF可以为测试测量工具提供分析LIN网络所必须的信息。</p>
+<p>LIN Configuration Language Specification 定义了创建LDF的过程，创建语法相当简单，可以手动或通过软件工具自动生成LDF。</p>
+<p>自 LIN V2.0 规范起，增补的节点统一描述语言可以清晰地说明商用节点（Off-the-Shelf Nodes）设备的通信特征，通过这种 LIN Node Capability Language 描述的节点特征文件称 NCF（Node Capability File），而LIN子网（Cluster）中所有节点NCF正是创建系统LDF的必要条件。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017221518.png"></p>
+<h1 id="特点和任务"><a href="#特点和任务" class="headerlink" title="特点和任务"></a>特点和任务</h1><p>LIN总线有如下特点：</p>
+<ol>
+<li><p>单主控器&#x2F;多从设备模式无需仲裁机制；</p>
+</li>
+<li><p>低成本，基于通用UART 接口，所有控制机都具备LIN 必需的硬件；</p>
+</li>
+<li><p>单信号线传输，同时保证信号传输的延迟时间；</p>
+</li>
+<li><p>LIN具有可预测的电磁兼容性能，为了限制EMC的强度，LIN协议规定最大传输速率为20kbps；</p>
+</li>
+<li><p>LIN总线提供信号的配置、处理、识别和诊断功能。</p>
+</li>
+</ol>
+<p><strong>主机任务：</strong></p>
+<ol>
+<li><p>调度总线上帧的传输次序；</p>
+</li>
+<li><p>监测数据，处理错误；</p>
+</li>
+<li><p>作为标准时钟参考；</p>
+</li>
+<li><p>接收从机节点发出的总线唤醒命令；</p>
+</li>
+<li><p>从机任务不能直接向总线发送数据，需要接受到主节点发送的帧头后，根据帧头所包含的信息来判断。</p>
+</li>
+</ol>
+<p><strong>从机任务</strong>：发送应答，接收应答，忽略应答。</p>
+<h1 id="网络拓扑"><a href="#网络拓扑" class="headerlink" title="网络拓扑"></a>网络拓扑</h1><p>LIN总线有其“局域”特性，在汽车中一般不独立存在，通常与上层CAN网络相连，形成CAN-LIN网关节点，通常汽车电子中，整车厂会规定该“网关节点”(主机节点)的控制器归属。</p>
+<p>LIN总线拓扑通常为线型，即所有节点设备均通过单线连在一起。主机包括主机任务（Master Task）和从机任务（Slave Task），从机节点只包括从机任务。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017221616.png"></p>
+<p>在LIN总线上，主机控制子网内每条消息的传输过程，这种总线访问方式称为授权令牌（Delegated Token）。授权令牌方式的优点是它可以避免消息传输过程的冲突竞争，因为完全由主机协调控制每条消息的应答请求。</p>
+<p>LIN总线主机可以根据预设好的调度表（Schedule）规划总线上的数据传输。授权令牌总线访问方式因此被归类为确定性总线访问方式。</p>
+<p>授权令牌访问方式的缺点有两点：首先，如果主机失效，则整个总线通信随即失效，因此该方式不适合安全要求高的应用；其次，由于每次通信过程均由主机控制，该方式不适合事件驱动型通信，从机无法自动获取总线访问权以发送数据。为弥补这点缺憾，LIN协议中增补额外的帧类型可以不按授权令牌方式发送消息。</p>
+<h1 id="LIN报文帧结构"><a href="#LIN报文帧结构" class="headerlink" title="LIN报文帧结构"></a>LIN报文帧结构</h1><p>LIN报文帧由帧头（Hearder）与应答（Response）两部分组成。传输过程中，主机任务负责发送帧头；从机任务负责接收帧头，然后作出解析决定发送应答，还是接收应答或不回复。</p>
+<p><mark>LIN总线显隐性与CAN总线是相同的。</mark></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017221658.png"></p>
+<h2 id="同步间隔段"><a href="#同步间隔段" class="headerlink" title="同步间隔段"></a>同步间隔段</h2><p>同步间隔段（Sync Break Field）由同步间隔和同步间隔段间隔符构成，同步间隔是至少持续 13 位（以主机节点的位速率为准）的显性电平，由于帧中的所有间隔或总线空闲时都应保持隐性电平，并且帧中的任何其它字段都不会发出大于 9 位的显性电平，因此同步间隔可以标志一个帧的开始。</p>
+<p>同步间隔段的间隔符是至少持续 1 位的隐性电平。</p>
+<p>从机任务接收帧头的同步间隔段时，以该从机任务所在节点的位速率为准，当检测总线上出现持续 11 位的显性电平时，认为是帧的开始。当从机节点使用精度较高的时钟时，识别阈值可以选择 9.5 位。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017221730.png"></p>
+<h2 id="同步段"><a href="#同步段" class="headerlink" title="同步段"></a>同步段</h2><p>在介绍同步段之前，首先介绍一下字节域(Byte Field)的概念，字节域包括1位起始位(Start Bit，显性) + 8位数据位 + 1位停止位(Stop Bit，隐性)，，这是一种标准UART数据传输格式。在 LIN 的一帧当中，除了同步间隔段，后面的各段都是通过字节域的格式传输的。</p>
+<p>在 LIN 帧中，数据传输都是先发送LSB，最后发送 MSB。</p>
+<p>LIN总线将下降沿作为判断标志，通过字节0x55（01010101b）进行同步，在从机节点上可以采用非高精度时钟，如果带来偏差，可以通过同步场来调整。</p>
+<h2 id="PID段"><a href="#PID段" class="headerlink" title="PID段"></a>PID段</h2><p>受保护的ID，其前6位为帧ID(依据节点LDF生成)，加上两个奇偶效验码称作受保护的ID。</p>
+<p>帧ID的取值范围为0x00~0x3F，共64个，帧ID标识了帧的类别和目的地，从机任务会根据帧头ID作出反应(接收&#x2F;发送&#x2F;忽略应答)，其中P0与P1效验如下：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017221800.png"></p>
+<p>其中“⊕”代表“异或”运算，“¬”代表“取非”运算。由公式可以看出，PID 不会出现全 0 或全 1 的情况，因此，如果从机节点收到了“0xFF”或“0x00”，可判断传输错误。</p>
+<h2 id="数据段"><a href="#数据段" class="headerlink" title="数据段"></a>数据段</h2><p>包含1-8个字节，可以分为两种数据类型，信号和诊断消息。信号由信号携带帧传递，诊断消息由诊断帧传递。</p>
+<p>LIN2.x规定可传输的LIN字节数为2，4，8，并不是1-8内任意一个数字。一般而言，车内会选择统一字节数，最常用的是每帧传递8个字节。</p>
+<p>与CAN总线不同，LIN协议中并没有规定数据长度的信息，数据内容和长度均由系统设计者根据帧ID提前设定。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017221833.png"></p>
+<h2 id="校验和段"><a href="#校验和段" class="headerlink" title="校验和段"></a>校验和段</h2><p>效验分为标准型效验与增强型效验。采用标准型还是增强型是由主机节点管理，发布节点和收听节点根据帧ID来判断采用哪种效验和。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017221859.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017221916.png"></p>
+<h1 id="帧类型"><a href="#帧类型" class="headerlink" title="帧类型"></a>帧类型</h1><p>LIN总线根据帧ID的不同，将报文分为信号携带帧、诊断帧、保留帧。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017221944.png"></p>
+<p><mark>从机应答帧是一个完整的帧，与帧结构中的“应答”不是一个概念。</mark></p>
+<ol>
+<li><p>无条件帧</p>
+<p>无条件帧是具有单一发布节点的，无论信号是否发生变化，帧头均会被无条件应答的帧。无条件帧在主机任务分配给它的固定的帧时隙（Reserved Frame Slot）中传输。总线上一旦有帧头发送出去，必须有从机任务作应答(即无条件发送应答)。</p>
+</li>
+<li><p>事件触发帧</p>
+<p>事件触发帧是主机节点在一个帧间隙中，<mark>主机查询</mark>各从机节点的信号是否发生变化时使用的帧。当从机节点信号发生变化的频率较低时，主机任务查询各个节点信息会占用一定的带宽。为了减小带宽的占用，引入了事件触发帧的概念。</p>
+<p>其主要原理就是：</p>
+<p>当从机节点信息状态没有发生变化的时候，从机节点可以不应答主机发出的帧头；当有多个节点信息同时发生变化的时候，同时应答事件触发帧头会造成总线的冲突。当主机节点检测到冲突时，便会执行冲突解决调度表，通过发送无条件帧轮询所有从机来确定从机节点的信息状态。</p>
+<p>因为无条件帧只有1个节点应答，同一个 PID 的事件触发帧和无条件帧对应的第一个字节数据是相同的，即，如果从机的数据已更新，则它会做出响应，其受保护的ID位于第一个数据字节中。当多个从机同时响应时，它们各自的应答信号会在总线上产生叠加，造成电压水平异常。由于LIN总线的物理层特性，主机能够通过检测这种电压水平的变&#x2F;response_error来识别出，发生了冲突。</p>
+</li>
+<li><p>偶发帧</p>
+<p>偶发帧是主机节点在同一帧时隙中，当自身信号发生变化时向总线发送的帧。当存在多个关联的应答信号变化时，通过预先设定的优先级来仲裁。偶发帧主要用于<mark>主机发送</mark>不经常变化的信息，可以理解为主机用的事件触发帧。与事件触发帧类似，偶发帧也定义了一组无条件帧。规定：偶发帧只有由主机节点发布。</p>
+<p>主机节点上面也有信息需要告诉从机节点，当主机节点检测到某个无条件帧的信号发生变化时，它会在适当的时机（即偶发帧的时隙）将这个变化发送出去。</p>
+</li>
+<li><p>诊断帧</p>
+<p>包括主机请求帧和从机应答帧，主要用于配置、识别和诊断。</p>
+<ul>
+<li><p>主机请求帧ID&#x3D;0x3C，应答部分的发布节点为主机节点；</p>
+</li>
+<li><p>从机应答帧ID&#x3D;0x3D，应答部分的发布节点为从机节点。</p>
+</li>
+<li><p>数据场规定为8个字节，一律采用标准效验和。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="偶发帧"><a href="#偶发帧" class="headerlink" title="偶发帧"></a>偶发帧</h2><p>偶发帧的传输可能出现 3 种状况：</p>
+<ol>
+<li><p>当关联的无条件帧没有信号发生变化时，该时隙保持沉默，<mark>主机节点</mark>连帧头都不需要发送；</p>
+</li>
+<li><p>当其中一个关联的无条件帧包含的信号发生了变化， 则<mark>发送</mark>该关联的无条件帧的<mark>应答部分</mark>，如图15上半部分所示；</p>
+</li>
+<li><p>如果有两个或以上关联的无条件帧包含的信号发生了变化，则按照事先规定好的优先级，优先级较高的关联的无条件帧获得发送权，优先级较低的要等到下一个偶发帧的帧头到来时才能<mark>发送</mark>应答。由于<mark>主机节点是唯一的发布节点</mark>，所以主机节点事先就知道各个关联信号的优先级别，这样在传输时不会产生冲突，如图15下半部分所示。</p>
+</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017222307.png"></p>
+<h1 id="调度表"><a href="#调度表" class="headerlink" title="调度表"></a>调度表</h1><p>调度表规定了总线上帧的传输次序以及传输时间。调度表位于主机节点，主机任务根据应用程序需要进行调度。</p>
+<p>调度表可以有多个，一般情况下，轮到某个调度表执行的时候，从该调度表的入口处开始执行，到调度表的最后一个帧时，如果没有新的调度表启动则返回到当前调度表的第一个帧开始执行；也有可能在执行到某个调度表时发生中断，跳到另一个调度表后再返回，如事件触发帧就是典型的例子。</p>
+<h2 id="主机状态机"><a href="#主机状态机" class="headerlink" title="主机状态机"></a>主机状态机</h2><p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017222347.png"></p>
+<p>在总线开始工作时，主机随即启动主机任务，周期性地执行调度表（Schedule）规定的消息发送程序。下表示意LIN总线调度表的内容，在调度表中包括各项消息 PID（Message Header）和启动时间。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017222408.png"></p>
+<h2 id="从机状态机"><a href="#从机状态机" class="headerlink" title="从机状态机"></a>从机状态机</h2><p>从机任务负责发布或者接听帧的应答状态，包括连两个状态机：同步间隔段与同步段检查器、帧处理器。</p>
+<p>从机任务状态机中，检测同步间隔段和同步段序列，要求节点处于任何状态下都能识别出该序列，包括已经检测到序列或进入帧处理的状态。</p>
+<p>帧处理包括接收并分析PID，接收数据，接收校验和，发送数据和发送校验和，对接收到的受保护ID进行分析，按照事先的设计，选择是接收应答部分，还是发送应答部分，或不接收也不发送。在五个子状态中，如果收到同步间隔段或同步段序列，将重新跳到“接收并分析PID”的子状态，通信不停止，根据需要置位相应的错误标志。</p>
+<h1 id="帧传输时间"><a href="#帧传输时间" class="headerlink" title="帧传输时间"></a>帧传输时间</h1><p>在消息调度中，协议为单条消息定义 Slot 的概念，Slot持续的时间必须大于帧头（Frame Header）和消息应答（Response）的时间以保证消息传送完毕。单个帧总是在同一个Slot内传输完的。考虑到收发器性能的影响，LIN协议规定单个消息传输时间有40%裕量，即帧的最小持续时间为其典型持续时间的1.4倍。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017222504.png"></p>
+<p>若同步间隔段是 13 bit 显性位 + 1 bit 隐性位，则帧头计 34 bit。应答包括数据段和校验和段，根据数据段长度的不同，应答最短为 20 bit（数据段 1 Byte），应答最长为 90 bit（数据段 8 Byte）。综上， LIN总线的帧最长为 124 bit（数据段 8 Byte），最短为 54 bit（数据段 1 Byte）。</p>
+<p>帧的额定传输时间计算公式如下</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017222531.png"></p>
+<p>LIN协议规定帧的最大传输时间为额定传输时间的 1.4 倍，即为帧传输预留 40% 的裕量。该特性是考虑到总线上节点设备性能参差不齐，允许节点不必收到指令后立即执行。也就是说，协议允许节点推迟下一个 UART 字符的发送。</p>
+<p>帧的最大传输时间计算公式如下：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017222553.png"></p>
+<h1 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h1><p>协议强制规定， 每个从机节点都要在它发布的某个无条件帧中包含一个长度为一位的标量信号 response_error，向主机节点报告自身状态。 主机节点负责接收这个信号并且执行分析，如下表所示。事件触发帧由于允许总线冲突，需特殊处理。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017222622.png"></p>
+<p>LIN 协议并没有标准化错误类型，用户可根据需要自行制定。 下表列出了可能出现的一些错误类型供参考。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017222644.png"></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://www.wangdali.net/lin/">http://www.wangdali.net/lin/</a></p>
+<p><a href="https://blog.csdn.net/dailbing/article/details/124248328">https://blog.csdn.net/dailbing/article/details/124248328</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/357967013">https://zhuanlan.zhihu.com/p/357967013</a></p>
+<p><a href="https://news.eeworld.com.cn/qrs/article_2018012444047.html">https://news.eeworld.com.cn/qrs/article_2018012444047.html</a></p>
+]]></content>
+      <categories>
+        <category>汽车与工业网络</category>
+      </categories>
+      <tags>
+        <tag>LIN</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>个人学习分享</title>
+    <url>/2025/prefix%20remember%20to%20change!!!-3bef8c1b86a0/</url>
+    <content><![CDATA[<h1 id="关于学习的思考"><a href="#关于学习的思考" class="headerlink" title="关于学习的思考"></a>关于学习的思考</h1><p>我认为的高效学习：在有限时间内，精准获取所需知识，并能有效内化和应用。</p>
+<p>我对学习的看法：知识是学不完的，论学习能力也比不上AI。我的观点是面向问题学习，让AI成为认知加速器。</p>
+<p>AI是认知的杠杆： 将AI视为研究助理、翻译器、知识连接器和初稿生成器，可以大幅提升工作效率。比如：</p>
+<ul>
+<li><p>客户邮件翻译</p>
+</li>
+<li><p>需求文档的翻译和理解</p>
+</li>
+</ul>
+<p>传统的翻译，翻译完后，也不一定能够理解对方想表达的意思。AI翻译不只是翻译，还会做出解释，这样效率更高。</p>
+<h1 id="高效获取信息与知识"><a href="#高效获取信息与知识" class="headerlink" title="高效获取信息与知识"></a>高效获取信息与知识</h1><p><strong>信息源选择</strong></p>
+<p>获取信息&#x2F;资料的信息源：官方文档 &gt; 官方论坛 &gt; 博客&#x2F;论文。 官方文档包括：</p>
+<ul>
+<li><p>官方网站的文档区域</p>
+</li>
+<li><p>SDK&#x2F;软件包，其中的 <code>README</code>、 <code>docs</code>、 <code>example</code>等目录</p>
+</li>
+<li><p>官方源代码仓库（GitHub 等）中的文档文件</p>
+</li>
+<li><p>官方提供的 API 参考</p>
+</li>
+<li><p>官方入门教程和指南</p>
+</li>
+</ul>
+<p><strong>利用公司资源</strong></p>
+<p>内部Wiki、知识库、过往项目文档。比如飞书云文档，可以在里面搜索想要了解的知识。</p>
+<p><strong>利用AI找资料</strong></p>
+<p>比如：项目需要使用共享内存，实现MCU和SOC之间的数据交互。</p>
+<p>以<code>KIMI</code>为例，找资料的时候，要打开接入互联网功能，不开的话，因为训练大模型使用的数据不是最新的，有些东西可能找不到。打开接入互联网的功能，就会通过互联网搜索资料。如果使用的AI工具不支持联网功能，不建议用来找资料。长思考主要用来分析一些复杂问题，如果只是收集信息，可以打开也可以不开。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017205152.png"></p>
+<ol>
+<li><p>假设项目用的芯片是TI的芯片。首先询问TI德州仪器的官网网址是多少？我们可以从回答里面看到阅读了哪些网页，展开后可以看看网页标题和简介，哪些与我们要找的信息强相关，可以点击对应的链接看看。<img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017205235.png"></p>
+</li>
+<li><p>进入官网，在最底部可以找到官方论坛。<img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017205324.png"></p>
+</li>
+<li><p>在官方论坛搜索IPC rpmsg相关的帖子，里面会有一些意想不到的收获。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017205415.png"></p>
+</li>
+<li><p>基于官网和官方论坛找资料。找软件安装包的下载地址也是一样的方法。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017205511.png"></p>
+</li>
+<li><p>rpmsg原理资料收集。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017205551.png"></p>
+</li>
+<li><p>了解基本概念后，继续了解实现流程。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017205634.png"></p>
+</li>
+<li><p>在有一定的概念后，再去尝试寻找代码示例，这样才能准确表达想要找的东西是什么。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017205710.png"></p>
+<p>最终引用的是官方论坛里面的一个帖子，上面的回复有提到一个demo的仓库地址。所以说官方论坛的帖子也是很重要的，有些资料藏得很深，只有TI的开发&#x2F;员工能找得到。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251017205732.png"></p>
+</li>
+</ol>
+<p>最终收集信息如下：</p>
+<ul>
+<li><p>MCU SDK介绍文档： <a href="https://software-dl.ti.com/mcu-plus-sdk/esd/AM62AX/09_02_00_38/exports/docs/api_guide_am62ax/IPC_GUIDE.html">Understanding inter-processor communication (IPC)</a></p>
+</li>
+<li><p>SOC SDK介绍文档：<a href="https://software-dl.ti.com/processor-sdk-linux/esd/AM62AX/latest/exports/docs/linux/Foundational_Components_IPC62ax.html">3.7. IPC for AM62ax &mdash; Processor SDK AM62Ax Documentation</a></p>
+</li>
+<li><p>官方论坛：<a href="https://e2e.ti.com/search?q=ipc&category=forum">Search - TI E2E support forums</a></p>
+</li>
+<li><p>代码示例：<a href="https://git.ti.com/cgit/rpmsg/rpmsg_char_zerocopy/">https://git.ti.com/cgit/rpmsg/rpmsg_char_zerocopy&#x2F;</a></p>
+</li>
+<li><p>高质量技术博客&#x2F;论文：<a href="https://openamp.readthedocs.io/en/latest/protocol_details/index.html">OpenAMP Design Details &mdash; OpenAMP documentation</a></p>
+</li>
+</ul>
+<h1 id="学习习惯"><a href="#学习习惯" class="headerlink" title="学习习惯"></a>学习习惯</h1><p>流程：收集 -&gt; 速览(建框架) -&gt; 主题聚焦 -&gt; 精读(核心) -&gt; 即时笔记(防忘) -&gt; 整理(内化)。 </p>
+<p><strong>第一阶段：广泛收集与初步吸收</strong></p>
+<ul>
+<li><p>行动： 围绕目标主题，广泛收集相关资料（遵循信息源优先级：官方文档 &gt; 官方论坛 &gt; 博客&#x2F;论文）。</p>
+</li>
+<li><p>方法： 对所有收集的资料进行快速通读，目标是：</p>
+<ul>
+<li><p>建立整体印象和知识框架。</p>
+</li>
+<li><p>识别核心概念、关键特性和潜在难点。</p>
+</li>
+<li><p>此阶段不求深度理解，重在扫盲和定位。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>第二阶段：聚焦主题，深度理解</strong></p>
+<ul>
+<li><p>方法：采用主题阅读法</p>
+<ul>
+<li><p>速览定位：快速浏览多个来源的目录、图表、摘要和章节标题，锁定与主题相关的核心章节。</p>
+</li>
+<li><p>精读核心：集中精力深入阅读与当前学习目标最相关、最重要的核心章节（如实现原理、协议机制、关键特性）。</p>
+</li>
+</ul>
+</li>
+<li><p>核心原则： 深度优先，聚焦核心，避免在非关键信息上过度耗时。</p>
+</li>
+</ul>
+<p><strong>第三阶段：即时输出，强化记忆与理解</strong></p>
+<ul>
+<li><p>行动：边学边记</p>
+<ul>
+<li><p>重要性： 在阅读精读核心内容的同时，强制自己输出笔记。 避免遗忘。</p>
+</li>
+<li><p>形式： 不拘泥于完美结构，想到什么写什么，优先记录：</p>
+<ul>
+<li><p>关键概念的定义。</p>
+</li>
+<li><p>核心原理、机制的理解（用自己的话复述）。</p>
+</li>
+<li><p>重要的命令、API、配置片段（直接复制代码&#x2F;命令）。</p>
+</li>
+<li><p>产生的疑问和思考。</p>
+</li>
+</ul>
+</li>
+<li><p>心态： 接受此时的笔记可能是草稿或碎片化，目标是即时捕捉想法和知识点。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>第四阶段：应用与迭代</strong></p>
+<ul>
+<li><p>行动：事后整理</p>
+<ul>
+<li><p>时机：已经应用到实际项目上，基本掌握该知识&#x2F;技能时，整理总结，加深理解。</p>
+</li>
+<li><p>目标：将碎片化笔记整理成结构化、易检索、有价值的笔记。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h1><p><strong>笔记工具</strong></p>
+<p>飞书云文档，支持双向链接，方便知识关联、更新和分享，还可以利用AI速览，总结笔记重点。</p>
+<p><strong>信息获取</strong></p>
+<p>通用对话AI (认知加速核心)：</p>
+<ul>
+<li><p>官方DeepSeek：不符合公司安全规范，需要注意使用场景，项目资料等信息需要保密。<a href="%5Bhttps://chat.deepseek.com/%5D(https://chat.deepseek.com/)"><a href="https://chat.deepseek.com/">https://chat.deepseek.com/</a></a></p>
+</li>
+<li><p>Kimi：不符合公司安全规范，需要注意使用场景，项目资料等信息需要保密。<a href="%5Bhttps://www.kimi.com/%5D(https://www.kimi.com/)"><a href="https://www.kimi.com/">https://www.kimi.com/</a></a></p>
+</li>
+</ul>
+<p>聚合类：<a href="https://www.aigc.cn/#term-1903">https://www.aigc.cn/#term-1903</a></p>
+<p><strong>AI 的幻觉&#x2F;错误</strong></p>
+<p>永远保持批判性思维！ AI的输出不一定都是正确的。AI是助手，我们才是决策者和责任人，可以同时向多个AI提出相同的问题，对比判断。</p>
+]]></content>
+      <categories>
+        <category>个人成长</category>
+      </categories>
+      <tags>
+        <tag>学习方法</tag>
+      </tags>
+  </entry>
 </search>
