@@ -1446,4 +1446,314 @@
         <tag>学习方法</tag>
       </tags>
   </entry>
+  <entry>
+    <title>IPC共享内存调试</title>
+    <url>/2025/prefix%20remember%20to%20change!!!-25bc31419109/</url>
+    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>由于 RPMsg 一次只能传递 496 字节的信息(在Linux系统中，RPMsg的最大大小包括16字节的头部，因此消息的有效载荷大小为512 - 16 &#x3D; 496字节)，而CAN升级过程中需要传输的数据量是很大的，这样会很影响升级速率。因此，考虑在共享内存区域中传递大量数据，这样会更加高效。</p>
+<p>参考 <code>RPMsg_char zerocopy</code> 示例，了解如何定义一个共享内存区域来在 Linux 和远程核心之间传递数据，然后使用 <code>RPMsg</code> 作为信号机制，在共享内存区域准备好读取时通知另一个核心。</p>
+<h1 id="相关知识"><a href="#相关知识" class="headerlink" title="相关知识"></a>相关知识</h1><h2 id="IPC"><a href="#IPC" class="headerlink" title="IPC"></a>IPC</h2><p>IPC代表“处理器间通信”。IPC可以是处理器核心之间的任何形式的通信。TI AM62Ax可以支持多种IPC实现。</p>
+<p><strong>IPC涉及核心</strong>：A53，MCU R5F，DM R5F 硬件支持的IPC特性：</p>
+<ol>
+<li><p>Interrupt：中断通常是从一个处理器核心传输信息到另一个处理器核心的最快方式。</p>
+</li>
+<li><p>Mailbox：将邮箱想象为与32位寄存器配对的中断信号。IPC Notify机制就是使用邮箱实现。</p>
+</li>
+<li><p>Spinlock：自旋锁可以用来协调对共享资源的访问。这有助于同步在不同处理器核心上运行的软件。</p>
+</li>
+</ol>
+<p><strong>轮询与中断</strong></p>
+<p>处理器核心接收来自另一核心信息的两种主要方法是：</p>
+<ul>
+<li><p>轮询：接收核心，手动检查更新的信息</p>
+</li>
+<li><p>中断：接收核心，继续运行自己的软件，直到被中断（通常由中断或邮箱触发）</p>
+</li>
+</ul>
+<p>一些核心结合了硬件中断和软件轮询。在这种情况下，接收到硬件中断，处理器核心必须手动轮询核心的中断控制器（INTC），以查看是否接收到中断，并处理任何额外的信息（如触发了哪个中断）。</p>
+<p><strong>内存</strong></p>
+<p>可以为以下内容分配DDR或片上内存区域：</p>
+<ul>
+<li><p>IPC协议</p>
+<ul>
+<li>IPC RPMsg</li>
+</ul>
+</li>
+<li><p>共享内存区域</p>
+<ul>
+<li><p>共享内存区域由发送核心直接写入，并由接收核心读取</p>
+</li>
+<li><p>共享内存区域可以小到一个 32 位字，也可以大到足以容纳千字节或兆字节的数据</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>延迟与吞吐量</strong></p>
+<ul>
+<li><p>平均延迟：平均而言，IPC可能需要在特定时间内完成</p>
+</li>
+<li><p>最坏情况延迟：IPC可能需要始终在特定时间内完成</p>
+</li>
+<li><p>数据吞吐量：可能需要在特定时间内在核心之间传输一定量的数据</p>
+</li>
+</ul>
+<p>许多设计对IPC有特定要求，一般来说：</p>
+<ul>
+<li><p>中断、邮箱（IPC Notify）：低延迟，低数据吞吐量</p>
+</li>
+<li><p>IPC RPMsg：易于实现，但没有针对延迟或吞吐量进行优化</p>
+</li>
+<li><p>共享内存区域：更高的延迟，更高的数据吞吐量</p>
+</li>
+</ul>
+<p><strong>IPC SW Architecture</strong></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251018204356.png"></p>
+<p><strong>IPC设计模式</strong></p>
+<p>以下是使用IPC RP消息在“client-serve”模式下的一个典型设计模式。</p>
+<ol>
+<li><p>server端</p>
+<p>一个服务器CPU通常提供某些服务，例如进行一些计算或读取某个传感器，</p>
+<ul>
+<li><p>服务器创建一个RP消息端点，一个端点是任何16位数字，然而在实现中，限制为<code>RPMESSAGE_MAX_LOCAL_ENDPT </code>，以便实现低内存占用，并且仍然保持高效能。</p>
+</li>
+<li><p>一个端点在某种程度上类似于UDP中的端口，而CPU ID在某种程度上类似于IP地址。因此，给定一个CPU ID和该CPU上的端点，任何其他CPU都可以向其发送消息或数据包。这个端点值对于所有希望与其通信的CPU来说是预先知道的，他们也知道所提供的服务的性质。</p>
+</li>
+<li><p>然后，服务器在这个端点等待接收消息。当它收到一条消息时，消息包指示要执行的操作，通常是通过包的命令ID来指示。</p>
+</li>
+<li><p>包还包含特定于命令的参数。参数需要适应包缓冲区，如果参数数量很大或参数本身是大量数据，则包缓冲区内的参数应该指向另一个更大的共享内存，该共享内存保存实际数据或附加参数。</p>
+</li>
+<li><p>作为接收到的消息的一部分，服务器还知道发送者CPU ID和发送者回复端点。处理完消息后，服务器可以向发送者发送一个包括处理结果的“确认”消息，它本身就是另一个消息包，它可以有命令状态和返回参数。</p>
+<p>服务器CPU可以创建多个端点，每个端点提供逻辑上不同的服务。使用单独的RTOS任务来等待给定端点上接收的消息是一个非常常见的设计选择。</p>
+</li>
+</ul>
+</li>
+<li><p>client端</p>
+<p>一个客户端CPU可以向上述服务器端点发送消息，</p>
+<ul>
+<li><p>创建一个RP消息端点来接收“确认”消息。这个端点可以是任何值，不需要与服务器端点匹配。</p>
+</li>
+<li><p>调用发送API，传入服务器CPU ID、服务器端点ID和回复端点ID。</p>
+</li>
+<li><p>发送API填充要发送的包，其中填充了要执行的命令和命令的参数。发送包后，等待回复。收到回复后，处理回复状态和结果。</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>类似的设计模式也可以用于IPC Notify，只是在这种情况下，消息包只能是一个28位的消息值。而且端点值必须小于 <code>IPC_NOTIFY_CLIENT_ID_MAX</code>。</p>
+<h2 id="RPmsg"><a href="#RPmsg" class="headerlink" title="RPmsg"></a>RPmsg</h2><p>RPMsg是一种标准化的IPC协议。RPMsg创建作为共享内存的VRING缓冲区，发送核心将RPMsg消息放入VRING缓冲区，然后使用邮箱或中断通知接收核心有消息等待。VRING 共享内存地址由 Linux 设备树中的值确定，并放置在 DDR 中。</p>
+<p><strong>IPC实现</strong></p>
+<p>RPMsg可用于MCU+核心之间的通信，或用于Linux与运行MCU+ SDK的核心之间的通信。</p>
+<p>TI为MCU核心和Linux核心提供了RPMsg驱动程序，以及仅适用于MCU核心的IPC Notify驱动程序。</p>
+<ol>
+<li><p>IPC Notify</p>
+<p>IPC Notify运行在MCU+核心上（FreeRTOS或裸机&#x2F;NORTOS）。IPC Notify只能用于运行MCU+ SDK的核心之间的通信。TI不支持使用IPC Notify与Linux交互。</p>
+<p>优点：低延迟，通过使用邮箱，IPC Notify能够在MCU+核心之间实现微秒级的延迟。</p>
+</li>
+<li><p>IPC RPMsg and Linux RPMsg</p>
+<ul>
+<li><p>IPC RPMsg运行在MCU+核心上。</p>
+</li>
+<li><p>Linux RPMsg运行在Linux上。</p>
+</li>
+</ul>
+</li>
+</ol>
+<p><strong>IPC RPMsg具体细节</strong></p>
+<ul>
+<li><p>MCU+ core to MCU+ core</p>
+<ul>
+<li><p>消息大小和消息缓冲区数量是可配置的</p>
+</li>
+<li><p>共享内存可以在DDR或内部存储器中</p>
+</li>
+</ul>
+</li>
+<li><p>MCU+ core to Linux core</p>
+<ul>
+<li><p>消息大小和消息缓冲区数量是固定的</p>
+</li>
+<li><p>共享内存在DDR中</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Linux RPMsg具体细节</strong></p>
+<p>Linux RPMsg驱动程序可以从Linux用户空间（例如，Linux应用程序）或从Linux内核空间（例如， Linux驱动程序）启用RPMsg。Linux RPMsg旨在易于使用，而不是优化延迟或数据吞吐量。</p>
+<ul>
+<li><p>共享内存在DDR中而不是内部存储器中</p>
+</li>
+<li><p>固定的RPMsg数据包大小。总数据包大小为512字节，496字节的数据，16字节的头</p>
+</li>
+<li><p>Linux用户空间不直接读取VRING缓冲区。相反，数据被多次复制以在Linux用户空间和远程核心之间传输。</p>
+</li>
+</ul>
+<p><strong>RPmsg协议介绍见</strong>：</p>
+<p><a href="https://www.jianshu.com/p/c7cdad8273ed">RPMsg：协议简介 - 简书</a></p>
+<p><a href="https://www.cnblogs.com/mic-chen/p/18217210">核间通信：RPMsg和OpenAMP - Mic_chen - 博客园</a></p>
+<p><a href="https://openamp.readthedocs.io/en/latest/protocol_details/index.html">OpenAMP Design Details — OpenAMP documentation</a></p>
+<p><a href="https://blog.csdn.net/qq_21438461/article/details/142793235">【核间通讯】深入解析 Virtio 和 RPMsg：多处理器通信的开放标准与应用实践-CSDN博客</a></p>
+<p><a href="https://blog.csdn.net/huang987246510/article/details/103739592">VirtIO实现原理——vring数据结构-CSDN博客</a></p>
+<p><a href="https://oenhan.com/virtio-vring">virtIO vring工作机制分析 | OenHan</a></p>
+<p><a href="https://cloud.tencent.com/developer/article/2395658">多核异构通信框架（RPMsg-Lite）-腾讯云开发者社区-腾讯云</a></p>
+<h1 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h1><p><code>RPMsg_char zerocopy</code> 这个仓库，展示了如何使用 <code>rpmsg_char</code>API 在 Linux 主机和远程 M4F 或 R5F MCU 端点之间传递共享内存数据。</p>
+<p>仓库地址：<a href="https://git.ti.com/cgit/rpmsg/rpmsg_char_zerocopy/">rpmsg&#x2F;rpmsg_char_zerocopy</a></p>
+<ul>
+<li><p>master分支：适用 Linux 内核 6.6 或更高版本（SDK 10.x）。</p>
+</li>
+<li><p>ti-linux-6.1 分支：适用 Linux 内核 5.10（SDK 8.x）或 Linux 内核 6.1（SDK 9.x）。</p>
+</li>
+<li><p>linux目录：基于通用 Linux 的 <code>rpmsg_char</code>示例。</p>
+</li>
+<li><p>rtos目录：包含了针对 AM64x&#x2F;R5F、AM62x&#x2F;M4F 和 AM62Ax&#x2F;C71&#x2F;R5F 的 FreeRTOS 部分示例。</p>
+</li>
+</ul>
+<p>查看Linux 内核版本，可以在终端或命令行界面中使用以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">uname -r</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251018204603.png"></p>
+<h2 id="Demo流程说明"><a href="#Demo流程说明" class="headerlink" title="Demo流程说明"></a>Demo流程说明</h2><ol>
+<li><p>Linux端用指定的数据填充共享内存缓冲区。在访问 <code>mmapped </code>区域前后使用<code>DMA_BUF_IOCTL_SYNC</code>ioctl进行非常基础的缓存一致性管理。</p>
+</li>
+<li><p>将缓冲区的物理地址、缓冲区大小和填充的固定数据通过rpmsg发送到远程端点(MCU)，并开始等待响应。</p>
+</li>
+<li><p>远程MCU将验证缓冲区数据，然后反转数据，用新数据填充缓冲区，并发送响应。</p>
+</li>
+<li><p>当Linux收到来自远程端点的消息时，验证与远程端共享的内存中的模式。</p>
+</li>
+</ol>
+<p>注意：填充共享内存缓冲区，也就是往共享内存写数据后，对端是不知道应用程序什么时候写的。所以在这里，rpmsg其实起到了通知的作用，实际上是产生了邮箱或中断通知，否则就需要轮询检查是否有新的数据。</p>
+<p>这个示例与 ipc_rpmsg_echo_linux 示例类似，有几个关键的不同点：</p>
+<ul>
+<li><p>创建了一个单一的 rpmsg 端点，用于与用户空间 Linux <code>rpmsg_char</code> 应用程序通信。</p>
+</li>
+<li><p>通过 rpmsg 通道交换包含共享内存描述符的⼆进制消息。共享数据位于共享内存中，不通过rpmsg 通道交换。</p>
+</li>
+<li><p>不与其他 CPU 交换任何消息。</p>
+</li>
+</ul>
+<h2 id="API说明"><a href="#API说明" class="headerlink" title="API说明"></a>API说明</h2><h3 id="Typedef说明"><a href="#Typedef说明" class="headerlink" title="Typedef说明"></a>Typedef说明</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="title function_">void</span><span class="params">(* RPMessage_RecvCallback)</span> <span class="params">(RPMessage_Object *obj, <span class="type">void</span> *arg, <span class="type">void</span></span></span><br><span class="line"><span class="params">*data, <span class="type">uint16_t</span> dataLen, <span class="type">uint16_t</span> remoteCoreId, <span class="type">uint16_t</span> remoteEndPt)</span></span><br><span class="line">`RPMessage_RecvCallback` 是一个回调函数类型定义，它在从指定的本地端点接收到任何CPU发</span><br><span class="line">送的消息时被调用。</span><br><span class="line"></span><br><span class="line">这个回调函数可以在 `RPMessage_construct` 期间选择性注册。</span><br><span class="line"></span><br><span class="line">注意：</span><br><span class="line">回调函数中必须处理所有消息内容。当回调函数返回时，消息缓冲区会被释放回发送者。</span><br><span class="line">如果需要延迟处理消息内容，则需要复制消息内容。</span><br><span class="line"></span><br><span class="line">参数：</span><br><span class="line">`obj` [in] 使用 `RPMessage_construct` 创建的RPMessage端点对象。</span><br><span class="line">`arg` [in] 用户在 `RPMessage_construct` 期间指定的参数。</span><br><span class="line">`data` [in] 指向消息的指针。</span><br><span class="line">`dataLen` [in] 消息的⻓度。</span><br><span class="line">`remoteCoreId` [in] 发送方的核ID。</span><br><span class="line">`remoteEndPt` [in] 发送方的端点。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="title function_">void</span><span class="params">(* RPMessage_RecvNotifyCallback)</span> <span class="params">(RPMessage_Object *obj, <span class="type">void</span></span></span><br><span class="line"><span class="params">*arg)</span></span><br><span class="line">`RPMessage_RecvNotifyCallback` 是一个回调函数类型定义，它在从指定的本地端点接收到任何</span><br><span class="line">CPU发送的消息时被调用。</span><br><span class="line"></span><br><span class="line">这个回调函数可以在 `RPMessage_construct` 期间选择性注册。</span><br><span class="line"></span><br><span class="line">注意：</span><br><span class="line">与 `RPMessage_RecvCallback` 不同，这个回调函数仅通知有一条或多条消息待读取，</span><br><span class="line">但消息本身不会被驱动程序读取，除非在该回调函数中或之后的某个任务中调用了</span><br><span class="line">`RPMessage_recv`。</span><br><span class="line">如果设置了 `RPMessage_RecvCallback`，则不会使用 `RPMessage_RecvNotifyCallback` 回</span><br><span class="line">调函数。</span><br><span class="line"></span><br><span class="line">参数：</span><br><span class="line">`obj` [in] 使用 `RPMessage_construct` 创建的RPMessage端点对象。</span><br><span class="line">`arg` [in] 用户在 `RPMessage_construct` 期间指定的参数。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="title function_">void</span><span class="params">(* RPMessage_ControlEndPtCallback)</span> <span class="params">(<span class="type">void</span> *arg, <span class="type">uint16_t</span></span></span><br><span class="line"><span class="params">remoteCoreId, <span class="type">uint16_t</span> remoteEndPt, <span class="type">const</span> <span class="type">char</span> *remoteServiceName)</span></span><br><span class="line">`RPMessage_ControlEndPtCallback` 是一个回调函数类型定义，在控制端点上接收到通知消息</span><br><span class="line">时调用的回调。</span><br><span class="line"></span><br><span class="line">这个回调函数可以在 `RPMessage_init` 期间选择性注册。</span><br><span class="line"></span><br><span class="line">注意：</span><br><span class="line">与 `RPMessage_RecvCallback` 类似，回调函数中必须处理所有消息内容。</span><br><span class="line">当回调函数返回时，消息缓冲区会被释放回发送者。如果需要延迟处理消息内容，则需要复制消息内</span><br><span class="line">容。</span><br><span class="line"></span><br><span class="line">参数：</span><br><span class="line">`arg` [in] 用户在 `RPMessage_init` 期间指定的参数。</span><br><span class="line">`remoteCoreId` [in] 发送方的核ID。</span><br><span class="line">`remoteEndPt` [in] 在控制端点上宣布服务的发送者的端点。</span><br><span class="line">`remoteServiceName` [in] 被宣布的远程服务的名称。</span><br></pre></td></tr></table></figure>
+
+<h3 id="函数说明"><a href="#函数说明" class="headerlink" title="函数说明"></a>函数说明</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">RPMessage_Params_init</span><span class="params">(RPMessage_Params * params)</span></span><br><span class="line"></span><br><span class="line">`<span class="title function_">RPMessage_Params_init</span><span class="params">()</span>` 函数用于为 `RPMessage_Params` 结构体设置默认值。</span><br><span class="line">参数：</span><br><span class="line">`params` [out] 需要被初始化为默认值的结构体。</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">RPMessage_CreateParams_init</span><span class="params">(RPMessage_CreateParams * params)</span></span><br><span class="line"></span><br><span class="line">`<span class="title function_">RPMessage_CreateParams_init</span><span class="params">()</span>` 函数用于为 `RPMessage_CreateParams` 结构体设置默</span><br><span class="line">认值。 </span><br><span class="line">参数：</span><br><span class="line">`params` [out] 需要被初始化为默认值的结构体。</span><br><span class="line"></span><br><span class="line"><span class="type">int32_t</span> <span class="title function_">RPMessage_init</span><span class="params">(<span class="type">const</span> RPMessage_Params * params)</span></span><br><span class="line"></span><br><span class="line">`<span class="title function_">RPMessage_init</span><span class="params">()</span>` 函数用于初始化 RPMessage 模块。</span><br><span class="line">参数：</span><br><span class="line">`params` [in] 初始化参数。</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">RPMessage_deInit</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line"></span><br><span class="line">`<span class="title function_">RPMessage_deInit</span><span class="params">()</span>` 函数用于反初始化 RPMessage 模块。</span><br><span class="line"></span><br><span class="line"><span class="type">int32_t</span> <span class="title function_">RPMessage_waitForLinuxReady</span><span class="params">(<span class="type">uint32_t</span> timeout)</span></span><br><span class="line"></span><br><span class="line">`<span class="title function_">RPMessage_waitForLinuxReady</span><span class="params">()</span>` 函数用于等待 Linux 端的 RPMessage 准备就绪。</span><br><span class="line">在启用了 Linux 端的 RPMessage 之前，不应该向 Linux 发送消息，直到这个函数返回成功。</span><br><span class="line"></span><br><span class="line">注意：</span><br><span class="line">当在 RTOS/非RTOS 核心之间使用 RPMessage 时，不需要调用这个 API。</span><br><span class="line"></span><br><span class="line">参数：</span><br><span class="line">`timeout` [in] 超时时间，以系统时钟周期为单位。</span><br><span class="line">返回值：</span><br><span class="line">`SystemP_SUCCESS`，表示 Linux 端的 RPMessage 已经初始化完成。</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">RPMessage_controlEndPtCallback</span><span class="params">(RPMessage_ControlEndPtCallback</span></span><br><span class="line"><span class="params">controlEndPtCallback,</span></span><br><span class="line"><span class="params"><span class="type">void</span> * controlEndPtCallbackArgs</span></span><br><span class="line"><span class="params">)</span></span><br><span class="line"></span><br><span class="line">`<span class="title function_">RPMessage_controlEndPtCallback</span><span class="params">()</span>` 函数用于设置一个回调，当在控制端点接收到控制消息</span><br><span class="line">时调用。</span><br><span class="line">参数：</span><br><span class="line">`controlEndPtCallback` [in] 用户定义的回调函数，当控制消息到达时将被调用。</span><br><span class="line">`controlEndPtCallbackArgs` [in] 传递给用户控制端点回调的参数。</span><br><span class="line"></span><br><span class="line"><span class="type">int32_t</span> <span class="title function_">RPMessage_construct</span><span class="params">(RPMessage_Object * obj,</span></span><br><span class="line"><span class="params"><span class="type">const</span> RPMessage_CreateParams * createParams</span></span><br><span class="line"><span class="params">)</span></span><br><span class="line"></span><br><span class="line">`<span class="title function_">RPMessage_construct</span><span class="params">()</span>` 函数用于创建一个 RPMessage 对象，以便在指定的端点接收消息。</span><br><span class="line"></span><br><span class="line">注意：</span><br><span class="line">- 每个新创建的对象必须有一个唯一的本地端点。</span><br><span class="line">- 本地端点必须小于 `RPMESSAGE_MAX_LOCAL_ENDPT`。</span><br><span class="line">- 用户必须选择一个值，不支持使用 ANY 值。</span><br><span class="line">- 如果在 `RPMessage_CreateParams` 中注册了回调，则不能使用 `RPMessage_recv`。</span><br><span class="line"></span><br><span class="line">参数：</span><br><span class="line">`obj` [out] 创建的对象。</span><br><span class="line">`createParams` [in] 创建对象时的参数。</span><br><span class="line">返回值：</span><br><span class="line">`SystemP_SUCCESS` 表示成功，否则表示失败。</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">RPMessage_destruct</span><span class="params">(RPMessage_Object * obj)</span></span><br><span class="line"></span><br><span class="line">`<span class="title function_">RPMessage_destruct</span><span class="params">()</span>` 函数用于删除之前创建的 RPMessage 对象。</span><br><span class="line">参数：</span><br><span class="line">`obj` [in] 要删除的对象。</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">RPMessage_unblock</span><span class="params">(RPMessage_Object * obj)</span></span><br><span class="line"></span><br><span class="line">`<span class="title function_">RPMessage_unblock</span><span class="params">()</span>` 函数用于解除对输入对象的 `RPMessage_recv` 调用的阻塞，如果它</span><br><span class="line">正在等待消息并且用户想要退出该任务。</span><br><span class="line">参数：</span><br><span class="line">`obj` [in] 要解除阻塞的对象。</span><br><span class="line"></span><br><span class="line"><span class="type">uint16_t</span> <span class="title function_">RPMessage_getLocalEndPt</span><span class="params">(<span class="type">const</span> RPMessage_Object * obj)</span></span><br><span class="line"></span><br><span class="line">`<span class="title function_">RPMessage_getLocalEndPt</span><span class="params">()</span>` 函数用于返回一个 `RPMessage_Object` 的本地端点。</span><br><span class="line">返回的值将与之前创建该对象时使用的值相同。</span><br><span class="line">参数：</span><br><span class="line">`obj` [in] 对象。</span><br><span class="line">返回值：</span><br><span class="line">输入对象的本地端点。</span><br><span class="line"></span><br><span class="line"><span class="type">int32_t</span> <span class="title function_">RPMessage_announce</span><span class="params">(<span class="type">uint16_t</span> remoteProcId,</span></span><br><span class="line"><span class="params"><span class="type">uint16_t</span> localEndPt,</span></span><br><span class="line"><span class="params"><span class="type">const</span> <span class="type">char</span> * name</span></span><br><span class="line"><span class="params">)</span></span><br><span class="line"></span><br><span class="line">`<span class="title function_">RPMessage_announce</span><span class="params">()</span>` 函数用于向远程核心宣告一个本地端点，该端点上创建了一个服务。</span><br><span class="line"></span><br><span class="line">注意：</span><br><span class="line">- 宣告端点是可选的，IPC RPmessage不会以任何方式内部使用它。</span><br><span class="line">- 用户必须逐个向所有感兴趣的远程核心宣告。没有向所有核心宣告的选项。</span><br><span class="line">- 为了处理宣告消息，确保用户在 `RPMessage_init` 期间通过 `RPMessage_Params` 注册了</span><br><span class="line">用户处理程序。</span><br><span class="line">- 由最终用户决定如何使用回调来发出信号或等待直到远程服务被宣告。</span><br><span class="line"></span><br><span class="line">参数：</span><br><span class="line">`remoteProcId` [in] 要宣告的远程核心。</span><br><span class="line">`localEndPt` [in] 正在宣告的服务的本地端点。</span><br><span class="line">`name` [in] 正在宣告的服务的名称。</span><br><span class="line">返回值：</span><br><span class="line">如果宣告消息已发送，则返回 `SystemP_SUCCESS`，否则表示失败。</span><br><span class="line"></span><br><span class="line"><span class="type">int32_t</span> <span class="title function_">RPMessage_send</span><span class="params">(<span class="type">void</span> * data,</span></span><br><span class="line"><span class="params"><span class="type">uint16_t</span> dataLen,</span></span><br><span class="line"><span class="params"><span class="type">uint16_t</span> remoteCoreId,</span></span><br><span class="line"><span class="params"><span class="type">uint16_t</span> remoteEndPt,</span></span><br><span class="line"><span class="params"><span class="type">uint16_t</span> localEndPt,</span></span><br><span class="line"><span class="params"><span class="type">uint32_t</span> timeout</span></span><br><span class="line"><span class="params">)</span></span><br><span class="line"></span><br><span class="line">`<span class="title function_">RPMessage_send</span><span class="params">()</span>` 函数用于向指定远程端点的远程核心发送消息。</span><br><span class="line"></span><br><span class="line">注意：</span><br><span class="line">- `dataLen` 必须小于等于RPMessage_Params::vringMsgSize - 16字节，以留出内部头部的</span><br><span class="line">空间。</span><br><span class="line">- 为了让远程核心能够接收到消息，远程核心上要有一个与 `remoteEndPt` 相同值的端点。</span><br><span class="line">- `localEndPt` 不是必需的，但是这个值在远程核心上是可用的，并且可以用作回复端点。使用</span><br><span class="line">`RPMessage_getLocalEndPt` 来设置监听回复的 RPMessage 对象的本地端点。</span><br><span class="line">- 当超时时间设置为 0 时，如果不可用的传输缓冲区，将⽴即返回 `SystemP_TIMEOUT`。否则，</span><br><span class="line">它将等待指定的超时时间，直到有可用的传输缓冲区。</span><br><span class="line"></span><br><span class="line">参数：</span><br><span class="line">`data` [in] 要发送的消息数据的指针。</span><br><span class="line">`dataLen` [in] 要发送的消息数据的大小。</span><br><span class="line">`remoteCoreId` [in] 消息被发送到的远程核心ID。</span><br><span class="line">`remoteEndPt` [in] 消息被发送到的远程核心端点ID。</span><br><span class="line">`localEndPt` [in] 发送消息的本地端点。</span><br><span class="line">`timeout` [in] 等待时间，以系统时钟周期为单位。</span><br><span class="line">返回值：</span><br><span class="line">`SystemP_SUCCESS`，当发送消息成功时返回。</span><br><span class="line">`SystemP_TIMEOUT`，由于没有可用的传输缓冲区且超时发生，消息未被发送。</span><br><span class="line"></span><br><span class="line"><span class="type">int32_t</span> <span class="title function_">RPMessage_recv</span><span class="params">(RPMessage_Object * obj,</span></span><br><span class="line"><span class="params"><span class="type">void</span> * data,</span></span><br><span class="line"><span class="params"><span class="type">uint16_t</span> * dataLen,</span></span><br><span class="line"><span class="params"><span class="type">uint16_t</span> * remoteCoreId,</span></span><br><span class="line"><span class="params"><span class="type">uint32_t</span> * remoteEndPt,</span></span><br><span class="line"><span class="params"><span class="type">uint32_t</span> timeout</span></span><br><span class="line"><span class="params">)</span></span><br><span class="line"></span><br><span class="line">`<span class="title function_">RPMessage_recv</span><span class="params">()</span>` 函数是一个阻塞式 API，直到在指定的本地端点接收到来自任何CPU的消</span><br><span class="line">息。</span><br><span class="line"></span><br><span class="line">注意：</span><br><span class="line">- 本地端点在 `RPMessage_construct` 期间指定。</span><br><span class="line">- 如果注册了回调，则不应使用此 API。</span><br><span class="line">- 用户传递的 `dataLen` 包含用户消息缓冲区的大小，即指向 `data` 的缓冲区大小。如果接收</span><br><span class="line">到的消息大小超过了 `*dataLen`，则会被截断。如果接收到的消息大小小于等于 `*dataLen`，则</span><br><span class="line">所有接收到的字节都会被复制到 `data` 中，并且 `*dataLen` 表示 `data` 中有效字节的大</span><br><span class="line">小。</span><br><span class="line"></span><br><span class="line">参数：</span><br><span class="line">`obj` [in] 使用 `RPMessage_construct` 创建的RPMessage端点对象。</span><br><span class="line">`data` [in] 指向接收到的消息内容的指针。</span><br><span class="line">`dataLen` [in] 用户消息缓冲区的⻓度，以字节为单位。</span><br><span class="line">[out] 接收到的消息的大小，以字节为单位。</span><br><span class="line">`remoteCoreId` [out] 发送方的核ID。</span><br><span class="line">`remoteEndPt` [out] 发送方的端点。</span><br><span class="line">`timeout` [in] 阻塞等待消息接收的时间，以系统时钟周期为单位。</span><br><span class="line">返回值：</span><br><span class="line">- `SystemP_SUCCESS`，接收到新消息，所有输出参数都是有效的。</span><br><span class="line">- `SystemP_TIMEOUT`，由于超时，API被解除阻塞，输出参数不应被使用。</span><br></pre></td></tr></table></figure>
+
+<p><strong>API for Task</strong></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">TaskP_Params_init</span><span class="params">(TaskP_Params * params)</span></span><br><span class="line"></span><br><span class="line">`<span class="title function_">TaskP_Params_init</span><span class="params">()</span>` 函数用于为 `TaskP_Params` 结构体设置默认值。</span><br><span class="line">强烈建议在设置 `TaskP_Params` 中的值之前调用此函数。</span><br><span class="line">参数：</span><br><span class="line">`params` [out] 要设置为默认值的参数结构体。</span><br><span class="line"></span><br><span class="line"><span class="type">int32_t</span> <span class="title function_">TaskP_construct</span><span class="params">(TaskP_Object * obj,</span></span><br><span class="line"><span class="params">TaskP_Params * params</span></span><br><span class="line"><span class="params">)</span></span><br><span class="line"></span><br><span class="line">`<span class="title function_">TaskP_construct</span><span class="params">()</span>` 函数用于创建一个任务对象。</span><br><span class="line">参数：</span><br><span class="line">`obj` [out] 创建的对象。</span><br><span class="line">`params` [in] 创建任务的参数。</span><br><span class="line">返回值：</span><br><span class="line">如果成功，返回 `SystemP_SUCCESS`。</span><br><span class="line">如果出错，返回 `SystemP_FAILURE`。</span><br></pre></td></tr></table></figure>
+
+<h2 id="共享内存的使用"><a href="#共享内存的使用" class="headerlink" title="共享内存的使用"></a>共享内存的使用</h2><p>使用共享内存的通讯方式，数据是不通过 rpmsg 通道交换的，rpmsg主要起通知作用，并传递共享内存描述的相关信息。这一条通知消息，可以和其他rpmsg的处理区分开，也可以不区分，主要有几种方式：</p>
+<ol>
+<li><p>不新增 RPMessage 对象，和其他rpmsg一起处理，那么需要增加自定义交互协议，来交换包含共享内存描述的相关信息；</p>
+</li>
+<li><p>调用 <code>RPMessage_construct</code>创建一个新的 RPMessage 对象，和其他rpmsg分开处理。根据输入参数区分不同的RPMessage对象，做不同的处理。</p>
+</li>
+</ol>
+<p><mark>注意：每个新创建的对象必须有一个唯一的本地端点。</mark></p>
+<p>假如之前已经用了14端点，共享内存的RPMessage对象可以用16端点。这就需要在项目中添加多个端点。</p>
+<p><strong>如何在MCU项目中添加多个RPMsg端点？</strong></p>
+<p><a href="https://dev.ti.com/tirex/explore/node?node=A__AcOC0VpHUlAvx.sBVgyDVQ__AM62A-ACADEMY__WeZ9SsL__LATEST">TI Resource Explorer</a></p>
+<p>实际上就是应用了下面的补丁：</p>
+<p><a href="https://dev.ti.com/tirex/explore/content/am62ax_academy_10_01_00_00/_build_am62ax_academy_10_01_00_00/_downloads/8572acd8118b2273bb40546f07e38f56/0001-Linux_RPMsg_Echo-add-additional-endpoints.patch"><code>Linux_RPMsg_Echo-add-additional-endpoints.patch</code></a></p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="ASSERT"><a href="#ASSERT" class="headerlink" title="ASSERT"></a>ASSERT</h3><p>在之前代码的基础上，把demo的代码移植过去，增加一个任务后，出现了断言，如下图:</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251018205540.png"></p>
+<p>在 <code>queue.c </code>文件 <code>xQueueSemaphoreTake </code>函数1582行，<code>configASSERT</code>断言 <code>QueueHandle_t xQueue </code>是否为空。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251018205603.png"></p>
+<p>出现断言打印，说明传了NULL。全局搜索没有直接调用 <code>xQueueSemaphoreTake </code>的地方，用的是<code>xSemaphoreTake </code>这个宏。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> xSemaphoreTake( xSemaphore, xBlockTime ) xQueueSemaphoreTake( (</span></span><br><span class="line">xSemaphore ), ( xBlockTime ) )</span><br></pre></td></tr></table></figure>
+
+<p>使用的地方比较多，所以下一步要定位，是新增加了哪个函数调用，导致该问题。</p>
+<p>最终定位是新加的任务，调用 <code>RPMessage_recv</code>函数出现的这个问题。</p>
+<p>问题在于<code>RPMessage_recv</code>使用了，未经过<code>RPMessage_construct</code>创建的RPMessage对象。</p>
+<p><strong>代码分析</strong></p>
+<p>详细分析见注释。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> IPC_RPMESSAGE_ENDPT_CHRDEV_PING (14U)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MCU_IPC_RECV_OBJ (1)</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* 在初始化的阶段，RPMessage_construct函数会创建一个RPMessage对象gIpcRecvMsgObject[1]，</span></span><br><span class="line"><span class="comment">* 用来在IPC_RPMESSAGE_ENDPT_CHRDEV_PING端点接收消息。</span></span><br><span class="line"><span class="comment">* 然后会调用SemaphoreP_constructBinary创建一个⼆进制信号量对象。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">RPMessage_CreateParams_init(&amp;createParams);</span><br><span class="line">createParams.localEndPt = IPC_RPMESSAGE_ENDPT_CHRDEV_PING;</span><br><span class="line">status = RPMessage_construct(&amp;gIpcRecvMsgObject[MCU_IPC_RECV_OBJ],</span><br><span class="line">&amp;createParams);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Create the tasks which will handle the ping service */</span></span><br><span class="line">TaskP_Params_init(&amp;taskParams);</span><br><span class="line">taskParams.name = <span class="string">&quot;RPMESSAGE_CHAR_ZEROCOPY&quot;</span>;</span><br><span class="line">taskParams.stackSize = IPC_RPMESSAGE_TASK_STACK_SIZE;</span><br><span class="line">taskParams.<span class="built_in">stack</span> = gIpcTaskStack[<span class="number">0</span>];</span><br><span class="line">taskParams.priority = IPC_RPMESSAFE_TASK_PRI;</span><br><span class="line"><span class="comment">/* we use the same task function for echo but pass the appropiate rpmsg</span></span><br><span class="line"><span class="comment">handle to it, to echo messages */</span></span><br><span class="line">taskParams.args = &amp;gIpcRecvMsgObject[<span class="number">0</span>];<span class="comment">//gIpcRecvMsgObject[0]作为参数传递给</span></span><br><span class="line">ipc_recv_task_main</span><br><span class="line">taskParams.taskMain = ipc_recv_task_main;</span><br><span class="line">status = TaskP_construct(&amp;gIpcTask[<span class="number">0</span>], &amp;taskParams);</span><br><span class="line">DebugP_assert(status == SystemP_SUCCESS);</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">ipc_recv_task_main</span><span class="params">(<span class="type">void</span> *args)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int32_t</span> status;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ipc_buf</span> <span class="title">ibuf</span> =</span> &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="type">uint16_t</span> recvMsgSize, remoteCoreId;</span><br><span class="line">    <span class="type">uint32_t</span> remoteCoreEndPt;</span><br><span class="line">    RPMessage_Object *pRpmsgObj = (RPMessage_Object *)args;</span><br><span class="line"></span><br><span class="line">    DebugP_log(<span class="string">&quot;[IPC RPMSG ZEROCOPY] Remote Core waiting for messages at endpoint %d ... !!!\r\n&quot;</span>,RPMessage_getLocalEndPt(pRpmsgObj));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* wait for messages forever in a loop */</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">/* Set &#x27;recvMsgSize&#x27; to size of recv buffer, after return`recvMsgSize`</span></span><br><span class="line"><span class="comment">        * contains actual size of valid data in recv buffer.</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        recvMsgSize = <span class="keyword">sizeof</span>(ibuf);</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        * 前面在初始化的时候，创建的RPMessage对象是gIpcRecvMsgObject[1]，</span></span><br><span class="line"><span class="comment">        * 而gIpcRecvMsgObject[0]并没有做创建处理，对应的信号量是NULL。</span></span><br><span class="line"><span class="comment">        * 那么，在任务里面，gIpcRecvMsgObject[0]作为输入参数传给RPMessage_recv之后，</span></span><br><span class="line"><span class="comment">        * 会调用RPMessage_getEndPtMsg。当消息队列为空时，调用SemaphoreP_pend等待一个信号量对象</span></span><br><span class="line"><span class="comment">        * 或锁定一个互斥锁，最终调用xSemaphoreTake，检测信号量为NULL，于是出现了断言。</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        status = RPMessage_recv(pRpmsgObj,</span><br><span class="line">                    &amp;ibuf, &amp;recvMsgSize,</span><br><span class="line">                    &amp;remoteCoreId, &amp;remoteCoreEndPt,</span><br><span class="line">                    SystemP_WAIT_FOREVER);</span><br><span class="line">        DebugP_assert(status==SystemP_SUCCESS);</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="MPU"><a href="#MPU" class="headerlink" title="MPU"></a>MPU</h3><p>MCU无法访问SOC发过来的地址，具体表现为，对地址进行读&#x2F;写操作，MCU会挂掉。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">IPC message: buffer address 0xXXXX, size 1M, pattern 0xaaaa5555</span><br></pre></td></tr></table></figure>
+
+<p>可能原因有：</p>
+<ol>
+<li><p>内存权限和属性：R5F核可能没有足够的权限访问该内存区域，或者内存属性（如执行、写入、读取等）可能没有正确配置。检查共享内存区域的权限和属性设置。</p>
+</li>
+<li><p>内存对齐：如果共享内存的地址或大小没有正确对齐，可能会导致访问错误。</p>
+</li>
+</ol>
+<p>实际排查是因为没有访问权限，MPU里面没有对相应内存区域进行设置，需要在syscfg设置如下：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251018210125.png"></p>
+<h1 id="核间同步"><a href="#核间同步" class="headerlink" title="核间同步"></a>核间同步</h1><p>两个CPU核同时访问同一个共享内存区域，如何实现同步，实现资源互斥访问是一个需要重点考虑的问题。</p>
+<p><a href="https://blog.csdn.net/lyd0813/article/details/126825378">核间通信（IPC）的两种解决方案-CSDN博客</a></p>
+<p>第一种通信的同步方案：</p>
+<p>使用virtIO来实现，详见RPMSG-VirtIO。前面多次提到一次只能传递 496 字节的信息。</p>
+<p>第⼆种通信的同步方案：</p>
+<p><strong>方案工作流程</strong></p>
+<ol>
+<li><p>R5F核写入共享内存：</p>
+<ul>
+<li><p>R5F核准备好数据后，将数据写入到共享内存的指定位置。</p>
+</li>
+<li><p>R5F核通过RPMsg发送一个消息给A53核，通知它数据已经写入完成。</p>
+</li>
+<li><p>这个消息可以通过核间中断来触发A53核的处理，解除其阻塞状态。</p>
+</li>
+<li><p>可以将多个数据包批量写入共享内存，然后通过RPMsg通知一次，减少中断的频率，提升性能。</p>
+</li>
+</ul>
+</li>
+<li><p>A53核读取数据：</p>
+<ul>
+<li><p>A53核在收到中断后从阻塞状态恢复，读取共享内存中R5F核写入的数据。</p>
+</li>
+<li><p>数据处理完后，A53核发送RPMsg通知R5F核操作完成。</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>同样，A53也可以通过类似的方式（共享内存写入 -&gt; RPMsg 通知）将数据写给R5F核。</p>
+<p><strong>优点</strong></p>
+<ol>
+<li><p>同步精确：通过核间中断来通知对方核，可以做到精确的同步，这种方式减少了忙等(不像自旋锁那样忙等)。</p>
+</li>
+<li><p>同步机制简单：不需要复杂的锁来控制共享内存的访问权限。因为在每个核被通知后才会进行读写操作，避免了数据竞争。</p>
+</li>
+<li><p>减少CPU开销：通过阻塞等待和通知机制，避免了轮询式的资源检查，大大减少了CPU资源的浪费。</p>
+</li>
+<li><p>减少中断频率：通过批量写入共享内存，能够减少核间中断的频率，降低处理器之间的通信开销。RPMsg只在批量数据处理完后触发一次通知，从而提高效率。</p>
+</li>
+</ol>
+<p><strong>需要注意的点</strong></p>
+<ol>
+<li><p>共享内存的一致性：需要手动清除缓存，确保两个核访问的是同样的数据。</p>
+</li>
+<li><p>RPMsg 通知的延迟：核间中断和RPMsg通常比较高效，但仍需要关注实际场景中的通知延迟，尤其是在高频率通信场景下。</p>
+</li>
+</ol>
+<p><strong>优化思考</strong></p>
+<ol>
+<li><p>双缓冲机制：使用双缓冲，保证读写操作互不影响。例如，当R5F核写入时，A53核可以读取另一块缓冲区，减少读写等待的时间。</p>
+</li>
+<li><p>异步处理机制：如果接收方的处理速度较慢，可能会影响整个数据传输的吞吐量。在这种情况下，可以考虑让接收方异步处理接收到的数据，而不阻塞发送方的后续传输。当然，异步机制需要更复杂的同步控制。</p>
+</li>
+</ol>
+<p><strong>说明</strong></p>
+<p>一个核心不同的task，访问同一个共享内存区域，也要考虑资源访问问题。</p>
+<h1 id="共享内存划分"><a href="#共享内存划分" class="headerlink" title="共享内存划分"></a>共享内存划分</h1><p>假设共享内存传输的数据，都用同样一块地址空间。因为升级数据不是写一次就通知soc，是写满之后才通知，那么在升级数据传输过程中，如果有其他功能，需要使用共享内存来传输数据，会导致之前升级包的数据被覆盖。考虑到这种场景(实际可能不会这么操作)，可以对共享内存划分不同的区域。</p>
+<h2 id="物理地址说明"><a href="#物理地址说明" class="headerlink" title="物理地址说明"></a>物理地址说明</h2><p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251018210408.png"></p>
+<ol>
+<li><p>上面接口获取的是soc app申请的内存的物理地址，而不能简单认为是一个首地址，它可以不是首地址。如果soc app上电初始化之后，去申请内存，并且永远只申请一次(要考虑申请的大小，是申请一整个区域，还是其他)，那么由于内存空间都是空闲的，此时的物理地址就是首地址。或者可以每次申请并在使用完后释放，那么下次再去申请，应该也还是首地址。</p>
+</li>
+<li><p>soc app是把申请的内存的fd， 通过 <code>mmap</code>函数把一个文件映射到进程的地址空间中，这样就可以直接通过内存操作来访问文件内容，也就是操作的就是app申请的空间。那么调用<code>dmabuf_get_phys</code>，获取到申请的内存的物理地址之后，发给mcu，这样两边访问的就是同一块地方。</p>
+</li>
+</ol>
+<h1 id="TI官方资料"><a href="#TI官方资料" class="headerlink" title="TI官方资料"></a>TI官方资料</h1><p><a href="https://software-dl.ti.com/mcu-plus-sdk/esd/AM62AX/09_02_00_38/exports/docs/api_guide_am62ax/IPC_GUIDE.html">AM62Ax MCU+ SDK: Understanding inter-processor communication (IPC)</a></p>
+<p><a href="https://software-dl.ti.com/processor-sdk-linux/esd/AM62AX/latest/exports/docs/linux/Foundational_Components_IPC62ax.html?highlight=rpmsg">3.7. IPC for AM62ax — Processor SDK AM62Ax Documentation</a></p>
+<p><a href="https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/06_02_00_21/exports/docs/psdk_rtos_auto/docs/user_guide/developer_notes_ipc.html">8.5. Developing IPC applications — Processor SDK RTOS Automotive</a></p>
+]]></content>
+      <categories>
+        <category>异构多核通信</category>
+      </categories>
+      <tags>
+        <tag>共享内存</tag>
+        <tag>TI AM62A</tag>
+      </tags>
+  </entry>
 </search>

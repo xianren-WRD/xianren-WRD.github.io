@@ -6,7 +6,7 @@
   <link href="https://xianren-wrd.github.io/atom.xml" rel="self"/>
   
   <link href="https://xianren-wrd.github.io/"/>
-  <updated>2025-10-17T15:02:59.434Z</updated>
+  <updated>2025-10-18T14:32:24.796Z</updated>
   <id>https://xianren-wrd.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>IPC共享内存调试</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-25bc31419109/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-25bc31419109/</id>
+    <published>2025-10-18T12:34:48.000Z</published>
+    <updated>2025-10-18T14:32:24.796Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;由于 RPMsg 一次只能传递 496</summary>
+        
+      
+    
+    
+    
+    <category term="异构多核通信" scheme="https://xianren-wrd.github.io/categories/%E5%BC%82%E6%9E%84%E5%A4%9A%E6%A0%B8%E9%80%9A%E4%BF%A1/"/>
+    
+    
+    <category term="共享内存" scheme="https://xianren-wrd.github.io/tags/%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98/"/>
+    
+    <category term="TI AM62A" scheme="https://xianren-wrd.github.io/tags/TI-AM62A/"/>
+    
+  </entry>
   
   <entry>
     <title>LIN总线介绍</title>
