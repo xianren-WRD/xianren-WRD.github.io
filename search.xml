@@ -1894,13 +1894,13 @@
 <p>其中， <code>xxx.out</code>文件名需要按实际情况修改。</p>
 </li>
 <li><p>obj文件反汇编</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">   D:\ti\ccs1240\ccs\tools\compiler\ti-cgt-armllvm_2.1.3.LTS\bin\tiarmobjdump.exe-d queue.obj &gt; disassembly_obj.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">D:\ti\ccs1240\ccs\tools\compiler\ti-cgt-armllvm_2.1.3.LTS\bin\tiarmobjdump.exe</span><br><span class="line">-d queue.obj &gt; disassembly_obj.txt</span><br></pre></td></tr></table></figure>
 
 <p><code>tiarmobjdump.exe</code>需要替换为自己的安装路径。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">   D:\ti\ccs1240\ccs\tools\compiler\ti-cgt-armllvm_2.1.3.LTS\bin\tiarmobjdump.exe-s -j .rodata queue.obj</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">D:\ti\ccs1240\ccs\tools\compiler\ti-cgt-armllvm_2.1.3.LTS\bin\tiarmobjdump.exe</span><br><span class="line">-s -j .rodata queue.obj</span><br></pre></td></tr></table></figure>
 
 <p><code>.rodata.str1.97075527348778053441</code>是目标文件 <code>queue.obj</code> 中的一个只读数据段，使用以下命令查看具体内容：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">   D:\ti\ccs1240\ccs\tools\compiler\ti-cgt-armllvm_2.1.3.LTS\bin\tiarmobjdump.exe-s -j .rodata.str1.97075527348778053441 queue.obj</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">D:\ti\ccs1240\ccs\tools\compiler\ti-cgt-armllvm_2.1.3.LTS\bin\tiarmobjdump.exe</span><br><span class="line">-s -j .rodata.str1.97075527348778053441 queue.obj</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020204445.png"></p>
 </li>
@@ -1928,7 +1928,7 @@
 <p>从逻辑分析仪的波形来看，SOC是前八个字节，后八个字节这样去发的。但是仿真查看MCU接收的数据，收到的要不就是全是前八个字节，要不就是后八个字节。数据接收不完整，所以ACK发不出去， ACK回复超时SOC会通知MCU Reset串口，如此循环…</p>
 <h1 id="仿真"><a href="#仿真" class="headerlink" title="仿真"></a>仿真</h1><p>首先，怀疑是不是中断没有进入，但是增加了count去记录中断进入的次数，发现中断是正常进入的。考虑到SOC会发很多东西，而且收不到ACK会重发，所以让SOC先发一帧，这样调试起来比较清晰。</p>
 <p>SOC端改为只发送一帧数据后，很明显的现象就是，明明逻辑分析仪抓到的是非0数据。但是，有时候仿真看收到的是全0数据；明明代码给发送的buffer赋值了，仿真也跑了赋值，但是实际发出去的是全0。从这个现象可以看出，这个问题是Cache的问题，开启Cache的RAM，CPU和DMA对RAM多主访问的情况，会有数据一致性问题。</p>
-<p>Cache介绍：</p>
+<p><strong>Cache介绍：<a href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-b53a9b624865/">Cache扫盲</a></strong></p>
 <h1 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h1><p>之前<code>bss段</code>是链接到DTCM的，MPU配置是<code>non_cacheable</code>的，所以之前用DMA的时候没有问题。后来，由于内存不足，UART相关的代码，链接到了SRAM，但是SRAM在启动代码里面的<code>SystemInit</code>函数配置MPU时，全部配置成了Cache，并且是写回策略，导致引发了数据一致性问题。</p>
 <h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>解决该问题的方法有两种：</p>
 <ol>
@@ -1993,7 +1993,7 @@
 </li>
 </ul>
 <p>根据MPU设置的不同，Cache读、写不同属性的内存会采用不同的策略。</p>
-<p>MPU介绍：</p>
+<p><strong>MPU介绍：<a href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-f119c37d2168/">MPU扫盲</a></strong></p>
 <h1 id="S32K312-Cache简述"><a href="#S32K312-Cache简述" class="headerlink" title="S32K312 Cache简述"></a>S32K312 Cache简述</h1><p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020220919.png"></p>
 <p>Cache属于内核外设，Cortex_M3与Cortex_M4没有Cache，Cortex_M7新增了Cache功能。</p>
 <p>Cortex-M7内核Cache分为I-cache 和D-cache，在S32K312中，它们的大小均为8K。</p>
