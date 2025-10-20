@@ -1756,4 +1756,344 @@
         <tag>TI AM62A</tag>
       </tags>
   </entry>
+  <entry>
+    <title>AM62Ax 使用笔记</title>
+    <url>/2025/prefix%20remember%20to%20change!!!-dcd52e3ffa20/</url>
+    <content><![CDATA[<h1 id="TI-官方文档"><a href="#TI-官方文档" class="headerlink" title="TI 官方文档"></a>TI 官方文档</h1><h2 id="TRM"><a href="#TRM" class="headerlink" title="TRM"></a>TRM</h2><p><a href="https://www.ti.com/lit/ug/spruj16b/spruj16b.pdf?ts=1739778134507">spruj16b.pdf</a></p>
+<ul>
+<li><p>MCAN模块介绍查看12.5.1章节</p>
+</li>
+<li><p>MCAN寄存器查看14.9.5章节</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020192354.png"></p>
+<h2 id="DataSheet"><a href="#DataSheet" class="headerlink" title="DataSheet"></a>DataSheet</h2><p><a href="https://www.ti.com.cn/cn/lit/ds/symlink/am62a7.pdf?ts=1739873018012&ref_url=https%253A%252F%252Fwww.ti.com.cn%252Fproduct%252Fcn%252FAM62A7">AM62Ax Sitara™ 处理器 datasheet (Rev. C)</a></p>
+<p>pin脚属性查看DataSheet，表 6-1. Pin Attributes</p>
+<h2 id="Application-Note"><a href="#Application-Note" class="headerlink" title="Application Note"></a>Application Note</h2><p><a href="https://www.ti.com/lit/ug/sprado2c/sprado2c.pdf?ts=1760959551494">AM62A7, AM62A7-Q1, AM62A3-Q1 and AM62D-Q1 Families Schematic, Design Guidelines and Review Checklist (Rev. C)</a></p>
+<h2 id="SDK"><a href="#SDK" class="headerlink" title="SDK"></a>SDK</h2><p><a href="https://software-dl.ti.com/mcu-plus-sdk/esd/AM62AX/09_02_00_38/exports/docs/api_guide_am62ax/index.html">AM62Ax MCU+ SDK: Introduction</a></p>
+<p>IPC性能参考：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020192650.png"></p>
+<h2 id="Training"><a href="#Training" class="headerlink" title="Training"></a>Training</h2><p><a href="https://dev.ti.com/tirex/explore/node?a=7qm9DIS__LATEST&node=AAz9Dxht0WlNjAge02XsaQ">Training</a></p>
+<h1 id="链接文件"><a href="#链接文件" class="headerlink" title="链接文件"></a>链接文件</h1><p><a href="https://dev.ti.com/tirex/explore/content/am62ax_academy_9_02_00_00_v1/_build_am62ax_academy_9_02_00_00_v1/source/mcu/mcu-plus-sdk-fundamentals/linker_cmd_file.html#mcu-linker-cmd-file">Linker command file — AM62Ax Academy</a></p>
+<p><a href="https://software-dl.ti.com/ccs/esd/documents/sdto_cgt_linker_special_section_types.html">Linker Special Section Types</a></p>
+<p><a href="https://software-dl.ti.com/ccs/esd/documents/sdto_cgt_Linker-Command-File-Primer.html">TI Linker Command File Primer</a></p>
+<p>从lib库中分配一个单一输入部分时，如果库文件名包含特殊字符，在链接脚本中，需要将包含特殊字符的文件名用双引号括起来，确保链接器将其视为整体路径：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* This is used to store memory segments related to the TI SDK library files.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">GROUP</span><br><span class="line">&#123;</span><br><span class="line">.ti_lib_text: &#123;<span class="string">&quot;freertos.am62ax.r5f.ti-arm-clang.release.lib&quot;</span>&lt;tasks.obj&gt;</span><br><span class="line">(.text)&#125; align(<span class="number">8</span>)</span><br><span class="line">&#125; &gt; MSRAM</span><br></pre></td></tr></table></figure>
+
+<h1 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h1><blockquote>
+<p>Bootloader是嵌入式系统在上电后执行的第一段代码，最终目标就是引导内核，启动内核。</p>
+</blockquote>
+<h2 id="SPL和SBL"><a href="#SPL和SBL" class="headerlink" title="SPL和SBL"></a>SPL和SBL</h2><p>AM62A7处理器支持两种主要类型的启动流程：SPL启动和SBL启动。</p>
+<ul>
+<li><p>SPL启动是Linux SDK的默认启动模式，其文件系统镜像均基于此模式开发并测试。<a href="https://dev.ti.com/tirex/explore/node?node=A__Aa8lmDzYbaW3Jkc-q3M5og__AM62A-ACADEMY__WeZ9SsL__LATEST&search=BOOT">Linux Boot Flow</a></p>
+</li>
+<li><p>SBL启动则主要应用于MCU+ SDK的开发与测试场景。</p>
+<ul>
+<li><p><a href="https://software-dl.ti.com/mcu-plus-sdk/esd/AM62AX/10_00_00_14/exports/docs/api_guide_am62ax/EXAMPLES_DRIVERS_SBL.html">AM62Ax MCU+ SDK: Secondary Bootloader (SBL)</a></p>
+</li>
+<li><p><a href="https://software-dl.ti.com/mcu-plus-sdk/esd/AM62AX/09_02_00_38/exports/docs/api_guide_am62ax/SBL_BOOTING_LINUX_OSPI.html">AM62Ax MCU+ SDK: SBL Booting Linux From OSPI</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="ROM-Code"><a href="#ROM-Code" class="headerlink" title="ROM Code"></a>ROM Code</h2><p>ROM Code：或ROM bootloader (RBL)，是设备ROM中首先执行并实现引导的片上软件，是一种驻留在片上只读存储器（ROM）中的软件(出厂时固化，不可更改)，这段代码执行第一阶段的启动任务，用于帮助用户传输和执行其应用程序代码。AM62Ax有两套协同工作的 ROM 代码，公共 ROM 代码和 M4 ROM 代码。</p>
+<p>AM62A7上电复位后，CPU从芯片内部的ROM（Boot ROM）开始执行固化代码（即ROM Code）。</p>
+<p>ROM Code会读取启动引脚配置，然后根据配置情况决定以哪种方式加载接下来的外部启动代码。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020193152.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020193211.png"></p>
+<h2 id="Bootloader-Modes"><a href="#Bootloader-Modes" class="headerlink" title="Bootloader Modes"></a>Bootloader Modes</h2><p>为了适应各种系统场景，ROM 代码支持多种引导模式。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020193248.png"></p>
+<p>这些引导模式可分为以下两类：</p>
+<ul>
+<li><p>主机引导模式：AM62Ax通过所选接口（如 UART 或 USB（DFU））从主机接收第二引导加载程序。</p>
+</li>
+<li><p>内存引导模式：AM62Ax从非易失性存储器（如 SD 卡、eMMC、OSPI&#x2F;QSPI&#x2F;SPI 闪存或 GPMC 闪存）中传输第二引导加载程序。</p>
+</li>
+</ul>
+<p>在 OSPI 启动模式下，ROM Code会初始化 OSPI 模块，然后从与选定片选信号相连的 OSPI 闪存中读取映像。如果无法正确从偏移量 0x0 处读取映像，将尝试在偏移量 0x400000 处获取映像。OSPI启动模式不支持XIP（原地执行），ROM Code首先将启动映像复制到片上RAM中，然后执行它。</p>
+<h2 id="Booting-Parameter-Table"><a href="#Booting-Parameter-Table" class="headerlink" title="Booting Parameter Table"></a>Booting Parameter Table</h2><p>一种存储于片上 RAM 内存中的逻辑结构，其包含有启动所需的信息，诸如启动文件名或者用于启动的地址等。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020193346.png"></p>
+<p><strong>更多参考：</strong></p>
+<p>TRM Chapter 5 Initialization：<a href="https://www.ti.com/lit/ug/spruj16b/spruj16b.pdf?ts=1739778134507">spruj16b.pdf</a></p>
+<p>DM R5F：<a href="https://dev.ti.com/tirex/explore/content/am62ax_academy_10_00_00_01/am62ax_academy_10_00_00_01/source/multicore/app-development/develop-dm-r5f.html#multicore-app-development-dm-r5f">Developing on the DM R5F</a></p>
+<p>Boot Time Optimizations：<a href="https://software-dl.ti.com/processor-sdk-linux/esd/AM62AX/latest/exports/docs/linux/How_to_Guides/Target/How_to_boot_quickly.html">6.1.10. Boot Time Optimizations</a></p>
+<p>其他：<a href="https://blog.csdn.net/zy812248258/article/details/39026081">ARM-Linux嵌入式系统启动流程_arm嵌入式开机启动流程简述题-CSDN博客</a></p>
+<h1 id="时钟"><a href="#时钟" class="headerlink" title="时钟"></a>时钟</h1><p>如何查看当前MCU R5内核的时钟频率：</p>
+<p><a href="https://e2echina.ti.com/support/machine-translation/mt-processors/f/mt-processors-forum/929438/sk-am62a-lp-mcu-r5-sk-am62a-lp">[参考译文] SK-AM62A-LP：需要 MCU-R5内核时钟频率相关信息(SK-AM62A-LP)</a></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">k3conf dump clock 9</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020193800.png"></p>
+<p>临时修改时钟频率，使用<code>k3conf</code>直接从命令行更改 MCU R5F 内核频率。比如：修改为200Mhz。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">k3conf set clock 9 0 200000000</span><br></pre></td></tr></table></figure>
+
+<p>如果要永久生效，可以在设备树里面增加如下配置：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">&amp;mcu_r5fss0 &#123;</span><br><span class="line">    /* Set DEV_MCU_R5FSS0_CORE0_CPU0_CLK to 200MHz */</span><br><span class="line">    assigned-clocks = &lt;&amp;k3_clks 9 0&gt;;</span><br><span class="line">    assigned-clock-rates = &lt;200000000&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="CCT"><a href="#CCT" class="headerlink" title="CCT"></a>CCT</h2><p><a href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-0d2b6ccd334f/">CCS使用笔记</a></p>
+<h1 id="IPC"><a href="#IPC" class="headerlink" title="IPC"></a>IPC</h1><p><a href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-25bc31419109/">IPC共享内存调试</a></p>
+<h1 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h1><p>注意：凡是TI提供的接口，代码实现需要到SDK里面去找。</p>
+<p><a href="https://software-dl.ti.com/mcu-plus-sdk/esd/AM62AX/09_02_00_38/exports/docs/api_guide_am62ax/KERNEL_DPL_HWI_PAGE.html">AM62Ax MCU+ SDK: HW Interrupts</a></p>
+<p>R5f核心专用中断控制器，称为向量中断管理器（VIM）。详细内容查看TRM文档第10章。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020194422.png"></p>
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><p>R5F的中断是通过 <code>HwiP_irq_handler</code>统一处理的， <code>HwiP_irq_handler</code>调用<code>vApplicationIRQHandlerConst</code>（ <code>HwiP_irq_handler_c </code>），然后根据 <code>HwiP_construct</code>注册的中断号和处理函数，执行对应的中断服务函数。对于上层应用来说，我们调用 <code>HwiP_construct</code>注册需要的中断就行了。</p>
+<p><strong>中断向量表</strong></p>
+<p><code>HwiP_armv7r_vectors_freertos_asm.S</code></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020201214.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020201242.png"></p>
+<p><code>HwiP_disable()</code></p>
+<blockquote>
+<p>Disable all interrupts.</p>
+<p>Note: In case of ARM R5F, ARM M4F, this only disables IRQ.FIQ is not disabled.</p>
+<p>Returns: interrupt state before disable, typically used by HwiP_restore later</p>
+</blockquote>
+<p>TI的SDK有问题。这个禁用所有中断的函数不起作用，e2e有类似的帖子：</p>
+<p><a href="https://e2e.ti.com/support/processors-group/processors/f/processors-forum/1368454/processor-sdk-am62x-m4-freertos-interrupt-disable-not-working-hwip_disable">PROCESSOR-SDK-AM62X: M4 FreeRTOS Interrupt Disable Not Working (HwiP_disable)</a></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* FUNCTION DEF: uint32_t HwiP_disable(void) */</span></span><br><span class="line">    .global HwiP_disable</span><br><span class="line">    .type HwiP_disable,%function</span><br><span class="line">    .section <span class="string">&quot;.text.hwi&quot;</span>,<span class="string">&quot;ax&quot;</span>,%progbits</span><br><span class="line">    .arm</span><br><span class="line">    .align <span class="number">2</span></span><br><span class="line">HwiP_disable:</span><br><span class="line">    mrs r0, cpsr</span><br><span class="line">    orr r12, r0, #<span class="number">0x80</span></span><br><span class="line">    msr cpsr_cf, r12</span><br><span class="line">    bx LR</span><br></pre></td></tr></table></figure>
+
+<p><strong>HwiP_init()</strong></p>
+<p><code>HwiP_armv7r_vim.c</code></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020201642.png"></p>
+<h1 id="MCU-SDK替换"><a href="#MCU-SDK替换" class="headerlink" title="MCU+ SDK替换"></a>MCU+ SDK替换</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>遇到了<code>HwiP_disable()</code>禁用中断不起作用的问题，TI的回复是使用 MCU+SDK v10.01看是否还有问题。</p>
+<h2 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h2><p><a href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-0d2b6ccd334f/">CCS使用笔记</a> </p>
+<h2 id="编译报错"><a href="#编译报错" class="headerlink" title="编译报错"></a>编译报错</h2><h3 id="CCS报错"><a href="#CCS报错" class="headerlink" title="CCS报错"></a>CCS报错</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">missing required argument <span class="string">&#x27;sw_version&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020202229.png"></p>
+<p>从上面的信息可以看出 <code>source_code.out</code>已经生成了，但是在调用 <code>elf2rprc.js</code>，将<code>source_code.out</code>转换为 <code>source_code.rprc</code>时出现了错误。</p>
+<p>对比两个SDK版本的js文件，发现10.01增加了一个 <code>sw_version</code>参数，所以导致了这个错误。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020202307.png"></p>
+<p>解决方法：替换 <code>makefile_ccs_bootimage_gen</code>文件。</p>
+<h3 id="Makefile报错"><a href="#Makefile报错" class="headerlink" title="Makefile报错"></a>Makefile报错</h3><ol>
+<li><p>makefile需要修改SDK的路径为实际的安装路径</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020202951.png"></p>
+<p>执行编译脚本，出现如下报错：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020203225.png"></p>
+</li>
+<li><p>需要修改SDK下面的 <code>imports.mak</code>文件</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020203258.png"></p>
+<p>修改工具安装路径，修改ccs的版本改为实际的版本：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020203336.png"></p>
+</li>
+<li><p>修改完后，出现了和上面一样的错误</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">missing required argument <span class="string">&#x27;sw_version&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>需要修改makefile增加参数</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020203504.png"></p>
+</li>
+</ol>
+<h1 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h1><h2 id="反汇编"><a href="#反汇编" class="headerlink" title="反汇编"></a>反汇编</h2><ol>
+<li><p>out文件反汇编</p>
+<p>检查 <code>ELF</code>文件头：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">arm-none-eabi-readelf -h xxx.out</span><br></pre></td></tr></table></figure>
+
+<p>输出示例：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ELF Header:</span><br><span class="line">Magic: 7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00</span><br><span class="line">Class: ELF32</span><br><span class="line">Data: 2&#x27;s complement, little endian</span><br><span class="line">Version: 1 (current)</span><br><span class="line">OS/ABI: UNIX - System V</span><br><span class="line">ABI Version: 0</span><br><span class="line">Type: EXEC (Executable file)</span><br><span class="line">Machine: ARM</span><br><span class="line">Version: 0x1</span><br><span class="line">Entry point address: 0x0</span><br><span class="line">Start of program headers: 3755220 (bytes into file)</span><br><span class="line">Start of section headers: 3755444 (bytes into file)</span><br><span class="line">Flags: 0x5000000, Version5 EABI</span><br><span class="line">Size of this header: 52 (bytes)</span><br><span class="line">Size of program headers: 32 (bytes)</span><br><span class="line">Number of program headers: 7</span><br><span class="line">Size of section headers: 40 (bytes)</span><br><span class="line">Number of section headers: 39</span><br><span class="line">Section header string table index: 38</span><br></pre></td></tr></table></figure>
+
+<p>反汇编，并将结果保存到<code>disassembly.txt</code>文件中：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">arm-none-eabi-objdump.exe -d --prefix-addresses -marm xxx.out &gt; disassembly.txt</span><br></pre></td></tr></table></figure>
+
+<p>其中， <code>xxx.out</code>文件名需要按实际情况修改。</p>
+</li>
+<li><p>obj文件反汇编</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">   D:\ti\ccs1240\ccs\tools\compiler\ti-cgt-armllvm_2.1.3.LTS\bin\tiarmobjdump.exe-d queue.obj &gt; disassembly_obj.txt</span><br></pre></td></tr></table></figure>
+
+<p><code>tiarmobjdump.exe</code>需要替换为自己的安装路径。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">   D:\ti\ccs1240\ccs\tools\compiler\ti-cgt-armllvm_2.1.3.LTS\bin\tiarmobjdump.exe-s -j .rodata queue.obj</span><br></pre></td></tr></table></figure>
+
+<p><code>.rodata.str1.97075527348778053441</code>是目标文件 <code>queue.obj</code> 中的一个只读数据段，使用以下命令查看具体内容：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">   D:\ti\ccs1240\ccs\tools\compiler\ti-cgt-armllvm_2.1.3.LTS\bin\tiarmobjdump.exe-s -j .rodata.str1.97075527348778053441 queue.obj</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020204445.png"></p>
+</li>
+</ol>
+<h2 id="SDK编译"><a href="#SDK编译" class="headerlink" title="SDK编译"></a>SDK编译</h2><p>进入SDK安装目录，命令终端输入指令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gmake -s libs PROFILE=release</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020203800.png"></p>
+<p>clean指令：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gmake -s libs-clean PROFILE=release</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020203843.png"></p>
+]]></content>
+      <categories>
+        <category>处理器与芯片</category>
+      </categories>
+      <tags>
+        <tag>TI AM62Ax</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Cache引发的数据一致性问题</title>
+    <url>/2025/prefix%20remember%20to%20change!!!-a7530e697474/</url>
+    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>调试MCU(S32K312)和SOC之间的串口时，发现逻辑分析仪抓到的数据波形异常。</p>
+<p>从逻辑分析仪的波形来看，SOC是前八个字节，后八个字节这样去发的。但是仿真查看MCU接收的数据，收到的要不就是全是前八个字节，要不就是后八个字节。数据接收不完整，所以ACK发不出去， ACK回复超时SOC会通知MCU Reset串口，如此循环…</p>
+<h1 id="仿真"><a href="#仿真" class="headerlink" title="仿真"></a>仿真</h1><p>首先，怀疑是不是中断没有进入，但是增加了count去记录中断进入的次数，发现中断是正常进入的。考虑到SOC会发很多东西，而且收不到ACK会重发，所以让SOC先发一帧，这样调试起来比较清晰。</p>
+<p>SOC端改为只发送一帧数据后，很明显的现象就是，明明逻辑分析仪抓到的是非0数据。但是，有时候仿真看收到的是全0数据；明明代码给发送的buffer赋值了，仿真也跑了赋值，但是实际发出去的是全0。从这个现象可以看出，这个问题是Cache的问题，开启Cache的RAM，CPU和DMA对RAM多主访问的情况，会有数据一致性问题。</p>
+<p>Cache介绍：</p>
+<h1 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h1><p>之前<code>bss段</code>是链接到DTCM的，MPU配置是<code>non_cacheable</code>的，所以之前用DMA的时候没有问题。后来，由于内存不足，UART相关的代码，链接到了SRAM，但是SRAM在启动代码里面的<code>SystemInit</code>函数配置MPU时，全部配置成了Cache，并且是写回策略，导致引发了数据一致性问题。</p>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>解决该问题的方法有两种：</p>
+<ol>
+<li>手动更新Cache，在合适的时机清理或无效Cache。</li>
+<li>将内存属性设置为<code>non-cacheable</code>的。</li>
+</ol>
+<h2 id="手动更新Cache"><a href="#手动更新Cache" class="headerlink" title="手动更新Cache"></a>手动更新Cache</h2><p><strong>手动更新Cache的接口函数在<code>core_cm7.h</code>文件可以找到。</strong></p>
+<p>Cache函数的参数类似，介绍如下：</p>
+<ul>
+<li><p>addr：要清除内存的起始地址。地址要求32字节对齐，否则自动强制按照D-cache的行大小对齐。</p>
+</li>
+<li><p>dsize：清除内存大小，通常要求是32的整数倍，不是整数倍需要注意正确的操作顺序。</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020224257.png"></p>
+<p>图中高亮的DCIMVAC寄存器是一个ARM处理器中的寄存器，它用于执行无效目标地址操作。如果数据在集群内是脏的，则在无效之前执行清除操作。</p>
+<p><strong>也可以使用RTD <code>Cache_Ip.c</code>里面的接口函数。</strong></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020224429.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020224446.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020224507.png"></p>
+<p>由于参数要求32字节对齐，代码里面UART的数据结构体是没对齐的，需要在DMA使用到的接收buffer后面填充32个字节。不然，会把后面的Cache也更新了。因为从前面函数的定义可以看到，Cache的操作是连续的，每次操作32个字节，如果地址没有32字节对齐且buffer大小不是32的倍数，后面又定义了有效的变量，在执行invalid操作时我们并不希望invalid该变量，但由于invalid的操作是连续的，会导致该变量的值被覆盖。所以，需要对DMA接收的buffer做填充处理，发送的buffer可以不用处理。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020224957.png"></p>
+<p>然后，在使用DMA发送数据前或者读取DMA收到的数据前，清理或无效化Cache就好了。</p>
+<p>使用这种方法可以继续将UART变量链接到SRAM，不用改链接脚本，不用自定义段，也不用改MPU的属性。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020225216.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020225236.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020225254.png"></p>
+<h2 id="修改内存属性"><a href="#修改内存属性" class="headerlink" title="修改内存属性"></a>修改内存属性</h2><p>将内存设置为<code>non-cacheable</code>的解决方法有两种：</p>
+<ol>
+<li><p>修改链接脚本，把int_sram section1的空间改小，把之前的<code>non-cacheable</code>空间改大。由于MPU区域的大小必须是2的次方大小，起始地址必须要是域大小的整数倍。这种方法改动量比较大，而且之前SRAM已经用了一些空间，很难凑出合适的数据，所以不采用这种方法。</p>
+</li>
+<li><p>把链接的段属性改成<code>non-cacheable</code></p>
+<p>在链接脚本中增加自定义段：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020225620.png"></p>
+<p>把UART相关的变量链接到自定义段：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020225641.png"></p>
+<p>自定义段的地址处于int_sram section2的区域，再将section2配置为<code>non_cacheable</code>属性即可。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020225748.png"></p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>异常与故障分析</category>
+      </categories>
+      <tags>
+        <tag>DMA</tag>
+        <tag>Cache</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Cache扫盲</title>
+    <url>/2025/prefix%20remember%20to%20change!!!-b53a9b624865/</url>
+    <content><![CDATA[<h1 id="什么是Cache"><a href="#什么是Cache" class="headerlink" title="什么是Cache"></a>什么是Cache</h1><p>它是一种位于处理器核心和主存之间的高速缓冲存储器，用于存储频繁访问的数据以加速数据的检索。Cache的基本工作原理基于计算机程序执行的局部性特性，即在一定时间内，CPU会倾向于访问最近访问过的数据或附近的数据。</p>
+<h1 id="为什么要用Cache"><a href="#为什么要用Cache" class="headerlink" title="为什么要用Cache"></a>为什么要用Cache</h1><p>Cache是为了提供快速的CPU存储访问而设计的，它的存在可以显著提高处理器的数据处理速度。在程序运行过程中CPU需要不断的从内存读取指令和数据，受限于内存访问速度，CPU需要等待指令或数据读取完成，这就造成了CPU的浪费。Cache就是用来减少CPU等待浪费的问题。Cache的读、写速度要比片内或片外内存快很多，使用Cache能大大提高程序的执行效率。</p>
+<h1 id="Cache的机制"><a href="#Cache的机制" class="headerlink" title="Cache的机制"></a>Cache的机制</h1><p>Cache系统一般包括多个Cache line，每个Cache line通常包含一个数据块和一个标记。数据块是实际存储的数据，而标记则包含了该数据块的一些元信息，如数据块所在的内存地址、数据块的状态等。</p>
+<p>当CPU需要读取某个内存地址的数据时，会首先查看对应的Cache line是否已被加载到Cache中。如果已经被加载，这个过程就被称为“命中”，则直接从Cache中读取该数据，这大大提高了处理速度；否则，如果Cache中没有所需的数据，这个过程被称为“未命中”，CPU则需要从主存储器中读取数据，并将其放入Cache中以备后用。</p>
+<p>在写数据时，通常有两种主要的策略：write through(写通)和write back(写回)。</p>
+<ul>
+<li><p>在write through策略中，当CPU执行写操作并在Cache中命中时，不仅会更新Cache中的数据，还会直接更新主存中的数据。这样可以保证Cache和主存的一致性，但可能会降低处理器的处理能力和占用总线带宽。</p>
+</li>
+<li><p>在write back策略中，CPU向内存中写数据，首先检查Cache中是否有数据备份，如果有则数据写入操作只写入Cache并标记为dirty，而并不会立即将数据更新到内存中，等待合适的时机会自动将数据更新到内存。如果没有则将会在Cache中分配空间，备份写入到内存的数据。</p>
+</li>
+</ul>
+<p>根据MPU设置的不同，Cache读、写不同属性的内存会采用不同的策略。</p>
+<p>MPU介绍：</p>
+<h1 id="S32K312-Cache简述"><a href="#S32K312-Cache简述" class="headerlink" title="S32K312 Cache简述"></a>S32K312 Cache简述</h1><p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020220919.png"></p>
+<p>Cache属于内核外设，Cortex_M3与Cortex_M4没有Cache，Cortex_M7新增了Cache功能。</p>
+<p>Cortex-M7内核Cache分为I-cache 和D-cache，在S32K312中，它们的大小均为8K。</p>
+<ul>
+<li><p>I-cache与D-cache 可以独立的打开和关闭</p>
+</li>
+<li><p>I-cache用于存储指令&#x2F;缓存代码，所以我们不必关心。</p>
+</li>
+<li><p>D-cache用于存储数据，因为涉及到DMA等问题，D-cache使用不当会导致一些错误。</p>
+</li>
+</ul>
+<h1 id="D-Cache一致性问题"><a href="#D-Cache一致性问题" class="headerlink" title="D-Cache一致性问题"></a>D-Cache一致性问题</h1><p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020221353.png"></p>
+<p>开启Cache的RAM，在CPU和DMA对RAM多主访问的情况下，会出现数据一致性问题。</p>
+<p>问题原因是CPU和DMA短时间内访问同一块内存区域。主要分为以下两种情况。</p>
+<ol>
+<li><p>未及时更新内存：当CPU向内存中写数据，如果Cache策略是“write back”CPU会将数据写入到Cache并且不会立即更新到内存中，如果此时DMA读取内存中的数据则读取得到的是旧数据，即出现数据一致性问题。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020222128.png"></p>
+</li>
+<li><p>未及时更新Cache：DMA更新了地址N中的数据，并且没有将更改更新到Cache。CPU从地址N读数据，并且在Cache中找到了地址N的数据备份，此时CPU得到的是旧的数据。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020222144.png"></p>
+</li>
+</ol>
+<p>解决该问题的方法有两种：</p>
+<ol>
+<li><p>手动更新Cache，这需要对外设的机制较为了解，且要找到合适的时机清理或无效Cache。</p>
+<p>Note：</p>
+<ul>
+<li><p>Cache清理并不是删除Cache中的内容，而是将Cache中的内容更新到各自对应的内存中。</p>
+</li>
+<li><p>缓存无效化是指，Cache中的内容失效，效果如同删除了Cache中的数据备份，CPU再次读数据时将直接从内存中读取。</p>
+</li>
+</ul>
+</li>
+<li><p>将内存属性设置为<code>non-cacheable</code>的。</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>嵌入式概念扫盲</category>
+      </categories>
+      <tags>
+        <tag>Cache</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MPU扫盲</title>
+    <url>/2025/prefix%20remember%20to%20change!!!-f119c37d2168/</url>
+    <content><![CDATA[<h1 id="什么是MPU"><a href="#什么是MPU" class="headerlink" title="什么是MPU"></a>什么是MPU</h1><p>MPU：Memory Protection Unit，即内存保护单元。它是一种提供内存保护的计算机硬件单元，它是单片机内核中用于内存保护的可选组件，通常作为CPU的一部分来实现。主要负责定义内存空间的属性，例如特权指令和非特权指令以及Cache是否可访问。</p>
+<h1 id="MPU的作用"><a href="#MPU的作用" class="headerlink" title="MPU的作用"></a>MPU的作用</h1><p>MPU可以将内存划分为不同的区域，并且可以设置每个区域的访问属性，提高系统的稳定性。</p>
+<p>典型应用如下：</p>
+<ul>
+<li><p>划分特权用户访问区域和普通用户访问区域，在OS系统中提高系统稳定性。</p>
+</li>
+<li><p>设置只读区域，防止关键数据被意外修改。</p>
+</li>
+<li><p>检测堆、栈是否溢出。</p>
+</li>
+</ul>
+<h1 id="相关寄存器"><a href="#相关寄存器" class="headerlink" title="相关寄存器"></a>相关寄存器</h1><p>和Cache一样，MPU也是内核外设，Cortex-M3、Cortex-M4以及Cortex-M7内核的微控制器可以选配MPU功能。这里介绍几个MPU相关的寄存器。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020221537.png"></p>
+<h2 id="MPU区域基地址寄存器（MPU-RBAR）"><a href="#MPU区域基地址寄存器（MPU-RBAR）" class="headerlink" title="MPU区域基地址寄存器（MPU_RBAR）"></a>MPU区域基地址寄存器（MPU_RBAR）</h2><p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020221603.png"></p>
+<h2 id="MPU区域属性和大小寄存器（MPU-RASR）"><a href="#MPU区域属性和大小寄存器（MPU-RASR）" class="headerlink" title="MPU区域属性和大小寄存器（MPU_RASR）"></a>MPU区域属性和大小寄存器（MPU_RASR）</h2><p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020221650.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020221702.png"></p>
+<p>通常我们会在链接脚本里定义不同的<code>section</code>，将需要设为<code>non-cacheable</code>的内存块放置到特定的<code>section</code>里。在启动代码里对不同的<code>section</code>配置MPU相关寄存器。此后,<br>CPU在访问内存的时候，经过MPU，就会知道这块内存是<code>cacheable</code>还是<code>non-cacheable</code>的了。</p>
+]]></content>
+      <categories>
+        <category>嵌入式概念扫盲</category>
+      </categories>
+      <tags>
+        <tag>MPU</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>UART中断中释放信号量引发的HardFault</title>
+    <url>/2025/prefix%20remember%20to%20change!!!-c139ec3b5aa2/</url>
+    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>项目需要增加一路串口，用来传输BAP IPC message。</p>
+<blockquote>
+<p>BAP：Operator And Display Protocol(Bedien und Anzeigeprotokoll)，操作和显示协议。BAP是大众汽车上一种ECU之间通信的协议。 BAP通常用于传输各种车辆信息，从而实现泊车交互、空调调节和仪表控制等功能。该协议通常运行在CAN、LIN总线上，但进年来也被部署到了新兴的车载以太网上。</p>
+</blockquote>
+<p>串口驱动不需要移植，之前代码屏蔽了，直接打开就能使用。只需要在初始化的时候，创建对应的ipc_uart thread即可。但是在实际调试的过程中，遇到了问题。</p>
+<p>问题表现：接收到soc发送的串口数据后，进入了HardFault_Handler，进而看门狗复位。</p>
+<h1 id="仿真"><a href="#仿真" class="headerlink" title="仿真"></a>仿真</h1><p>MCU重启后，查看串口复位原因的打印，关键字<code>rst_source</code>。</p>
+<p>复位原因有：MCU_SWT0_RST_RESET: SWT0 Timeout，软件看门狗定时器0超时复位。</p>
+<p>接上仿真器运行一段时间后，仿真进入了<code>HardFault_Handler</code>。</p>
+<p>从IDE仿真窗口可以看到进入<code>HardFault_Handler</code>之前的函数调用关系，可以看出代码在<code>uxListRemove</code>这里挂了，这个是freertos模块的api。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020212609.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020212634.png"></p>
+<p>Tips：暂停仿真时，S32DS可以查看之前的函数调用情况，不需要查看pc和lr寄存器。实际查看寄存器，得出的结论也是一样的， 在跑<code>uxListRemove</code>函数时出现了问题。</p>
+<h1 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h1><p>UART Reset脚&#x2F;DMA产生中断后，中断服务函数里面调用了操作系统内核接口（…FromISR()），释放信号量。但是外设的中断优先级高于操作系统内核中断优先级，就会出现系统内核无法抢占当前中断的情况，从而导致系统出错。</p>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020213018.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020212822.png"></p>
+<p>将FreeRTOS里面的调用中断安全的FreeRTOS API 函数的最高中断优先级调高。</p>
+<p>因为FreeRTOS的应用手册中有明确说明，对于可以在中断中调用的api函数，必须保证中断优先级不高于<code>configMAX_SYSCALL_INTERRUPT_PRIORITY</code>，违反操作会导致系统调度出现问题。</p>
+]]></content>
+      <categories>
+        <category>异常与故障分析</category>
+      </categories>
+      <tags>
+        <tag>HardFault</tag>
+        <tag>看门狗复位</tag>
+      </tags>
+  </entry>
 </search>

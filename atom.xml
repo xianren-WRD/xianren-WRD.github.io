@@ -6,7 +6,7 @@
   <link href="https://xianren-wrd.github.io/atom.xml" rel="self"/>
   
   <link href="https://xianren-wrd.github.io/"/>
-  <updated>2025-10-18T14:32:24.796Z</updated>
+  <updated>2025-10-20T14:17:49.987Z</updated>
   <id>https://xianren-wrd.github.io/</id>
   
   <author>
@@ -15,6 +15,137 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MPU扫盲</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-f119c37d2168/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-f119c37d2168/</id>
+    <published>2025-10-20T14:04:34.000Z</published>
+    <updated>2025-10-20T14:17:49.987Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;什么是MPU&quot;&gt;&lt;a href=&quot;#什么是MPU&quot; class=&quot;headerlink&quot; title=&quot;什么是MPU&quot;&gt;&lt;/a&gt;什么是MPU&lt;/h1&gt;&lt;p&gt;MPU：Memory Protection</summary>
+        
+      
+    
+    
+    
+    <category term="嵌入式概念扫盲" scheme="https://xianren-wrd.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E6%A6%82%E5%BF%B5%E6%89%AB%E7%9B%B2/"/>
+    
+    
+    <category term="MPU" scheme="https://xianren-wrd.github.io/tags/MPU/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Cache扫盲</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-b53a9b624865/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-b53a9b624865/</id>
+    <published>2025-10-20T14:04:13.000Z</published>
+    <updated>2025-10-20T14:24:01.811Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;什么是Cache&quot;&gt;&lt;a href=&quot;#什么是Cache&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="嵌入式概念扫盲" scheme="https://xianren-wrd.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E6%A6%82%E5%BF%B5%E6%89%AB%E7%9B%B2/"/>
+    
+    
+    <category term="Cache" scheme="https://xianren-wrd.github.io/tags/Cache/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Cache引发的数据一致性问题</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-a7530e697474/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-a7530e697474/</id>
+    <published>2025-10-20T13:41:01.000Z</published>
+    <updated>2025-10-20T14:57:59.842Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="异常与故障分析" scheme="https://xianren-wrd.github.io/categories/%E5%BC%82%E5%B8%B8%E4%B8%8E%E6%95%85%E9%9A%9C%E5%88%86%E6%9E%90/"/>
+    
+    
+    <category term="DMA" scheme="https://xianren-wrd.github.io/tags/DMA/"/>
+    
+    <category term="Cache" scheme="https://xianren-wrd.github.io/tags/Cache/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>UART中断中释放信号量引发的HardFault</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-c139ec3b5aa2/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-c139ec3b5aa2/</id>
+    <published>2025-10-20T13:13:12.000Z</published>
+    <updated>2025-10-20T13:34:49.458Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;项目需要增加一路串口，用来传输BAP IPC message。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;BAP：Operator And</summary>
+        
+      
+    
+    
+    
+    <category term="异常与故障分析" scheme="https://xianren-wrd.github.io/categories/%E5%BC%82%E5%B8%B8%E4%B8%8E%E6%95%85%E9%9A%9C%E5%88%86%E6%9E%90/"/>
+    
+    
+    <category term="HardFault" scheme="https://xianren-wrd.github.io/tags/HardFault/"/>
+    
+    <category term="看门狗复位" scheme="https://xianren-wrd.github.io/tags/%E7%9C%8B%E9%97%A8%E7%8B%97%E5%A4%8D%E4%BD%8D/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>AM62Ax 使用笔记</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-dcd52e3ffa20/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-dcd52e3ffa20/</id>
+    <published>2025-10-20T10:55:54.000Z</published>
+    <updated>2025-10-20T13:04:28.044Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;TI-官方文档&quot;&gt;&lt;a href=&quot;#TI-官方文档&quot; class=&quot;headerlink&quot; title=&quot;TI 官方文档&quot;&gt;&lt;/a&gt;TI 官方文档&lt;/h1&gt;&lt;h2 id=&quot;TRM&quot;&gt;&lt;a href=&quot;#TRM&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="处理器与芯片" scheme="https://xianren-wrd.github.io/categories/%E5%A4%84%E7%90%86%E5%99%A8%E4%B8%8E%E8%8A%AF%E7%89%87/"/>
+    
+    
+    <category term="TI AM62Ax" scheme="https://xianren-wrd.github.io/tags/TI-AM62Ax/"/>
+    
+  </entry>
   
   <entry>
     <title>IPC共享内存调试</title>
