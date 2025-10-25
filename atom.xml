@@ -6,7 +6,7 @@
   <link href="https://xianren-wrd.github.io/atom.xml" rel="self"/>
   
   <link href="https://xianren-wrd.github.io/"/>
-  <updated>2025-10-20T14:17:49.987Z</updated>
+  <updated>2025-10-25T15:32:14.301Z</updated>
   <id>https://xianren-wrd.github.io/</id>
   
   <author>
@@ -15,6 +15,134 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>SPI介绍</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-ab00c8087bd4/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-ab00c8087bd4/</id>
+    <published>2025-10-25T15:21:31.000Z</published>
+    <updated>2025-10-25T15:32:14.301Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;什么是SPI&quot;&gt;&lt;a href=&quot;#什么是SPI&quot; class=&quot;headerlink&quot; title=&quot;什么是SPI&quot;&gt;&lt;/a&gt;什么是SPI&lt;/h1&gt;&lt;p&gt;SPI 是英语Serial Peripheral</summary>
+        
+      
+    
+    
+    
+    <category term="板级通信协议" scheme="https://xianren-wrd.github.io/categories/%E6%9D%BF%E7%BA%A7%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/"/>
+    
+    
+    <category term="SPI" scheme="https://xianren-wrd.github.io/tags/SPI/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>IIC介绍</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-ad3df2fe07bc/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-ad3df2fe07bc/</id>
+    <published>2025-10-25T15:21:15.000Z</published>
+    <updated>2025-10-25T15:27:49.609Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;什么是IIC&quot;&gt;&lt;a href=&quot;#什么是IIC&quot; class=&quot;headerlink&quot; title=&quot;什么是IIC&quot;&gt;&lt;/a&gt;什么是IIC&lt;/h1&gt;&lt;p&gt;I2C(IIC,Inter－Integrated</summary>
+        
+      
+    
+    
+    
+    <category term="板级通信协议" scheme="https://xianren-wrd.github.io/categories/%E6%9D%BF%E7%BA%A7%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/"/>
+    
+    
+    <category term="IIC" scheme="https://xianren-wrd.github.io/tags/IIC/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>看门狗扫盲</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-5323449eed0c/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-5323449eed0c/</id>
+    <published>2025-10-25T15:03:12.000Z</published>
+    <updated>2025-10-25T15:18:47.267Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;下面以STM32为例介绍&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&quot;独立看门狗&quot;&gt;&lt;a href=&quot;#独立看门狗&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="嵌入式概念扫盲" scheme="https://xianren-wrd.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E6%A6%82%E5%BF%B5%E6%89%AB%E7%9B%B2/"/>
+    
+    
+    <category term="看门狗" scheme="https://xianren-wrd.github.io/tags/%E7%9C%8B%E9%97%A8%E7%8B%97/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>中断扫盲</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-e79f52ee8adb/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-e79f52ee8adb/</id>
+    <published>2025-10-25T14:35:09.000Z</published>
+    <updated>2025-10-25T15:00:33.521Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;什么是中断&quot;&gt;&lt;a href=&quot;#什么是中断&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="嵌入式概念扫盲" scheme="https://xianren-wrd.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E6%A6%82%E5%BF%B5%E6%89%AB%E7%9B%B2/"/>
+    
+    
+    <category term="中断" scheme="https://xianren-wrd.github.io/tags/%E4%B8%AD%E6%96%AD/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数据通信</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-c32fb0d47bf1/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-c32fb0d47bf1/</id>
+    <published>2025-10-25T14:06:48.000Z</published>
+    <updated>2025-10-25T14:42:00.825Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;基本组成&quot;&gt;&lt;a href=&quot;#基本组成&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="嵌入式概念扫盲" scheme="https://xianren-wrd.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E6%A6%82%E5%BF%B5%E6%89%AB%E7%9B%B2/"/>
+    
+    
+    <category term="通信" scheme="https://xianren-wrd.github.io/tags/%E9%80%9A%E4%BF%A1/"/>
+    
+  </entry>
   
   <entry>
     <title>MPU扫盲</title>
@@ -397,136 +525,6 @@
     
     
     <category term="PCAN" scheme="https://xianren-wrd.github.io/tags/PCAN/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CANoe 使用问题汇总</title>
-    <link href="https://xianren-wrd.github.io/2023/CANoe-Usage-5b23d9c22076/"/>
-    <id>https://xianren-wrd.github.io/2023/CANoe-Usage-5b23d9c22076/</id>
-    <published>2023-08-12T08:04:07.000Z</published>
-    <updated>2025-10-16T08:44:35.119Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot; title=&quot;说明&quot;&gt;&lt;/a&gt;说明&lt;/h1&gt;&lt;p&gt;记录日常工作中使用CANoe遇到的问题的解决方法。&lt;/p&gt;
-&lt;h1 id=&quot;CANoe安装&quot;&gt;&lt;a href=&quot;#CANoe安装&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="CAN总线工具" scheme="https://xianren-wrd.github.io/categories/CAN%E6%80%BB%E7%BA%BF%E5%B7%A5%E5%85%B7/"/>
-    
-    
-    <category term="CANoe" scheme="https://xianren-wrd.github.io/tags/CANoe/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Keil 使用问题汇总</title>
-    <link href="https://xianren-wrd.github.io/2023/Keil-Usage-12a1a959c43e/"/>
-    <id>https://xianren-wrd.github.io/2023/Keil-Usage-12a1a959c43e/</id>
-    <published>2023-08-12T06:28:25.000Z</published>
-    <updated>2025-10-16T08:43:30.064Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot; title=&quot;说明&quot;&gt;&lt;/a&gt;说明&lt;/h1&gt;&lt;p&gt;记录日常工作中使用Keil遇到的问题的解决方法。&lt;/p&gt;
-&lt;h1 id=&quot;keil仿真相关&quot;&gt;&lt;a href=&quot;#keil仿真相关&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="嵌入式IDE" scheme="https://xianren-wrd.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8FIDE/"/>
-    
-    
-    <category term="Keil" scheme="https://xianren-wrd.github.io/tags/Keil/"/>
-    
-    <category term="JLink" scheme="https://xianren-wrd.github.io/tags/JLink/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>spreadsheet compare 简单使用说明</title>
-    <link href="https://xianren-wrd.github.io/2023/spreadsheet-compare-cf954b484b3c/"/>
-    <id>https://xianren-wrd.github.io/2023/spreadsheet-compare-cf954b484b3c/</id>
-    <published>2023-08-11T13:33:51.000Z</published>
-    <updated>2025-10-16T10:19:42.603Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h1&gt;&lt;p&gt;Office2013开始，Office家族增加了Spreadsheet</summary>
-        
-      
-    
-    
-    
-    <category term="Office" scheme="https://xianren-wrd.github.io/categories/Office/"/>
-    
-    
-    <category term="对比工具" scheme="https://xianren-wrd.github.io/tags/%E5%AF%B9%E6%AF%94%E5%B7%A5%E5%85%B7/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>S32DS 使用问题汇总</title>
-    <link href="https://xianren-wrd.github.io/2023/S32DS-Usage-31bfab119a51/"/>
-    <id>https://xianren-wrd.github.io/2023/S32DS-Usage-31bfab119a51/</id>
-    <published>2023-08-11T04:03:35.000Z</published>
-    <updated>2025-10-16T08:43:16.187Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;说明&quot;&gt;&lt;a href=&quot;#说明&quot; class=&quot;headerlink&quot; title=&quot;说明&quot;&gt;&lt;/a&gt;说明&lt;/h1&gt;&lt;p&gt;记录日常工作中使用S32 Design Studio IDE遇到的问题的解决方法。问题大多比较久远，因此没有附图。&lt;/p&gt;
-&lt;h1</summary>
-        
-      
-    
-    
-    
-    <category term="嵌入式IDE" scheme="https://xianren-wrd.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8FIDE/"/>
-    
-    
-    <category term="S32DS" scheme="https://xianren-wrd.github.io/tags/S32DS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用拨号上网时，笔记本电脑无法打开热点的解决方法</title>
-    <link href="https://xianren-wrd.github.io/2021/%E6%97%A0%E6%B3%95%E5%BC%80%E5%90%AF%E7%83%AD%E7%82%B9%E9%97%AE%E9%A2%98-38d92260e969/"/>
-    <id>https://xianren-wrd.github.io/2021/%E6%97%A0%E6%B3%95%E5%BC%80%E5%90%AF%E7%83%AD%E7%82%B9%E9%97%AE%E9%A2%98-38d92260e969/</id>
-    <published>2021-08-09T15:07:05.000Z</published>
-    <updated>2023-08-10T14:24:04.986Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h3 id=&quot;问题背景&quot;&gt;&lt;a href=&quot;#问题背景&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="其他" scheme="https://xianren-wrd.github.io/categories/%E5%85%B6%E4%BB%96/"/>
-    
-    
-    <category term="疑难杂症" scheme="https://xianren-wrd.github.io/tags/%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/"/>
     
   </entry>
   
