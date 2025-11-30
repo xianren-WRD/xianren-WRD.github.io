@@ -2802,4 +2802,460 @@
         <tag>看门狗</tag>
       </tags>
   </entry>
+  <entry>
+    <title>E2E介绍</title>
+    <url>/2025/prefix%20remember%20to%20change!!!-ef0ad893c1c4/</url>
+    <content><![CDATA[<h1 id="E2E-的核心定义与目标"><a href="#E2E-的核心定义与目标" class="headerlink" title="E2E 的核心定义与目标"></a>E2E 的核心定义与目标</h1><p>E2E 是 <strong>End-to-End</strong> 的缩写，中文通常翻译为 <strong>“端到端”</strong> 。在汽车电子，特别是涉及功能安全的领域，它是一个至关重要的概念。</p>
+<p><strong>核心定义：</strong><br>E2E 指的是一种保护机制，它确保在<strong>发送节点</strong>和<strong>接收节点</strong>之间的整个通信路径上，数据的<strong>完整性、真实性</strong>和<strong>时效性</strong>得到保护。</p>
+<p><strong>简单来说：</strong> 发送方在发出数据前，为数据加上一个“安全信封”（包含校验码、计数器等），接收方在收到数据后，会仔细检查这个“信封”。只有通过所有检查，接收方才会认为这个数据是可信、可用、最新的。</p>
+<p><strong>主要目标：</strong></p>
+<ol>
+<li><strong>防止数据篡改：</strong> 确保数据在总线传输过程中没有被意外或恶意修改。</li>
+<li><strong>检测数据丢失：</strong> 确保没有丢失任何一帧数据。</li>
+<li><strong>检测数据重复：</strong> 防止同一帧数据被重复处理。</li>
+<li><strong>检测数据延迟：</strong> 确保接收到的数据是及时、新鲜的，而不是一个过时的旧数据。</li>
+<li><strong>确保发送者身份真实：</strong> 确认数据确实来自于声称的发送节点。</li>
+</ol>
+<p>这一切的最终目的，是为了满足 <strong>ISO 26262</strong> 道路车辆功能安全标准中对通信环节的要求。</p>
+<hr>
+<h1 id="为什么需要-E2E？"><a href="#为什么需要-E2E？" class="headerlink" title="为什么需要 E2E？"></a>为什么需要 E2E？</h1><p>车载网络（如 CAN, CAN FD, FlexRay, Ethernet SOME&#x2F;IP）本身并不是绝对可靠的。在复杂的电磁环境中，可能会发生各种通信故障：</p>
+<ul>
+<li><strong>物理层故障：</strong> 线路干扰、短路、断路等，导致比特翻转或数据帧损坏。</li>
+<li><strong>硬件故障：</strong> 发送节点的ECU或通信控制器故障，可能会重复发送数据、停止发送或发送错误数据。</li>
+<li><strong>软件故障：</strong> 发送方软件故障，可能写入错误的值；接收方软件故障，可能错误地解读数据。</li>
+<li><strong>网络拥堵：</strong> 导致数据延迟，接收方可能收到过时的信息。</li>
+</ul>
+<p>对于非安全相关的功能（如调节空调温度），偶尔的数据错误可能影响不大。但对于<strong>安全关键系统</strong>，如刹车、转向、安全气囊等，任何数据错误都可能导致灾难性后果。E2E 保护机制就是为了在这些故障发生时，能够被及时检测到，并使系统可以进入一个安全状态。</p>
+<hr>
+<h1 id="E2E-的保护机制是如何工作的？"><a href="#E2E-的保护机制是如何工作的？" class="headerlink" title="E2E 的保护机制是如何工作的？"></a>E2E 的保护机制是如何工作的？</h1><p>E2E 的核心是在应用层数据之外，增加一个 <strong>E2E Header</strong>。这个头部包含了一系列校验信息。最经典和广泛使用的模型是 <strong>AUTOSAR</strong> 定义的 <strong>E2E Profile</strong>。</p>
+<p><strong>关键组成部分：</strong></p>
+<ol>
+<li><p><strong>CRC（循环冗余校验）：</strong></p>
+<ul>
+<li><strong>作用：</strong> 保护数据的完整性。它对整个或部分用户数据（Payload）进行计算，生成一个校验值。</li>
+<li><strong>接收方检查：</strong> 接收方用同样的算法重新计算CRC，如果结果不匹配，说明数据在传输过程中被篡改或损坏。</li>
+</ul>
+</li>
+<li><p><strong>Counter（计数器）：</strong></p>
+<ul>
+<li><strong>作用：</strong> 检测数据丢失和重复。发送方每发送一次新数据，计数器就加1（有上限，会循环）。</li>
+<li><strong>接收方检查：</strong> 接收方会记录上一次收到的计数器值。如果新收到的计数器值不是预期的“上一个值+1”，则说明中间有帧丢失（如果跳变很大）或发生了重复（如果收到相同的计数值）。</li>
+</ul>
+</li>
+<li><p><strong>Data ID（数据标识符）：</strong></p>
+<ul>
+<li><strong>作用：</strong> 确保数据的真实性，并将CRC与特定的数据关联起来。它是一个预先配置好的、对发送方和接收方都已知的唯一标识符。</li>
+<li><strong>工作原理：</strong> 在计算CRC时，会将Data ID也作为输入之一。这样，即使两个不同的发送节点发送了完全相同的数据，它们的CRC也会因为Data ID不同而不同，防止了接收方混淆数据来源。</li>
+</ul>
+</li>
+<li><p><strong>Timeout（超时检查）：</strong></p>
+<ul>
+<li><strong>作用：</strong> 检测数据延迟或发送方完全失效。</li>
+<li><strong>工作原理：</strong> 接收方会监控特定数据的接收间隔。如果超过预设的时间阈值还没有收到新数据，就认为通信超时，数据已不再新鲜。</li>
+</ul>
+</li>
+</ol>
+<p><strong>工作流程示例（以 AUTOSAR E2E Profile 1 为例）：</strong></p>
+<ol>
+<li><p><strong>发送端：</strong></p>
+<ul>
+<li>应用程序生成了需要发送的数据（例如，车速 <code>100 km/h</code>）。</li>
+<li>E2E保护模块介入：<ul>
+<li>读取并递增<strong>计数器</strong>（例如，从 <code>5</code> 到 <code>6</code>）。</li>
+<li>结合 <strong>Data ID</strong>、<strong>计数器 <code>6</code></strong> 和**用户数据 <code>100</code>**，计算 <strong>CRC</strong>。</li>
+<li>将 <strong>计数器 <code>6</code></strong> 和 <strong>CRC</strong> 作为 E2E Header，与用户数据 <code>100</code> 一起打包，交给底层通信栈发送出去。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>传输过程：</strong></p>
+<ul>
+<li>数据在CAN总线上传输，可能受到干扰，但未被检测到（CAN本身的CRC可能未能检测出极低概率的多位错误）。</li>
+</ul>
+</li>
+<li><p><strong>接收端：</strong></p>
+<ul>
+<li>从总线收到数据，CAN Driver先进行基础的校验。</li>
+<li>数据被传递到应用层前，E2E保护模块介入检查：<ul>
+<li><strong>CRC校验：</strong> 使用相同的Data ID、收到的计数器和用户数据重新计算CRC，与收到的CRC比对。<strong>（检查数据完整性）</strong></li>
+<li><strong>计数器校验：</strong> 检查收到的计数器 <code>6</code> 是否等于上一次收到的计数器 <code>5</code> + 1。<strong>（检查数据丢失&#x2F;重复）</strong></li>
+<li><strong>超时检查：</strong> 检查距离上次收到该数据的时间是否在允许范围内。<strong>（检查数据新鲜度）</strong></li>
+</ul>
+</li>
+<li><strong>结果：</strong><ul>
+<li><strong>所有检查通过：</strong> E2E模块将状态标记为 <code>E2E_OK</code>，并将纯净的用户数据 <code>100 km/h</code> 传递给应用程序使用。</li>
+<li><strong>任何一项检查失败：</strong> E2E模块将状态标记为 <code>E2E_NOT_OK</code>、<code>E2E_REPEATED</code> 等，并<strong>不会</strong>将数据传递给应用程序，或者传递一个无效值。同时，系统可以根据安全策略采取相应措施（如使用默认值、报错、进入降级模式等）。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h1 id="E2E-在哪些车载总线上使用？"><a href="#E2E-在哪些车载总线上使用？" class="headerlink" title="E2E 在哪些车载总线上使用？"></a>E2E 在哪些车载总线上使用？</h1><p>E2E 是一种与应用层紧密相关的保护机制，理论上可以应用在任何车载总线上，只要发送和接收双方遵循相同的 E2E Profile 协议。最常见于：</p>
+<ul>
+<li><strong>CAN &#x2F; CAN FD：</strong> 这是E2E应用最广泛的场景，因为CAN总线本身没有足够强大的安全机制。</li>
+<li><strong>FlexRay：</strong> 同样需要E2E来满足更高功能安全等级的要求。</li>
+<li><strong>汽车以太网（SOME&#x2F;IP）：</strong> 虽然TCP&#x2F;IP协议栈本身有校验和等机制，但对于安全关键的SOME&#x2F;IP服务，仍然会在其之上实施E2E保护，以满足ISO 26262的严格要求。</li>
+</ul>
+<hr>
+<h1 id="相关标准与规范"><a href="#相关标准与规范" class="headerlink" title="相关标准与规范"></a>相关标准与规范</h1><ul>
+<li><strong>ISO 26262：</strong> 这是E2E机制的“需求方”。标准第6部分专门提到了对产品开发中避免和控制系统性故障的要求，其中就包括通信的可靠性。</li>
+<li><strong>AUTOSAR：</strong> 这是E2E机制的“解决方案提供方”。AUTOSAR标准中明确定义了多种 <strong>E2E Profiles</strong>（如 Profile 1, 2, 5, 6, 7, 11等），针对不同的数据长度、总线类型和安全等级提供了标准化的实现方案。这是行业内事实上的标准。</li>
+<li><strong>OSEK&#x2F;VDX：</strong> 在AUTOSAR之前，也有相关的通信标准。</li>
+</ul>
+<h2 id="E2E-Profile-1-详解"><a href="#E2E-Profile-1-详解" class="headerlink" title="E2E Profile 1 详解"></a>E2E Profile 1 详解</h2><p>以下表格汇总了 AUTOSAR E2E Profile 1 的关键规范：</p>
+<table>
+<thead>
+<tr>
+<th align="left">方面</th>
+<th align="left">E2E Profile 1 规范摘要</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>核心保护机制</strong></td>
+<td align="left">使用 <strong>CRC</strong>、<strong>计数器</strong> 和 <strong>Data ID</strong> 组合保护数据。</td>
+</tr>
+<tr>
+<td align="left"><strong>CRC 规范</strong></td>
+<td align="left">采用 <strong>8位 CRC</strong>，遵循 <strong>SAE J1850</strong> 标准，多项式为 <strong>0x1D</strong> (x⁸ + x⁴ + x³ + x² + 1)。</td>
+</tr>
+<tr>
+<td align="left"><strong>计数器规范</strong></td>
+<td align="left"><strong>4位计数器</strong>，值范围 <strong>0 到 14</strong>。发送时逐帧递增（从0开始），至14后归零。 接收端通过检查计数器连续性检测丢失或重复帧。</td>
+</tr>
+<tr>
+<td align="left"><strong>Data ID 规范</strong></td>
+<td align="left"><strong>16位标识符</strong>，用于唯一标识数据源或特定通信关系，参与CRC计算以提高真实性。</td>
+</tr>
+<tr>
+<td align="left"><strong>数据状态检查</strong></td>
+<td align="left">接收端 <code>E2E_P01Check</code> 函数返回多种状态，例如：<br> - <code>E2E_P01STATUS_OK</code> (数据和计数器正确) <br> - <code>E2E_P01STATUS_WRONGCRC</code> (CRC错误) <br> - <code>E2E_P01STATUS_OKSOMELOST</code> (有数据丢失但仍在容限内)</td>
+</tr>
+</tbody></table>
+<p>E2E Profile 1 接收端的检查状态 (<code>E2E_P01CheckStatusType</code>) 详细说明了通信质量，理解这些状态对于系统诊断很重要：</p>
+<ul>
+<li><strong>E2E_P01STATUS_OK</strong>：CRC正确，计数器连续。这是<strong>理想的正常状态</strong>。</li>
+<li><strong>E2E_P01STATUS_OKSOMELOST</strong>：CRC正确，但计数器有跳变（在允许的 <code>MaxDeltaCounter</code> 内）。表示<strong>有报文丢失，但仍在可接受范围</strong>。</li>
+<li><strong>E2E_P01STATUS_REPEATED</strong>：CRC正确，但计数器与上一次相同。表明<strong>报文可能被重复发送</strong>。</li>
+<li><strong>E2E_P01STATUS_WRONGSEQUENCE</strong>：CRC正确，但计数器跳变过大（超过 <code>MaxDeltaCounter</code>）。表示<strong>有大量报文丢失</strong>。</li>
+<li><strong>E2E_P01STATUS_WRONGCRC</strong>：<strong>CRC校验失败</strong>，数据在传输中可能已损坏。</li>
+<li><strong>E2E_P01STATUS_SYNC</strong>：在检测到计数器异常后，正在<strong>重新同步</strong>的过程中。</li>
+<li><strong>E2E_P01STATUS_INITIAL</strong>：接收端<strong>初始化后的第一个报文</strong>，CRC正确，但计数器连续性尚未验证。</li>
+<li><strong>E2E_P01STATUS_NONEWDATA</strong>：<strong>没有收到新数据</strong>。</li>
+</ul>
+<h1 id="AUTOSAR模块如何实现E2E"><a href="#AUTOSAR模块如何实现E2E" class="headerlink" title="AUTOSAR模块如何实现E2E"></a>AUTOSAR模块如何实现E2E</h1><p>在AUTOSAR架构中，E2E功能的实现需要多个标准模块协同工作。下面这个表格汇总了参与实现E2E功能的核心AUTOSAR标准模块及其职责。</p>
+<table>
+<thead>
+<tr>
+<th align="left">模块名称</th>
+<th align="left">核心职责</th>
+<th align="left">在E2E保护中的作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>E2E Library</strong></td>
+<td align="left"><strong>核心算法库</strong></td>
+<td align="left">提供E2E保护的<strong>核心算法</strong>（如CRC计算、计数器管理，状态检查），实现不同Profile（如P01）的<code>Protect</code>和<code>Check</code>函数。发送时调用 <code>E2E_P01Protect</code>，接收时调用 <code>E2E_P01Check</code>。</td>
+</tr>
+<tr>
+<td align="left"><strong>E2E Transformer (E2EXf)</strong></td>
+<td align="left"><strong>标准化集成</strong></td>
+<td align="left">位于RTE中，<strong>自动调用E2E库</strong>，实现SWC间通信数据的序列化&#x2F;反序列化及E2E保护。对SWC<strong>透明</strong>。</td>
+</tr>
+<tr>
+<td align="left"><strong>COM Transformer (ComXf)</strong></td>
+<td align="left"><strong>信号格式转换</strong></td>
+<td align="left">负责将应用层<strong>结构化数据</strong>与总线传输所需的<strong>线性字节数组</strong>进行相互转换（序列化&#x2F;反序列化）。</td>
+</tr>
+<tr>
+<td align="left"><strong>E2E Protection Wrapper (E2EPW)</strong></td>
+<td align="left"><strong>SWC层集成</strong></td>
+<td align="left">位于<strong>RTE之上</strong>（属于SWC部分），为特定信号组提供接口，<strong>手动调用E2E库</strong>进行保护和校验。</td>
+</tr>
+<tr>
+<td align="left"><strong>COM模块</strong></td>
+<td align="left"><strong>信号管理与PDU处理</strong></td>
+<td align="left">处理信号到PDU的映射，可通过<strong>COM Callout</strong>函数在PDU收发时<strong>调用E2E库</strong>进行保护和校验。</td>
+</tr>
+<tr>
+<td align="left"><strong>PduR模块</strong></td>
+<td align="left"><strong>PDU路由</strong></td>
+<td align="left">作为通信栈的枢纽，在相关模块（如COM、E2EXf）间<strong>路由</strong>携带E2E保护信息的PDU。</td>
+</tr>
+<tr>
+<td align="left"><strong>DEM</strong></td>
+<td align="left"><strong>记录故障</strong></td>
+<td align="left">当E2E检查函数（如 <code>E2E_P01Check</code>）返回错误状态（如 <code>E2E_P01STATUS_WRONGCRC</code>）时，可通过<strong>诊断事件管理器</strong>记录对应的诊断故障码，以便后续诊断和故障处理。</td>
+</tr>
+</tbody></table>
+<h2 id="核心模块协作流程"><a href="#核心模块协作流程" class="headerlink" title="核心模块协作流程"></a>核心模块协作流程</h2><p>在典型的E2E通信保护中，上述模块协同工作。下面的流程图直观展示了在两种常见实现路径中，数据从发送到接收校验的完整过程：<br><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251130231928.png" title="" alt="" width="715"></p>
+<p>如图所示，E2E保护主要有两种实现路径：</p>
+<ul>
+<li><strong>路径一（E2EXf + ComXf）</strong>：这是AUTOSAR推荐的<strong>标准化、自动化</strong>路径。RTE自动调用E2EXf和ComXf，对应用层SWC<strong>透明</strong>，集成度高，但配置相对复杂。</li>
+<li><strong>路径二（E2EPW）</strong>：在SWC层<strong>手动调用</strong>，使用<strong>灵活</strong>，但SWC需要感知并处理E2E相关的状态和错误。</li>
+</ul>
+<p>此外，还有一种<strong>COM Callout</strong>方式，它在COM模块处理PDU时调用E2E库，其保护单元是整个PDU。</p>
+<h2 id="如何选择实现方式"><a href="#如何选择实现方式" class="headerlink" title="如何选择实现方式"></a>如何选择实现方式</h2><p>在实际项目中，可以参考以下思路进行选择：</p>
+<ul>
+<li><strong>追求标准化与自动化</strong>：在架构设计阶段就系统性地规划，优先考虑<strong>E2E Transformer (E2EXf)</strong> 方式。这是AUTOSAR大力推广的现代化实现，尤其在新项目中值得采用。</li>
+<li><strong>需要快速集成或特定灵活性</strong>：在某些特定场景或需要快速验证时，可以考虑使用<strong>E2E Protection Wrapper (E2EPW)</strong> 或 <strong>COM Callout</strong>。它们能在一定程度上提供灵活性。</li>
+</ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://www.ctfiot.com/136436.html">Autosar E2E及其实现（基于E2E_P01）（1） | CTF导航</a></p>
+<p><a href="https://baijiahao.baidu.com/s?id=1789030736765315482">鉴源实验室｜AUTOSAR E2E：车载通信的安全保障</a></p>
+]]></content>
+      <categories>
+        <category>汽车与工业网络</category>
+      </categories>
+      <tags>
+        <tag>E2E</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OBD诊断介绍</title>
+    <url>/2025/prefix%20remember%20to%20change!!!-a58c172dcc1b/</url>
+    <content><![CDATA[<h1 id="OBD诊断"><a href="#OBD诊断" class="headerlink" title="OBD诊断"></a>OBD诊断</h1><p><strong>OBD系统的首要任务和设计初衷，就是为了确保汽车在整个生命周期内，其尾气排放都能符合环保法规要求，从而保护大气环境和公众健康。</strong></p>
+<p>它不是为了提高性能或舒适度，而是一个由<strong>政府法规强制推行</strong>的、用于<strong>环保监督</strong>的系统。当它亮起那个黄色的发动机故障灯时，本质上是在说：“<strong>我的排放系统出问题了，现在排出的尾气可能超标，对环境不友好，需要尽快检修！</strong>”</p>
+<p>主要的有害排放物有哪些？</p>
+<ol>
+<li><p><strong>一氧化碳 (CO)<strong>：一种无色无味的有毒气体。可以把它理解为“</strong>燃料不完全燃烧的产物</strong>”。它会阻碍血液输送氧气，高浓度时致命。</p>
+</li>
+<li><p><strong>碳氢化合物 (HC)<strong>：本质上就是</strong>未燃烧的燃油</strong>。它和氮氧化物在阳光下会发生反应，形成光化学烟雾，刺激人眼和呼吸道。</p>
+</li>
+<li><p><strong>氮氧化物 (NOx)<strong>：包括NO和NO₂等。是在高温高压下，空气中氮气和氧气反应的产物。它是形成</strong>酸雨和雾霾（PM2.5）</strong> 的重要元凶，也会对人体肺部造成损害。</p>
+</li>
+<li><p>颗粒物 (PM)：特别是柴油车产生的“黑烟”，就是由大量颗粒物组成的。这些微小的颗粒可以深入肺部，引发呼吸系统和心血管疾病。</p>
+</li>
+</ol>
+<h2 id="OBD如何“关注”排放？"><a href="#OBD如何“关注”排放？" class="headerlink" title="OBD如何“关注”排放？"></a>OBD如何“关注”排放？</h2><p>OBD系统本身不直接减少排放，它扮演的是一个 <strong>“7x24小时不间断的排放系统监督员”</strong> 的角色。它的工作逻辑是：</p>
+<p><strong>监控 → 发现异常 → 报警 → 确保可维修</strong></p>
+<p>它通过监控与排放相关的<strong>几十个甚至上百个</strong>传感器、执行器和子系统，来确保整个“消化和排泄系统”工作正常。具体来说：</p>
+<ul>
+<li><p><strong>监控“消化”效率</strong>：</p>
+<ul>
+<li><p><strong>发动机燃烧状况</strong>：通过氧传感器、曲轴位置传感器等，监控燃烧是否充分。如果燃烧不好，就会导致CO和HC飙升。</p>
+</li>
+<li><p><strong>燃油系统</strong>：监控喷油嘴的工作情况，确保喷油量精确。喷油过多或过少都会影响排放。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>监控“垃圾处理”系统</strong>：</p>
+<ul>
+<li><p>三元催化器 (TWC)：这是<strong>最重要的尾气净化装置</strong>，能同时净化CO、HC和NOx。OBD系统会通过催化器前后端的氧传感器，来实时监测它的净化效率。如果效率下降到阈值以下，OBD就会立刻报警。</p>
+</li>
+<li><p>颗粒捕集器 (DPF)：用于捕捉柴油车产生的颗粒物。OBD会监控它的堵塞情况，并在需要时提醒司机进行“再生”清理。</p>
+</li>
+<li><p>废气再循环 (EGR)：通过将部分废气再次引入气缸，降低燃烧温度，从而减少NOx的生成。OBD会监控EGR阀的工作是否正常。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="OBD诊断和UDS诊断对比"><a href="#OBD诊断和UDS诊断对比" class="headerlink" title="OBD诊断和UDS诊断对比"></a>OBD诊断和UDS诊断对比</h1><p>OBD和UDS虽然都用于车载诊断，但定位和能力不同。</p>
+<p>OBD是满足法规要求的“基础体检”，重点关注排放；UDS则是用于深度开发、调试和维修的“全面精准检查”。</p>
+<table>
+<thead>
+<tr>
+<th align="left">对比维度</th>
+<th align="left">🔧 <strong>OBD (车载诊断系统)</strong></th>
+<th align="left">🔬 <strong>UDS (统一诊断服务)</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>主要目标</strong></td>
+<td align="left">专注于<strong>监控与排放相关的系统和元件</strong></td>
+<td align="left">提供<strong>统一的、全面的ECU诊断通信</strong>规范</td>
+</tr>
+<tr>
+<td align="left"><strong>法规强制力</strong></td>
+<td align="left"><strong>强制的</strong>，需满足法规要求</td>
+<td align="left"><strong>推荐的</strong>，无统一法规强制，由厂商决定采用程度</td>
+</tr>
+<tr>
+<td align="left"><strong>应用范围</strong></td>
+<td align="left">主要针对<strong>排放相关系统</strong>（如发动机、催化转化器）</td>
+<td align="left">覆盖车辆<strong>所有电子控制单元(ECU)</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>协议与标准化</strong></td>
+<td align="left">协议相对<strong>固定</strong></td>
+<td align="left">协议<strong>可扩展</strong>，支持多种总线，厂商可定义私有服务</td>
+</tr>
+<tr>
+<td align="left"><strong>诊断深度与功能</strong></td>
+<td align="left"><strong>标准化功能</strong>，如读取排放相关故障码(DTC)、就绪状态、实时数据</td>
+<td align="left"><strong>深度交互功能</strong>，支持读写内存、安全访问、软件更新等</td>
+</tr>
+</tbody></table>
+<p>简单来说，可以把OBD理解为运行在ISO-TP之上的一套<strong>固定的、专用的诊断服务集</strong>，而UDS则是一套<strong>丰富的、可配置的诊断服务集</strong>。在AUTOSAR架构中，来自诊断工具的OBD请求和UDS请求，都会由<strong>DCM模块</strong>统一接收和处理，并根据请求的服务ID（SID）分发给相应的处理程序。</p>
+<h1 id="AUTOSAR中实现OBD诊断的核心模块"><a href="#AUTOSAR中实现OBD诊断的核心模块" class="headerlink" title="AUTOSAR中实现OBD诊断的核心模块"></a>AUTOSAR中实现OBD诊断的核心模块</h1><p>在AUTOSAR (汽车开放系统架构) 软件架构中，OBD功能的实现主要由以下核心模块协同完成：</p>
+<ul>
+<li><p><strong>DCM (诊断通信管理器)</strong> : DCM是诊断请求的“<strong>总调度室</strong>”。它遵循OBD及相关诊断通信标准，当你用诊断工具发送OBD请求时，DCM负责接收、解析，并确保请求被正确响应。它内部通常由DSL (会话层)、DSD (服务分发器) 和DSP (服务处理) 子模块构成，共同管理诊断会话状态、分发请求并协调响应。</p>
+</li>
+<li><p><strong>DEM (诊断事件管理器)</strong> : DEM是故障信息的“<strong>档案管理员</strong>”。与排放相关的监控系统（如燃油系统）检测到故障时，会报告给DEM。DEM则负责处理和存储这些“诊断事件”（包括与之相关的故障码DTC），并记录故障发生时的“冻结帧”数据（如当时的车速、发动机转速）。此外，OBD法规要求的<strong>IUMPR (在用监测性能比率)</strong> 计算也由DEM负责。</p>
+</li>
+<li><p><strong>FIM (功能抑制管理器)</strong> : FIM是系统功能的“<strong>安全开关</strong>”。它与DEM协同工作，当诊断确认某些特定故障时，FIM会根据预设策略<strong>禁止或启用ECU的某些功能</strong>，以防止故障扩大或确保安全，例如在检测到相关故障时禁止进行排放诊断测试或停止递增IUMPR计数器。</p>
+</li>
+</ul>
+<h1 id="OBD诊断协议详解"><a href="#OBD诊断协议详解" class="headerlink" title="OBD诊断协议详解"></a>OBD诊断协议详解</h1><p>OBD-II作为一个法规强制系统，其协议的核心特点是<strong>标准化、固定化</strong>，这与UDS的高度可配置性形成鲜明对比。</p>
+<h2 id="支持的核心诊断服务"><a href="#支持的核心诊断服务" class="headerlink" title="支持的核心诊断服务"></a>支持的核心诊断服务</h2><p>OBD-II标准强制定义了一组用于排放相关诊断的<strong>9种模式（Mode）</strong>，这些模式在UDS中大致对应不同的<strong>诊断服务（Service）</strong>。下表详细列出了这些模式及其与UDS的对比：</p>
+<table>
+<thead>
+<tr>
+<th align="left">OBD 模式</th>
+<th align="left">等效 UDS 服务&#x2F;概念</th>
+<th align="left">服务描述</th>
+<th align="left">请求报文示例</th>
+<th align="left">正响应报文示例</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Mode $01</strong></td>
+<td align="left">类似 <code>0x22</code></td>
+<td align="left"><strong>请求当前动力系统状态数据</strong></td>
+<td align="left"><code>01 00</code> <br>(请求PID $00支持的所有PID列表)</td>
+<td align="left"><code>41 00 BE 1F A8 13</code> <br>(<code>41</code>&#x3D;Mode01响应; <code>00</code>&#x3D;请求的PID; <code>BE 1F A8 13</code>&#x3D;支持的PID位掩码)</td>
+<td align="left">核心数据获取方式，通过PID参数化</td>
+</tr>
+<tr>
+<td align="left"><strong>Mode $02</strong></td>
+<td align="left">类似 <code>0x19</code> (子服务 $04)</td>
+<td align="left"><strong>请求冻结帧数据</strong></td>
+<td align="left"><code>02 01</code> <br>(请求冻结帧1的数据)</td>
+<td align="left"><code>42 01 00 07 E0 ...</code> <br>(<code>42</code>&#x3D;Mode02响应; <code>01</code>&#x3D;冻结帧号; 后续为数据)</td>
+<td align="left">冻结帧是DEM管理的“故障快照”</td>
+</tr>
+<tr>
+<td align="left"><strong>Mode $03</strong></td>
+<td align="left">类似 <code>0x19</code> (子服务 $02)</td>
+<td align="left"><strong>请求排放相关的已确认故障码</strong></td>
+<td align="left"><code>03</code></td>
+<td align="left"><code>43 01 33 00 00 00</code> <br>(<code>43</code>&#x3D;Mode03响应; <code>01 33</code>为DTC)</td>
+<td align="left">DTC格式标准化，DEM负责存储管理</td>
+</tr>
+<tr>
+<td align="left"><strong>Mode $04</strong></td>
+<td align="left">类似 <code>0x14</code></td>
+<td align="left"><strong>清除&#x2F;复位排放相关的诊断信息</strong></td>
+<td align="left"><code>04</code></td>
+<td align="left"><code>44</code></td>
+<td align="left">清除DTC、冻结帧，并重置IUMPR</td>
+</tr>
+<tr>
+<td align="left"><strong>Mode $05</strong></td>
+<td align="left">类似 <code>0x22</code></td>
+<td align="left"><strong>请求氧传感器监测测试结果</strong></td>
+<td align="left"><code>05 01</code> <br>(请求测试ID $01的结果)</td>
+<td align="left"><code>45 01 8A FF ...</code></td>
+<td align="left">用于监控催化器效率等。<br/>Mode 5读取氧传感器的监测结果。只有K_line的系统支持Mode 5的输出，CAN通信系统氧传感器信息输出到Mode 6。<br/>ISO 15031-5中定义了所有可以获得的氧传感器信息。每条信息都有一个TID与之相对应。Mode 5支持输出哪些TID的输出是根据项目的具体配置设定的。</td>
+</tr>
+<tr>
+<td align="left"><strong>Mode $06</strong></td>
+<td align="left">类似 Mode <code>0x05</code></td>
+<td align="left"><strong>请求指定监控系统的测试结果</strong></td>
+<td align="left"><code>06 01</code> <br>(请求TID $01的结果)</td>
+<td align="left"><code>46 01 00 03 ...</code></td>
+<td align="left">监控具体部件，如EGR、EVAP等。CAN通信Mode6的输出包括OBDMID、TID、USID、测量值、最小值、最大值。 OBDMID、部分TID、USID在ISO 15031-5中有标准化定义。</td>
+</tr>
+<tr>
+<td align="left"><strong>Mode $07</strong></td>
+<td align="left">类似 <code>0x19</code> (子服务 $02)</td>
+<td align="left"><strong>请求排放相关的待处理故障码</strong></td>
+<td align="left"><code>07</code></td>
+<td align="left"><code>47 00 00 00 00</code> <br>(无待处理DTC)</td>
+<td align="left">表示可能未稳定触发的故障（当前以及上一个驾驶循环中出现的pending状态的DTC）</td>
+</tr>
+<tr>
+<td align="left"><strong>Mode $08</strong></td>
+<td align="left">类似 <code>0x31</code></td>
+<td align="left"><strong>请求控制车载系统或部件</strong></td>
+<td align="left"><code>08 01</code> <br>(请求运行测试 $01)</td>
+<td align="left"><code>48 01</code></td>
+<td align="left">用于主动测试，如控制继电器</td>
+</tr>
+<tr>
+<td align="left"><strong>Mode $09</strong></td>
+<td align="left">类似 <code>0x22</code></td>
+<td align="left"><strong>请求车辆和ECU信息</strong></td>
+<td align="left"><code>09 02</code> <br>(请求信息类型 $02)</td>
+<td align="left"><code>49 02 48 32 30 30 30</code> <br>(VIN&#x3D;”H2000”)</td>
+<td align="left">读取VIN、CALID、CVN等</td>
+</tr>
+<tr>
+<td align="left"><strong>Mode $0A</strong></td>
+<td align="left">类似 <code>0x19</code></td>
+<td align="left"><strong>请求排放相关的永久故障</strong></td>
+<td align="left"><code>0A</code></td>
+<td align="left"><code>4A 00</code></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<p><strong>与UDS的关键区别：</strong></p>
+<ul>
+<li><strong>服务ID固定</strong>：OBD的服务（模式）是预定义的，范围是01-0A，而UDS的服务ID范围更广（如10, 22, 2E等），且允许厂商自定义。</li>
+<li><strong>参数化访问</strong>：OBD严重依赖PID、TID等参数来访问特定数据，结构固定。UDS则通过DID（Data Identifier）来读写任意数据，更加灵活。</li>
+</ul>
+<h2 id="请求与响应格式"><a href="#请求与响应格式" class="headerlink" title="请求与响应格式"></a>请求与响应格式</h2><p>OBD的报文格式非常规整，这与UDS的可变长度格式有所不同。</p>
+<ul>
+<li><p><strong>请求格式</strong>：<br><code>[模式 Mode] [参数 PID/TID]</code></p>
+<ul>
+<li>例如 <code>01 0C</code> 表示请求模式01下的PID $0C（发动机转速）数据。</li>
+<li>非常简洁，没有UDS中可能存在的子功能码或复杂的数据参数。</li>
+</ul>
+</li>
+<li><p><strong>正响应格式</strong>：<br><code>[模式 + 0x40] [请求的 PID/TID] [数据 1] [数据 2] ...</code></p>
+<ul>
+<li>例如，对 <code>01 0C</code> 的正响应是 <code>41 0C 1A F8</code>。</li>
+<li><code>41</code> &#x3D; <code>01</code> + <code>40</code>，这是OBD响应报文的固定规则。</li>
+<li><code>1A F8</code> 是两个字节的原始数据，需要根据标准公式转换为有意义的物理值（如转速 &#x3D; <code>(256 * 0x1A + 0xF8) / 4 = 1728 RPM</code>）。</li>
+</ul>
+</li>
+</ul>
+<h2 id="物理寻址与功能寻址"><a href="#物理寻址与功能寻址" class="headerlink" title="物理寻址与功能寻址"></a>物理寻址与功能寻址</h2><p><strong>OBD明确支持物理寻址和功能寻址，这是其协议架构的基础。</strong></p>
+<ul>
+<li><p><strong>功能寻址</strong>：</p>
+<ul>
+<li><strong>目的</strong>：用于<strong>广播</strong>诊断请求。所有监听在OBD功能地址上的ECU都必须接收并处理该请求。</li>
+<li><strong>地址</strong>：在CAN总线中，OBD-II法规规定的<strong>功能请求地址是 0x7DF</strong>。</li>
+<li><strong>场景</strong>：当诊断工具发送一条请求到0x7DF时，所有支持该请求的ECU（主要是动力系统相关的ECU）都应当处理。</li>
+</ul>
+</li>
+<li><p><strong>物理寻址</strong>：</p>
+<ul>
+<li><strong>目的</strong>：用于<strong>单播</strong>响应。每个ECU必须使用自己唯一的物理地址进行回复，以避免总线冲突。</li>
+<li><strong>地址</strong>：在CAN总线中，ECU的<strong>物理响应地址范围是 0x7E8 到 0x7EF</strong>。通常，发动机ECU会使用0x7E8，变速箱ECU使用0x7E9，以此类推。</li>
+<li><strong>工作流程</strong>：<ol>
+<li>诊断工具发送功能寻址请求到 <code>0x7DF</code>。</li>
+<li>支持该请求的ECU（例如发动机ECU）处理请求。</li>
+<li>该ECU使用自己的物理地址（例如 <code>0x7E8</code>）将响应发送回诊断工具。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>与UDS的对比</strong>：<br>概念上与UDS完全一致。UDS中使用<strong>功能地址</strong>（如0x7DF）进行广播请求，使用<strong>物理地址</strong>（如0x7E0&#x2F;0x7E8）进行一对一通信。OBD可以看作是UDS在这方面的一个具体应用实例。</p>
+<h2 id="传输层协议"><a href="#传输层协议" class="headerlink" title="传输层协议"></a>传输层协议</h2><p><strong>OBD over CAN 必须支持TP。</strong></p>
+<ul>
+<li><strong>协议</strong>：当OBD诊断报文在CAN总线上传输，且单帧无法容纳所有数据时，必须使用<strong>ISO 15765-4</strong>（也就是我们常说的<strong>ISO-TP</strong>）作为传输层协议。</li>
+<li><strong>作用</strong>：与UDS over CAN完全一样，ISO-TP负责将长于8字节（对于经典CAN）的诊断报文进行<strong>分段、传输和重组</strong>。</li>
+<li><strong>示例</strong>：<ul>
+<li>请求车辆VIN（Mode 09, PID $02）时，VIN字符串长度超过7字节，就无法在一个CAN数据帧中装下。</li>
+<li>此时，ECU的响应会使用ISO-TP的多帧传输：<ul>
+<li><strong>首帧</strong>：指示总数据长度。</li>
+<li><strong>连续帧</strong>：携带剩余的数据。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://zhuanlan.zhihu.com/p/706045388">汽车诊断及OBD和UDS协议的基础概念介绍 - 知乎</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/662834071">OBD 诊断 初入门 - 知乎</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/67674852">OBD(On-Board Diagnostic)介绍 - 知乎</a></p>
+]]></content>
+      <categories>
+        <category>汽车与工业网络</category>
+      </categories>
+      <tags>
+        <tag>诊断</tag>
+      </tags>
+  </entry>
 </search>
