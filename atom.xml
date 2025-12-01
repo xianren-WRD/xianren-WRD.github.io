@@ -6,7 +6,7 @@
   <link href="https://xianren-wrd.github.io/atom.xml" rel="self"/>
   
   <link href="https://xianren-wrd.github.io/"/>
-  <updated>2025-11-30T15:27:13.203Z</updated>
+  <updated>2025-12-01T15:16:21.796Z</updated>
   <id>https://xianren-wrd.github.io/</id>
   
   <author>
@@ -15,6 +15,60 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>PNC和VFC介绍</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-e6d5a090949a/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-e6d5a090949a/</id>
+    <published>2025-12-01T14:12:02.000Z</published>
+    <updated>2025-12-01T15:16:21.796Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;PNC与VFC：从功能到网络&quot;&gt;&lt;a href=&quot;#PNC与VFC：从功能到网络&quot; class=&quot;headerlink&quot; title=&quot;PNC与VFC：从功能到网络&quot;&gt;&lt;/a&gt;PNC与VFC：从功能到网络&lt;/h1&gt;&lt;p&gt;PNC（Partial Network</summary>
+        
+      
+    
+    
+    
+    <category term="汽车与工业网络" scheme="https://xianren-wrd.github.io/categories/%E6%B1%BD%E8%BD%A6%E4%B8%8E%E5%B7%A5%E4%B8%9A%E7%BD%91%E7%BB%9C/"/>
+    
+    
+    <category term="PNC" scheme="https://xianren-wrd.github.io/tags/PNC/"/>
+    
+    <category term="VFC" scheme="https://xianren-wrd.github.io/tags/VFC/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>A2L文件生成</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-3f5ba5b47990/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-3f5ba5b47990/</id>
+    <published>2025-12-01T13:34:54.000Z</published>
+    <updated>2025-12-01T14:04:29.436Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;A2L文件是什么？&quot;&gt;&lt;a href=&quot;#A2L文件是什么？&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="汽车与工业网络" scheme="https://xianren-wrd.github.io/categories/%E6%B1%BD%E8%BD%A6%E4%B8%8E%E5%B7%A5%E4%B8%9A%E7%BD%91%E7%BB%9C/"/>
+    
+    
+    <category term="A2L" scheme="https://xianren-wrd.github.io/tags/A2L/"/>
+    
+    <category term="XCP" scheme="https://xianren-wrd.github.io/tags/XCP/"/>
+    
+  </entry>
   
   <entry>
     <title>OBD诊断介绍</title>
@@ -475,56 +529,6 @@
     
     
     <category term="TSMaster" scheme="https://xianren-wrd.github.io/tags/TSMaster/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用Curl排查HTTP问题的经历</title>
-    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-92342a72fd01/"/>
-    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-92342a72fd01/</id>
-    <published>2025-10-16T10:16:05.000Z</published>
-    <updated>2025-10-16T15:19:03.400Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="其他" scheme="https://xianren-wrd.github.io/categories/%E5%85%B6%E4%BB%96/"/>
-    
-    
-    <category term="Curl" scheme="https://xianren-wrd.github.io/tags/Curl/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CCS使用笔记</title>
-    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-0d2b6ccd334f/"/>
-    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-0d2b6ccd334f/</id>
-    <published>2025-10-16T08:53:03.000Z</published>
-    <updated>2025-10-16T09:50:14.305Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;文档&quot;&gt;&lt;a href=&quot;#文档&quot; class=&quot;headerlink&quot; title=&quot;文档&quot;&gt;&lt;/a&gt;文档&lt;/h1&gt;&lt;p&gt;TI 官方文档：&lt;a</summary>
-        
-      
-    
-    
-    
-    <category term="嵌入式IDE" scheme="https://xianren-wrd.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8FIDE/"/>
-    
-    
-    <category term="Code Composer Studio" scheme="https://xianren-wrd.github.io/tags/Code-Composer-Studio/"/>
     
   </entry>
   
