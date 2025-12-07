@@ -3314,7 +3314,7 @@
 </ul>
 <h3 id="A2L生成工具"><a href="#A2L生成工具" class="headerlink" title="A2L生成工具"></a>A2L生成工具</h3><p>这是<strong>自动化</strong>的核心步骤。常见的工具有：</p>
 <ul>
-<li><strong>Vector的 ASAP2 Studio</strong></li>
+<li><strong>Vector的 ASAP2 Tool-Set（自动生成A2L工具），ASAP2 Studio（手动编辑A2L的工具）</strong></li>
 <li><strong>ETAS的 ASCET &#x2F; INCA</strong></li>
 <li><strong>dSPACE的 TargetLink</strong></li>
 <li>一些芯片厂商（如Infineon, NXP）也提供自己的工具链插件。</li>
@@ -3334,7 +3334,7 @@
 <li><strong>XCP on Ethernet：</strong> 则需要指定IP地址、端口号、UDP&#x2F;TCP等。</li>
 </ul>
 </li>
-<li>这部分通常通过一个<strong>A2L编辑器</strong>（如CANape的A2L Editor、ATI Vision）来完成，或者由构建脚本自动将配置文件与上一步生成的数据描述部分合并。</li>
+<li>这部分通常通过一个<strong>A2L编辑器</strong>来完成，或者由构建脚本自动将配置文件与上一步生成的数据描述部分合并。</li>
 </ul>
 <h2 id="最终生成与验证"><a href="#最终生成与验证" class="headerlink" title="最终生成与验证"></a>最终生成与验证</h2><p>最终的A2L文件是上述所有信息的集合体。在ECU项目构建的最后阶段（如每日构建或发布构建），会有一个<strong>自动化脚本</strong>（如Python、Makefile）来驱动整个流程：</p>
 <ol>
