@@ -6,7 +6,7 @@
   <link href="https://xianren-wrd.github.io/atom.xml" rel="self"/>
   
   <link href="https://xianren-wrd.github.io/"/>
-  <updated>2026-06-13T15:46:13.557Z</updated>
+  <updated>2026-06-13T16:47:11.736Z</updated>
   <id>https://xianren-wrd.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>AUTOSAR学习资料</title>
+    <link href="https://xianren-wrd.github.io/2026/prefix%20remember%20to%20change!!!-4c50e2a8a160/"/>
+    <id>https://xianren-wrd.github.io/2026/prefix%20remember%20to%20change!!!-4c50e2a8a160/</id>
+    <published>2026-06-13T16:31:18.000Z</published>
+    <updated>2026-06-13T16:47:11.736Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;AUTOSAR-是什么？&quot;&gt;&lt;a href=&quot;#AUTOSAR-是什么？&quot; class=&quot;headerlink&quot; title=&quot;AUTOSAR 是什么？&quot;&gt;&lt;/a&gt;AUTOSAR 是什么？&lt;/h1&gt;&lt;p&gt;AUTOSAR</summary>
+        
+      
+    
+    
+    
+    <category term="汽车与工业网络" scheme="https://xianren-wrd.github.io/categories/%E6%B1%BD%E8%BD%A6%E4%B8%8E%E5%B7%A5%E4%B8%9A%E7%BD%91%E7%BB%9C/"/>
+    
+    
+    <category term="AUTOSAR" scheme="https://xianren-wrd.github.io/tags/AUTOSAR/"/>
+    
+  </entry>
   
   <entry>
     <title>J1939设计注意点</title>
@@ -176,31 +201,6 @@
   </entry>
   
   <entry>
-    <title>个人学习分享</title>
-    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-3bef8c1b86a0/"/>
-    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-3bef8c1b86a0/</id>
-    <published>2025-10-17T12:43:09.000Z</published>
-    <updated>2025-10-17T13:28:23.558Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;关于学习的思考&quot;&gt;&lt;a href=&quot;#关于学习的思考&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="个人成长" scheme="https://xianren-wrd.github.io/categories/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/"/>
-    
-    
-    <category term="学习方法" scheme="https://xianren-wrd.github.io/tags/%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/"/>
-    
-  </entry>
-  
-  <entry>
     <title>使用Curl排查HTTP问题的经历</title>
     <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-92342a72fd01/"/>
     <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-92342a72fd01/</id>
@@ -247,6 +247,31 @@
     
     
     <category term="Code Composer Studio" scheme="https://xianren-wrd.github.io/tags/Code-Composer-Studio/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>个人学习分享</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-89db45545aed/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-89db45545aed/</id>
+    <published>2025-05-02T12:43:09.000Z</published>
+    <updated>2026-06-13T16:24:39.354Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;关于学习的思考&quot;&gt;&lt;a href=&quot;#关于学习的思考&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="个人成长" scheme="https://xianren-wrd.github.io/categories/%E4%B8%AA%E4%BA%BA%E6%88%90%E9%95%BF/"/>
+    
+    
+    <category term="学习方法" scheme="https://xianren-wrd.github.io/tags/%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/"/>
     
   </entry>
   
@@ -501,31 +526,6 @@
     
     
     <category term="SPI" scheme="https://xianren-wrd.github.io/tags/SPI/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>IIC介绍</title>
-    <link href="https://xianren-wrd.github.io/2023/prefix%20remember%20to%20change!!!-598213f1eb25/"/>
-    <id>https://xianren-wrd.github.io/2023/prefix%20remember%20to%20change!!!-598213f1eb25/</id>
-    <published>2023-10-25T15:21:15.000Z</published>
-    <updated>2026-06-13T15:46:32.566Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;什么是IIC&quot;&gt;&lt;a href=&quot;#什么是IIC&quot; class=&quot;headerlink&quot; title=&quot;什么是IIC&quot;&gt;&lt;/a&gt;什么是IIC&lt;/h1&gt;&lt;p&gt;I2C(IIC,Inter－Integrated</summary>
-        
-      
-    
-    
-    
-    <category term="板级通信协议" scheme="https://xianren-wrd.github.io/categories/%E6%9D%BF%E7%BA%A7%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/"/>
-    
-    
-    <category term="IIC" scheme="https://xianren-wrd.github.io/tags/IIC/"/>
     
   </entry>
   

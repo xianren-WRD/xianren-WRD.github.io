@@ -1295,7 +1295,7 @@
   </entry>
   <entry>
     <title>个人学习分享</title>
-    <url>/2025/prefix%20remember%20to%20change!!!-3bef8c1b86a0/</url>
+    <url>/2025/prefix%20remember%20to%20change!!!-89db45545aed/</url>
     <content><![CDATA[<h1 id="关于学习的思考"><a href="#关于学习的思考" class="headerlink" title="关于学习的思考"></a>关于学习的思考</h1><p>我认为的高效学习：在有限时间内，精准获取所需知识，并能有效内化和应用。</p>
 <p>我对学习的看法：知识是学不完的，论学习能力也比不上AI。我的观点是面向问题学习，让AI成为认知加速器。</p>
 <p>AI是认知的杠杆： 将AI视为研究助理、翻译器、知识连接器和初稿生成器，可以大幅提升工作效率。比如：</p>
@@ -3495,6 +3495,171 @@
       <tags>
         <tag>PNC</tag>
         <tag>VFC</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>AUTOSAR学习资料</title>
+    <url>/2026/prefix%20remember%20to%20change!!!-4c50e2a8a160/</url>
+    <content><![CDATA[<h1 id="AUTOSAR-是什么？"><a href="#AUTOSAR-是什么？" class="headerlink" title="AUTOSAR 是什么？"></a>AUTOSAR 是什么？</h1><p>AUTOSAR 全称：</p>
+<p><strong>AUTomotive Open System ARchitecture</strong></p>
+<p>汽车软件标准架构。</p>
+<p>目前主要分：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Classic Platform</td>
+<td>MCU、ECU、车身控制、底盘、电机</td>
+</tr>
+<tr>
+<td>Adaptive Platform</td>
+<td>智能驾驶、域控制器、高性能计算平台</td>
+</tr>
+</tbody></table>
+<p>绝大部分嵌入式岗位：</p>
+<blockquote>
+<p>先学 Classic AUTOSAR</p>
+</blockquote>
+<p>Adaptive 是后续进阶。</p>
+<h1 id="学习前置知识"><a href="#学习前置知识" class="headerlink" title="学习前置知识"></a>学习前置知识</h1><p>如果这些不会，直接看 AUTOSAR 会崩溃。</p>
+<h2 id="C语言"><a href="#C语言" class="headerlink" title="C语言"></a>C语言</h2><p>至少掌握：</p>
+<ul>
+<li>指针</li>
+<li>结构体</li>
+<li>函数指针</li>
+<li>链表</li>
+<li>位操作</li>
+</ul>
+<p>推荐：</p>
+<h3 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h3><ul>
+<li>C Primer Plus</li>
+<li>The C Programming Language</li>
+</ul>
+<h2 id="ARM-Cortex-M"><a href="#ARM-Cortex-M" class="headerlink" title="ARM Cortex-M"></a>ARM Cortex-M</h2><p>理解：</p>
+<ul>
+<li>中断</li>
+<li>NVIC</li>
+<li>定时器</li>
+<li>CAN</li>
+<li>SPI</li>
+<li>UART</li>
+</ul>
+<p>推荐：</p>
+<ul>
+<li>STM32</li>
+</ul>
+<h2 id="RTOS"><a href="#RTOS" class="headerlink" title="RTOS"></a>RTOS</h2><p>重点：</p>
+<ul>
+<li>Task</li>
+<li>Queue</li>
+<li>Semaphore</li>
+<li>Mutex</li>
+</ul>
+<p>推荐：</p>
+<ul>
+<li><a href="https://www.freertos.org/">FreeRTOS官网</a></li>
+</ul>
+<h2 id="汽车总线"><a href="#汽车总线" class="headerlink" title="汽车总线"></a>汽车总线</h2><p>必须学：</p>
+<h3 id="CAN"><a href="#CAN" class="headerlink" title="CAN"></a>CAN</h3><p>重点：</p>
+<ul>
+<li>CAN Frame</li>
+<li>Arbitration</li>
+<li>Signal</li>
+</ul>
+<h3 id="CAN-FD"><a href="#CAN-FD" class="headerlink" title="CAN FD"></a>CAN FD</h3><h3 id="LIN"><a href="#LIN" class="headerlink" title="LIN"></a>LIN</h3><h1 id="AUTOSAR-学习路线"><a href="#AUTOSAR-学习路线" class="headerlink" title="AUTOSAR 学习路线"></a>AUTOSAR 学习路线</h1><h2 id="第一阶段：理解整体架构"><a href="#第一阶段：理解整体架构" class="headerlink" title="第一阶段：理解整体架构"></a>第一阶段：理解整体架构</h2><p>先看经典架构图。</p>
+<p>AUTOSAR Classic：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Application Layer</span><br><span class="line">       ↓</span><br><span class="line">RTE</span><br><span class="line">       ↓</span><br><span class="line">BSW</span><br><span class="line"> ├── Services</span><br><span class="line"> ├── ECU Abstraction</span><br><span class="line"> ├── MCAL</span><br><span class="line">       ↓</span><br><span class="line">MCU</span><br></pre></td></tr></table></figure>
+
+<p>官方说明：</p>
+<ul>
+<li>Application</li>
+<li>RTE</li>
+<li>BSW</li>
+</ul>
+<p>是 AUTOSAR 最核心的三个层次。</p>
+<h1 id="官方文档"><a href="#官方文档" class="headerlink" title="官方文档"></a>官方文档</h1><p><a href="https://www.autosar.org/standards">AUTOSAR官网</a></p>
+<hr>
+<p>重点下载：</p>
+<h2 id="Classic-Platform"><a href="#Classic-Platform" class="headerlink" title="Classic Platform"></a>Classic Platform</h2><p><a href="https://www.autosar.org/standards/classic-platform">Classic Platform标准文档</a></p>
+<p>重点：</p>
+<h3 id="AUTOSAR-EXP-LayeredSoftwareArchitecture"><a href="#AUTOSAR-EXP-LayeredSoftwareArchitecture" class="headerlink" title="AUTOSAR_EXP_LayeredSoftwareArchitecture"></a>AUTOSAR_EXP_LayeredSoftwareArchitecture</h3><p>经典架构说明书</p>
+<p>第一本看。</p>
+<hr>
+<h3 id="AUTOSAR-SWS-RTE"><a href="#AUTOSAR-SWS-RTE" class="headerlink" title="AUTOSAR_SWS_RTE"></a>AUTOSAR_SWS_RTE</h3><p>RTE规范</p>
+<hr>
+<h3 id="AUTOSAR-SWS-OS"><a href="#AUTOSAR-SWS-OS" class="headerlink" title="AUTOSAR_SWS_OS"></a>AUTOSAR_SWS_OS</h3><p>AUTOSAR OS</p>
+<hr>
+<h3 id="AUTOSAR-SWS-CANDriver"><a href="#AUTOSAR-SWS-CANDriver" class="headerlink" title="AUTOSAR_SWS_CANDriver"></a>AUTOSAR_SWS_CANDriver</h3><p>CAN Driver</p>
+<hr>
+<h3 id="AUTOSAR-SWS-CANInterface"><a href="#AUTOSAR-SWS-CANInterface" class="headerlink" title="AUTOSAR_SWS_CANInterface"></a>AUTOSAR_SWS_CANInterface</h3><p>CAN Interface</p>
+<hr>
+<h3 id="AUTOSAR-TPS-ECUConfiguration"><a href="#AUTOSAR-TPS-ECUConfiguration" class="headerlink" title="AUTOSAR_TPS_ECUConfiguration"></a>AUTOSAR_TPS_ECUConfiguration</h3><p>配置流程</p>
+<hr>
+<p>建议：</p>
+<p>不要下载全部。</p>
+<p>先看：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Layered Architecture</span><br><span class="line">↓</span><br><span class="line">RTE</span><br><span class="line">↓</span><br><span class="line">OS</span><br><span class="line">↓</span><br><span class="line">CAN</span><br></pre></td></tr></table></figure>
+
+<h1 id="GitHub-开源项目"><a href="#GitHub-开源项目" class="headerlink" title="GitHub 开源项目"></a>GitHub 开源项目</h1><p>AUTOSAR 开源项目极少。</p>
+<p>因为商业化严重。</p>
+<h2 id="1-openAUTOSAR"><a href="#1-openAUTOSAR" class="headerlink" title="1. openAUTOSAR"></a>1. openAUTOSAR</h2><p><a href="https://github.com/openAUTOSAR/classic-platform">openAUTOSAR&#x2F;classic-platform</a></p>
+<p>特点：</p>
+<ul>
+<li>开源 Classic AUTOSAR</li>
+<li>Arctic Core 分支</li>
+<li>学习价值最高</li>
+</ul>
+<h2 id="2-Arctic-Core"><a href="#2-Arctic-Core" class="headerlink" title="2. Arctic Core"></a>2. Arctic Core</h2><p><a href="https://github.com/Fang717/arccore-core-21">Arctic Core v21仓库</a></p>
+<p>最经典开源 AUTOSAR。</p>
+<p>很多教学资料都基于它。</p>
+<h2 id="3-ARForge"><a href="#3-ARForge" class="headerlink" title="3. ARForge"></a>3. ARForge</h2><p>一个近年比较有意思的项目。</p>
+<p>可以：</p>
+<ul>
+<li>YAML建模</li>
+<li>导出ARXML</li>
+<li>学习SWC设计</li>
+</ul>
+<p>适合了解配置流程。</p>
+<p>GitHub：</p>
+<p><a href="https://github.com/bzivkovic1986/arforge">ARForge</a></p>
+<h2 id="4-个人收集"><a href="#4-个人收集" class="headerlink" title="4.个人收集"></a>4.个人收集</h2><p><a href="https://github.com/Microrain-zh/uds_protocol/tree/master/autosar">uds_protocol&#x2F;autosar at master · Microrain-zh&#x2F;uds_protocol · GitHub</a></p>
+<p><a href="https://github.com/dingtang2008/autosar/tree/master/src/guide">autosar&#x2F;src&#x2F;guide at master · dingtang2008&#x2F;autosar · GitHub</a></p>
+<h1 id="工具链"><a href="#工具链" class="headerlink" title="工具链"></a>工具链</h1><p>真正企业里最常见：</p>
+<h2 id="Vector"><a href="#Vector" class="headerlink" title="Vector"></a>Vector</h2><h3 id="DaVinci-Configurator"><a href="#DaVinci-Configurator" class="headerlink" title="DaVinci Configurator"></a>DaVinci Configurator</h3><h3 id="DaVinci-Developer"><a href="#DaVinci-Developer" class="headerlink" title="DaVinci Developer"></a>DaVinci Developer</h3><hr>
+<h2 id="Elektrobit"><a href="#Elektrobit" class="headerlink" title="Elektrobit"></a>Elektrobit</h2><h3 id="EB-Tresos"><a href="#EB-Tresos" class="headerlink" title="EB Tresos"></a>EB Tresos</h3><hr>
+<p>这些基本都是收费软件。</p>
+<p>但面试时经常出现：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">是否了解DaVinci</span><br><span class="line">是否了解Tresos</span><br></pre></td></tr></table></figure>
+
+<p>至少知道名字。</p>
+<h1 id="Adaptive-AUTOSAR（进阶）"><a href="#Adaptive-AUTOSAR（进阶）" class="headerlink" title="Adaptive AUTOSAR（进阶）"></a>Adaptive AUTOSAR（进阶）</h1><p>官方：</p>
+<p><a href="https://www.autosar.org/standards/adaptive-platform">Adaptive Platform标准文档</a></p>
+<p>特点：</p>
+<ul>
+<li>Linux</li>
+<li>POSIX</li>
+<li>SOA</li>
+<li>SOME&#x2F;IP</li>
+<li>C++17</li>
+</ul>
+<p>与 Classic 最大区别：</p>
+<p>Classic：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">静态配置</span><br></pre></td></tr></table></figure>
+
+<p>Adaptive：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">动态服务发现</span><br></pre></td></tr></table></figure>
+
+<p>运行时连接服务。</p>
+]]></content>
+      <categories>
+        <category>汽车与工业网络</category>
+      </categories>
+      <tags>
+        <tag>AUTOSAR</tag>
       </tags>
   </entry>
 </search>
