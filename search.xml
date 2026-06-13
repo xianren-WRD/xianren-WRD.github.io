@@ -1928,7 +1928,7 @@
 <p>从逻辑分析仪的波形来看，SOC是前八个字节，后八个字节这样去发的。但是仿真查看MCU接收的数据，收到的要不就是全是前八个字节，要不就是后八个字节。数据接收不完整，所以ACK发不出去， ACK回复超时SOC会通知MCU Reset串口，如此循环…</p>
 <h1 id="仿真"><a href="#仿真" class="headerlink" title="仿真"></a>仿真</h1><p>首先，怀疑是不是中断没有进入，但是增加了count去记录中断进入的次数，发现中断是正常进入的。考虑到SOC会发很多东西，而且收不到ACK会重发，所以让SOC先发一帧，这样调试起来比较清晰。</p>
 <p>SOC端改为只发送一帧数据后，很明显的现象就是，明明逻辑分析仪抓到的是非0数据。但是，有时候仿真看收到的是全0数据；明明代码给发送的buffer赋值了，仿真也跑了赋值，但是实际发出去的是全0。从这个现象可以看出，这个问题是Cache的问题，开启Cache的RAM，CPU和DMA对RAM多主访问的情况，会有数据一致性问题。</p>
-<p><strong>Cache介绍：<a href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-b53a9b624865/">Cache扫盲</a></strong></p>
+<p><strong>Cache介绍：<a href="https://xianren-wrd.github.io/2024/prefix%20remember%20to%20change!!!-f69a5bb74b58/">Cache扫盲</a></strong></p>
 <h1 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h1><p>之前<code>bss段</code>是链接到DTCM的，MPU配置是<code>non_cacheable</code>的，所以之前用DMA的时候没有问题。后来，由于内存不足，UART相关的代码，链接到了SRAM，但是SRAM在启动代码里面的<code>SystemInit</code>函数配置MPU时，全部配置成了Cache，并且是写回策略，导致引发了数据一致性问题。</p>
 <h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>解决该问题的方法有两种：</p>
 <ol>
@@ -1982,6 +1982,7 @@
     <title>Cache扫盲</title>
     <url>/2024/prefix%20remember%20to%20change!!!-f69a5bb74b58/</url>
     <content><![CDATA[<h1 id="什么是Cache"><a href="#什么是Cache" class="headerlink" title="什么是Cache"></a>什么是Cache</h1><p>它是一种位于处理器核心和主存之间的高速缓冲存储器，用于存储频繁访问的数据以加速数据的检索。Cache的基本工作原理基于计算机程序执行的局部性特性，即在一定时间内，CPU会倾向于访问最近访问过的数据或附近的数据。</p>
+<p>更多可以看看野火的文档：<a href="https://doc.embedfire.com/mcu/i.mxrt/i.mxrt1052/zh/latest/doc/chapter40/chapter40.html#id29">40. MPU和Cache — [野火]i.MX RT库开发实战指南——基于i.MXRT1052 文档</a></p>
 <h1 id="为什么要用Cache"><a href="#为什么要用Cache" class="headerlink" title="为什么要用Cache"></a>为什么要用Cache</h1><p>Cache是为了提供快速的CPU存储访问而设计的，它的存在可以显著提高处理器的数据处理速度。在程序运行过程中CPU需要不断的从内存读取指令和数据，受限于内存访问速度，CPU需要等待指令或数据读取完成，这就造成了CPU的浪费。Cache就是用来减少CPU等待浪费的问题。Cache的读、写速度要比片内或片外内存快很多，使用Cache能大大提高程序的执行效率。</p>
 <h1 id="Cache的机制"><a href="#Cache的机制" class="headerlink" title="Cache的机制"></a>Cache的机制</h1><p>Cache系统一般包括多个Cache line，每个Cache line通常包含一个数据块和一个标记。数据块是实际存储的数据，而标记则包含了该数据块的一些元信息，如数据块所在的内存地址、数据块的状态等。</p>
 <p>当CPU需要读取某个内存地址的数据时，会首先查看对应的Cache line是否已被加载到Cache中。如果已经被加载，这个过程就被称为“命中”，则直接从Cache中读取该数据，这大大提高了处理速度；否则，如果Cache中没有所需的数据，这个过程被称为“未命中”，CPU则需要从主存储器中读取数据，并将其放入Cache中以备后用。</p>
@@ -1993,7 +1994,7 @@
 </li>
 </ul>
 <p>根据MPU设置的不同，Cache读、写不同属性的内存会采用不同的策略。</p>
-<p><strong>MPU介绍：<a href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-f119c37d2168/">MPU扫盲</a></strong></p>
+<p><strong>MPU介绍：<a href="https://xianren-wrd.github.io/2024/prefix%20remember%20to%20change!!!-b53991953c44/">MPU扫盲</a></strong></p>
 <h1 id="S32K312-Cache简述"><a href="#S32K312-Cache简述" class="headerlink" title="S32K312 Cache简述"></a>S32K312 Cache简述</h1><p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251020220919.png"></p>
 <p>Cache属于内核外设，Cortex_M3与Cortex_M4没有Cache，Cortex_M7新增了Cache功能。</p>
 <p>Cortex-M7内核Cache分为I-cache 和D-cache，在S32K312中，它们的大小均为8K。</p>
