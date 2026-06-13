@@ -32,7 +32,7 @@
   </entry>
   <entry>
     <title>J1939设计注意点</title>
-    <url>/2025/prefix%20remember%20to%20change!!!-9a9c4e5c1e4f/</url>
+    <url>/2025/prefix%20remember%20to%20change!!!-c974d95309d9/</url>
     <content><![CDATA[<h1 id="需求规范检查"><a href="#需求规范检查" class="headerlink" title="需求规范检查"></a>需求规范检查</h1><h2 id="标准规范"><a href="#标准规范" class="headerlink" title="标准规范"></a>标准规范</h2><p><strong>OSI层级</strong></p>
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251013203758.png"></p>
 <table>
@@ -836,7 +836,7 @@
   </entry>
   <entry>
     <title>同星UDS刷写工程搭建</title>
-    <url>/2025/prefix%20remember%20to%20change!!!-68598371f033/</url>
+    <url>/2024/prefix%20remember%20to%20change!!!-217df0f37907/</url>
     <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>之前做的升级工程是基于CANoe的，但是CANoe工具数量有限，且价格昂贵，在没有CANoe的情况下，可以使用同星的自动诊断流程来升级ECU。SOC的同事也可以使用同星，自行验证升级的功能。</p>
 <h1 id="同星UDS刷写工程搭建"><a href="#同星UDS刷写工程搭建" class="headerlink" title="同星UDS刷写工程搭建"></a>同星UDS刷写工程搭建</h1><h2 id="软件版本"><a href="#软件版本" class="headerlink" title="软件版本"></a>软件版本</h2><p>同星硬件配套的TSMaster软件：</p>
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20251016214458.png"></p>
@@ -902,8 +902,8 @@
       </tags>
   </entry>
   <entry>
-    <title>报文回放</title>
-    <url>/2025/prefix%20remember%20to%20change!!!-76f0d30e8b43/</url>
+    <title>CAN报文回放</title>
+    <url>/2024/prefix%20remember%20to%20change!!!-76a910a81c72/</url>
     <content><![CDATA[<h1 id="在线回放"><a href="#在线回放" class="headerlink" title="在线回放"></a>在线回放</h1><p><strong>为什么需要在线回放报文？</strong></p>
 <ol>
 <li><p>复现问题场景</p>
@@ -1157,7 +1157,7 @@
   </entry>
   <entry>
     <title>LIN总线介绍</title>
-    <url>/2025/prefix%20remember%20to%20change!!!-bf0b42ffbba4/</url>
+    <url>/2024/prefix%20remember%20to%20change!!!-70015d0e55c4/</url>
     <content><![CDATA[<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>LIN（Local Interconnect Network）总线是在汽车内广泛应用的串行通信协议，它的第一个完整版本 V1.3 发布于 2002 年，在 2016 年LIN总线被正式列为国际标准（ISO 17987）。</p>
 <p>LIN总线是针对汽车分布式电子系统而定义的一种低成本的低速串行通讯网络，是对控制器区域网络(CAN)等其它汽车多路网络的一种补充，适用于对网络的带宽、性能或容错功能没有过高要求的应用。</p>
 <p>LIN适用于节点数目小于等于 16 个，数据速率 20Kbps 以内的应用场合。</p>
@@ -1448,7 +1448,7 @@
   </entry>
   <entry>
     <title>IPC共享内存调试</title>
-    <url>/2025/prefix%20remember%20to%20change!!!-25bc31419109/</url>
+    <url>/2025/prefix%20remember%20to%20change!!!-b42b10787202/</url>
     <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>由于 RPMsg 一次只能传递 496 字节的信息(在Linux系统中，RPMsg的最大大小包括16字节的头部，因此消息的有效载荷大小为512 - 16 &#x3D; 496字节)，而CAN升级过程中需要传输的数据量是很大的，这样会很影响升级速率。因此，考虑在共享内存区域中传递大量数据，这样会更加高效。</p>
 <p>参考 <code>RPMsg_char zerocopy</code> 示例，了解如何定义一个共享内存区域来在 Linux 和远程核心之间传递数据，然后使用 <code>RPMsg</code> 作为信号机制，在共享内存区域准备好读取时通知另一个核心。</p>
 <h1 id="相关知识"><a href="#相关知识" class="headerlink" title="相关知识"></a>相关知识</h1><h2 id="IPC"><a href="#IPC" class="headerlink" title="IPC"></a>IPC</h2><p>IPC代表“处理器间通信”。IPC可以是处理器核心之间的任何形式的通信。TI AM62Ax可以支持多种IPC实现。</p>
@@ -1923,7 +1923,7 @@
   </entry>
   <entry>
     <title>Cache引发的数据一致性问题</title>
-    <url>/2025/prefix%20remember%20to%20change!!!-a7530e697474/</url>
+    <url>/2025/prefix%20remember%20to%20change!!!-b56154e70c92/</url>
     <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>调试MCU(S32K312)和SOC之间的串口时，发现逻辑分析仪抓到的数据波形异常。</p>
 <p>从逻辑分析仪的波形来看，SOC是前八个字节，后八个字节这样去发的。但是仿真查看MCU接收的数据，收到的要不就是全是前八个字节，要不就是后八个字节。数据接收不完整，所以ACK发不出去， ACK回复超时SOC会通知MCU Reset串口，如此循环…</p>
 <h1 id="仿真"><a href="#仿真" class="headerlink" title="仿真"></a>仿真</h1><p>首先，怀疑是不是中断没有进入，但是增加了count去记录中断进入的次数，发现中断是正常进入的。考虑到SOC会发很多东西，而且收不到ACK会重发，所以让SOC先发一帧，这样调试起来比较清晰。</p>
@@ -1980,7 +1980,7 @@
   </entry>
   <entry>
     <title>Cache扫盲</title>
-    <url>/2025/prefix%20remember%20to%20change!!!-b53a9b624865/</url>
+    <url>/2024/prefix%20remember%20to%20change!!!-f69a5bb74b58/</url>
     <content><![CDATA[<h1 id="什么是Cache"><a href="#什么是Cache" class="headerlink" title="什么是Cache"></a>什么是Cache</h1><p>它是一种位于处理器核心和主存之间的高速缓冲存储器，用于存储频繁访问的数据以加速数据的检索。Cache的基本工作原理基于计算机程序执行的局部性特性，即在一定时间内，CPU会倾向于访问最近访问过的数据或附近的数据。</p>
 <h1 id="为什么要用Cache"><a href="#为什么要用Cache" class="headerlink" title="为什么要用Cache"></a>为什么要用Cache</h1><p>Cache是为了提供快速的CPU存储访问而设计的，它的存在可以显著提高处理器的数据处理速度。在程序运行过程中CPU需要不断的从内存读取指令和数据，受限于内存访问速度，CPU需要等待指令或数据读取完成，这就造成了CPU的浪费。Cache就是用来减少CPU等待浪费的问题。Cache的读、写速度要比片内或片外内存快很多，使用Cache能大大提高程序的执行效率。</p>
 <h1 id="Cache的机制"><a href="#Cache的机制" class="headerlink" title="Cache的机制"></a>Cache的机制</h1><p>Cache系统一般包括多个Cache line，每个Cache line通常包含一个数据块和一个标记。数据块是实际存储的数据，而标记则包含了该数据块的一些元信息，如数据块所在的内存地址、数据块的状态等。</p>
@@ -2040,7 +2040,7 @@
   </entry>
   <entry>
     <title>MPU扫盲</title>
-    <url>/2025/prefix%20remember%20to%20change!!!-f119c37d2168/</url>
+    <url>/2024/prefix%20remember%20to%20change!!!-b53991953c44/</url>
     <content><![CDATA[<h1 id="什么是MPU"><a href="#什么是MPU" class="headerlink" title="什么是MPU"></a>什么是MPU</h1><p>MPU：Memory Protection Unit，即内存保护单元。它是一种提供内存保护的计算机硬件单元，它是单片机内核中用于内存保护的可选组件，通常作为CPU的一部分来实现。主要负责定义内存空间的属性，例如特权指令和非特权指令以及Cache是否可访问。</p>
 <h1 id="MPU的作用"><a href="#MPU的作用" class="headerlink" title="MPU的作用"></a>MPU的作用</h1><p>MPU可以将内存划分为不同的区域，并且可以设置每个区域的访问属性，提高系统的稳定性。</p>
 <p>典型应用如下：</p>
@@ -2098,7 +2098,7 @@
   </entry>
   <entry>
     <title>中断扫盲</title>
-    <url>/2025/prefix%20remember%20to%20change!!!-e79f52ee8adb/</url>
+    <url>/2022/prefix%20remember%20to%20change!!!-0447b8dd0e00/</url>
     <content><![CDATA[<h1 id="什么是中断"><a href="#什么是中断" class="headerlink" title="什么是中断"></a>什么是中断</h1><p>CPU执行程序时，由于发生了某种随机的事件(外部或内部)，引起CPU暂时中断正在运行的程序，转去执行一段特殊的服务程序(中断服务子程序或中断处理程序)，以处理该事件，该事件处理完后又返回被中断的程序继续执行，这一过程称为中断。</p>
 <p>在计算机科学中，中断（Interrupt）是指处理器接收到来自硬件或软件的信号，提示发生了某个事件，应该被注意，这种情况就称为中断。</p>
 <p>通常，在接收到来自外围硬件（相对于中央处理器和内存）的异步信号，或来自软件的同步信号之后，处理器将会进行相应的硬件／软件处理。发出这样的信号称为进行中断请求（interrupt request，IRQ）。</p>
@@ -2221,7 +2221,7 @@
   </entry>
   <entry>
     <title>数据通信</title>
-    <url>/2025/prefix%20remember%20to%20change!!!-c32fb0d47bf1/</url>
+    <url>/2023/prefix%20remember%20to%20change!!!-9fb9a58697d6/</url>
     <content><![CDATA[<h1 id="基本组成"><a href="#基本组成" class="headerlink" title="基本组成"></a>基本组成</h1><p><strong>数据通信系统是软硬件的结合体。</strong></p>
 <p>数据指对数字、字母以及其组合意义的一种表达。数据通信是两点或多点之间，借助某种传输介质以二进制形式进行信息交换的过程。</p>
 <p>数据通信技术主要涉及通信协议、信号编码、接口、同步、数据交换、安全、通信控制与管理等。</p>
@@ -2337,7 +2337,7 @@
   </entry>
   <entry>
     <title>IIC介绍</title>
-    <url>/2025/prefix%20remember%20to%20change!!!-ad3df2fe07bc/</url>
+    <url>/2023/prefix%20remember%20to%20change!!!-598213f1eb25/</url>
     <content><![CDATA[<h1 id="什么是IIC"><a href="#什么是IIC" class="headerlink" title="什么是IIC"></a>什么是IIC</h1><p>I2C(IIC,Inter－Integrated Circuit)，<strong>两线式串行通信总线</strong>，其实是IICBus简称，所以中文应该叫<strong>集成电路总线</strong>，它是一种串行通信总线，使用多主从架构。由PHILIPS公司开发用于连接微控制器及其外围设备。它是由数据线SDA和时钟SCL构成的串行总线，可发送和接收数据。在CPU与被控IC之间、IC与IC之间进行双向传送，高速IIC总线一般可达<strong>400kbps</strong>。 </p>
 <p>IIC是<strong>半双工</strong>通信方式，SDA 和 SCL 都是双向的；数据可以在主设备和从设备之间来回传送。主设备启动总线上的所有数据传输，并生成所有时钟信号。在开始传输数据之前，主设备必须先寻址一个特定的从设备并接收一条确认信息。</p>
 <h1 id="协议层"><a href="#协议层" class="headerlink" title="协议层"></a>协议层</h1><p>每个I2C数据操作都由以下元素组成：启动（或重复启动）、寻址、数据和停止。</p>
@@ -2485,7 +2485,7 @@
   </entry>
   <entry>
     <title>SPI介绍</title>
-    <url>/2025/prefix%20remember%20to%20change!!!-ab00c8087bd4/</url>
+    <url>/2023/prefix%20remember%20to%20change!!!-686ac33f803e/</url>
     <content><![CDATA[<h1 id="什么是SPI"><a href="#什么是SPI" class="headerlink" title="什么是SPI"></a>什么是SPI</h1><p>SPI 是英语Serial Peripheral interface的缩写，顾名思义就是串行外围设备接口，是一种用于芯片通信的同步串行通信接口规范，是Motorola首先在其MC68HCXX系列处理器上定义的。</p>
 <p>SPI，是一种<strong>高速的，全双工，同步</strong>的通信总线，并且在芯片的管脚上只占用<strong>四根线</strong>，节约了芯片的管脚，同时为PCB的布局上节省空间，提供方便。</p>
 <p>SPI 接口主要应用在 EEPROM，FLASH，实时时钟，AD转换器，还有数字信号处理器和数字信号解码器之间。（M4高达37.5Mbps，不过很多外围设备往往只支持高达10Mbps，极少部分的设备能够超过10Mbps，例如W25Q128）</p>
@@ -2750,7 +2750,7 @@
   </entry>
   <entry>
     <title>看门狗扫盲</title>
-    <url>/2025/prefix%20remember%20to%20change!!!-5323449eed0c/</url>
+    <url>/2023/prefix%20remember%20to%20change!!!-7716657f6d23/</url>
     <content><![CDATA[<blockquote>
 <p>下面以STM32为例介绍</p>
 </blockquote>
@@ -2804,7 +2804,7 @@
   </entry>
   <entry>
     <title>E2E介绍</title>
-    <url>/2025/prefix%20remember%20to%20change!!!-ef0ad893c1c4/</url>
+    <url>/2024/prefix%20remember%20to%20change!!!-4d41615f7db0/</url>
     <content><![CDATA[<h1 id="E2E-的核心定义与目标"><a href="#E2E-的核心定义与目标" class="headerlink" title="E2E 的核心定义与目标"></a>E2E 的核心定义与目标</h1><p>E2E 是 <strong>End-to-End</strong> 的缩写，中文通常翻译为 <strong>“端到端”</strong> 。在汽车电子，特别是涉及功能安全的领域，它是一个至关重要的概念。</p>
 <p><strong>核心定义：</strong><br>E2E 指的是一种保护机制，它确保在<strong>发送节点</strong>和<strong>接收节点</strong>之间的整个通信路径上，数据的<strong>完整性、真实性</strong>和<strong>时效性</strong>得到保护。</p>
 <p><strong>简单来说：</strong> 发送方在发出数据前，为数据加上一个“安全信封”（包含校验码、计数器等），接收方在收到数据后，会仔细检查这个“信封”。只有通过所有检查，接收方才会认为这个数据是可信、可用、最新的。</p>
@@ -3012,7 +3012,7 @@
   </entry>
   <entry>
     <title>OBD诊断介绍</title>
-    <url>/2025/prefix%20remember%20to%20change!!!-a58c172dcc1b/</url>
+    <url>/2025/prefix%20remember%20to%20change!!!-a8d6a8adb342/</url>
     <content><![CDATA[<h1 id="OBD诊断"><a href="#OBD诊断" class="headerlink" title="OBD诊断"></a>OBD诊断</h1><p><strong>OBD系统的首要任务和设计初衷，就是为了确保汽车在整个生命周期内，其尾气排放都能符合环保法规要求，从而保护大气环境和公众健康。</strong></p>
 <p>它不是为了提高性能或舒适度，而是一个由<strong>政府法规强制推行</strong>的、用于<strong>环保监督</strong>的系统。当它亮起那个黄色的发动机故障灯时，本质上是在说：“<strong>我的排放系统出问题了，现在排出的尾气可能超标，对环境不友好，需要尽快检修！</strong>”</p>
 <p>主要的有害排放物有哪些？</p>
@@ -3260,7 +3260,7 @@
   </entry>
   <entry>
     <title>A2L文件生成</title>
-    <url>/2025/prefix%20remember%20to%20change!!!-3f5ba5b47990/</url>
+    <url>/2025/prefix%20remember%20to%20change!!!-d156a3e208c9/</url>
     <content><![CDATA[<h1 id="A2L文件是什么？"><a href="#A2L文件是什么？" class="headerlink" title="A2L文件是什么？"></a>A2L文件是什么？</h1><p>在汽车电子开发中，A2L文件是XCP标定协议能够正常工作的“地图”和“字典”。</p>
 <p><strong>A2L文件</strong>是一个基于ASCII文本的描述文件，它使用一种叫做ASAP2的标准格式。这个文件详细描述了ECU（电子控制单元）内部的所有“可标定”信息，包括：</p>
 <ul>
@@ -3363,7 +3363,7 @@
   </entry>
   <entry>
     <title>PNC和VFC介绍</title>
-    <url>/2025/prefix%20remember%20to%20change!!!-e6d5a090949a/</url>
+    <url>/2025/prefix%20remember%20to%20change!!!-1c8e705f2245/</url>
     <content><![CDATA[<h1 id="PNC与VFC：从功能到网络"><a href="#PNC与VFC：从功能到网络" class="headerlink" title="PNC与VFC：从功能到网络"></a>PNC与VFC：从功能到网络</h1><p>PNC（Partial Network Cluster，部分网络集群）和VFC（Virtual Function Cluster，虚拟功能簇），是实现车辆“按需通信、节能降耗”的关键概念。</p>
 <p>你可以这样理解二者的关系：<strong>VFC是应用层的“逻辑功能组”，而PNC是实现该功能的“物理通信组”</strong>。</p>
 <table>

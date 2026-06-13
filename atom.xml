@@ -6,7 +6,7 @@
   <link href="https://xianren-wrd.github.io/atom.xml" rel="self"/>
   
   <link href="https://xianren-wrd.github.io/"/>
-  <updated>2025-12-01T15:16:21.796Z</updated>
+  <updated>2026-06-13T15:46:13.557Z</updated>
   <id>https://xianren-wrd.github.io/</id>
   
   <author>
@@ -17,45 +17,18 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>PNC和VFC介绍</title>
-    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-e6d5a090949a/"/>
-    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-e6d5a090949a/</id>
-    <published>2025-12-01T14:12:02.000Z</published>
-    <updated>2025-12-01T15:16:21.796Z</updated>
+    <title>J1939设计注意点</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-c974d95309d9/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-c974d95309d9/</id>
+    <published>2025-12-13T11:41:58.000Z</published>
+    <updated>2026-06-13T15:46:13.557Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;h1 id=&quot;PNC与VFC：从功能到网络&quot;&gt;&lt;a href=&quot;#PNC与VFC：从功能到网络&quot; class=&quot;headerlink&quot; title=&quot;PNC与VFC：从功能到网络&quot;&gt;&lt;/a&gt;PNC与VFC：从功能到网络&lt;/h1&gt;&lt;p&gt;PNC（Partial Network</summary>
-        
-      
-    
-    
-    
-    <category term="汽车与工业网络" scheme="https://xianren-wrd.github.io/categories/%E6%B1%BD%E8%BD%A6%E4%B8%8E%E5%B7%A5%E4%B8%9A%E7%BD%91%E7%BB%9C/"/>
-    
-    
-    <category term="PNC" scheme="https://xianren-wrd.github.io/tags/PNC/"/>
-    
-    <category term="VFC" scheme="https://xianren-wrd.github.io/tags/VFC/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>A2L文件生成</title>
-    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-3f5ba5b47990/"/>
-    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-3f5ba5b47990/</id>
-    <published>2025-12-01T13:34:54.000Z</published>
-    <updated>2025-12-07T14:46:49.027Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;A2L文件是什么？&quot;&gt;&lt;a href=&quot;#A2L文件是什么？&quot; class=&quot;headerlink&quot;</summary>
+    <summary type="html">&lt;h1 id=&quot;需求规范检查&quot;&gt;&lt;a href=&quot;#需求规范检查&quot; class=&quot;headerlink&quot; title=&quot;需求规范检查&quot;&gt;&lt;/a&gt;需求规范检查&lt;/h1&gt;&lt;h2 id=&quot;标准规范&quot;&gt;&lt;a href=&quot;#标准规范&quot; class=&quot;headerlink&quot;</summary>
         
       
     
@@ -64,246 +37,43 @@
     <category term="汽车与工业网络" scheme="https://xianren-wrd.github.io/categories/%E6%B1%BD%E8%BD%A6%E4%B8%8E%E5%B7%A5%E4%B8%9A%E7%BD%91%E7%BB%9C/"/>
     
     
-    <category term="A2L" scheme="https://xianren-wrd.github.io/tags/A2L/"/>
-    
-    <category term="XCP" scheme="https://xianren-wrd.github.io/tags/XCP/"/>
+    <category term="J1939" scheme="https://xianren-wrd.github.io/tags/J1939/"/>
     
   </entry>
   
   <entry>
-    <title>OBD诊断介绍</title>
-    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-a58c172dcc1b/"/>
-    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-a58c172dcc1b/</id>
-    <published>2025-11-30T14:09:36.000Z</published>
-    <updated>2025-11-30T15:27:13.203Z</updated>
+    <title>IPC共享内存调试</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-b42b10787202/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-b42b10787202/</id>
+    <published>2025-12-01T12:34:48.000Z</published>
+    <updated>2026-06-13T15:54:21.424Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;h1 id=&quot;OBD诊断&quot;&gt;&lt;a href=&quot;#OBD诊断&quot; class=&quot;headerlink&quot;</summary>
+    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;由于 RPMsg 一次只能传递 496</summary>
         
       
     
     
     
-    <category term="汽车与工业网络" scheme="https://xianren-wrd.github.io/categories/%E6%B1%BD%E8%BD%A6%E4%B8%8E%E5%B7%A5%E4%B8%9A%E7%BD%91%E7%BB%9C/"/>
+    <category term="异构多核通信" scheme="https://xianren-wrd.github.io/categories/%E5%BC%82%E6%9E%84%E5%A4%9A%E6%A0%B8%E9%80%9A%E4%BF%A1/"/>
     
     
-    <category term="诊断" scheme="https://xianren-wrd.github.io/tags/%E8%AF%8A%E6%96%AD/"/>
+    <category term="共享内存" scheme="https://xianren-wrd.github.io/tags/%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98/"/>
     
-  </entry>
-  
-  <entry>
-    <title>E2E介绍</title>
-    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-ef0ad893c1c4/"/>
-    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-ef0ad893c1c4/</id>
-    <published>2025-11-30T13:15:02.000Z</published>
-    <updated>2025-11-30T15:22:02.550Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;E2E-的核心定义与目标&quot;&gt;&lt;a href=&quot;#E2E-的核心定义与目标&quot; class=&quot;headerlink&quot; title=&quot;E2E 的核心定义与目标&quot;&gt;&lt;/a&gt;E2E 的核心定义与目标&lt;/h1&gt;&lt;p&gt;E2E 是</summary>
-        
-      
-    
-    
-    
-    <category term="汽车与工业网络" scheme="https://xianren-wrd.github.io/categories/%E6%B1%BD%E8%BD%A6%E4%B8%8E%E5%B7%A5%E4%B8%9A%E7%BD%91%E7%BB%9C/"/>
-    
-    
-    <category term="E2E" scheme="https://xianren-wrd.github.io/tags/E2E/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>SPI介绍</title>
-    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-ab00c8087bd4/"/>
-    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-ab00c8087bd4/</id>
-    <published>2025-10-25T15:21:31.000Z</published>
-    <updated>2025-10-26T14:35:37.680Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;什么是SPI&quot;&gt;&lt;a href=&quot;#什么是SPI&quot; class=&quot;headerlink&quot; title=&quot;什么是SPI&quot;&gt;&lt;/a&gt;什么是SPI&lt;/h1&gt;&lt;p&gt;SPI 是英语Serial Peripheral</summary>
-        
-      
-    
-    
-    
-    <category term="板级通信协议" scheme="https://xianren-wrd.github.io/categories/%E6%9D%BF%E7%BA%A7%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/"/>
-    
-    
-    <category term="SPI" scheme="https://xianren-wrd.github.io/tags/SPI/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>IIC介绍</title>
-    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-ad3df2fe07bc/"/>
-    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-ad3df2fe07bc/</id>
-    <published>2025-10-25T15:21:15.000Z</published>
-    <updated>2025-10-26T14:16:55.882Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;什么是IIC&quot;&gt;&lt;a href=&quot;#什么是IIC&quot; class=&quot;headerlink&quot; title=&quot;什么是IIC&quot;&gt;&lt;/a&gt;什么是IIC&lt;/h1&gt;&lt;p&gt;I2C(IIC,Inter－Integrated</summary>
-        
-      
-    
-    
-    
-    <category term="板级通信协议" scheme="https://xianren-wrd.github.io/categories/%E6%9D%BF%E7%BA%A7%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/"/>
-    
-    
-    <category term="IIC" scheme="https://xianren-wrd.github.io/tags/IIC/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>看门狗扫盲</title>
-    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-5323449eed0c/"/>
-    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-5323449eed0c/</id>
-    <published>2025-10-25T15:03:12.000Z</published>
-    <updated>2025-10-25T15:18:47.267Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;blockquote&gt;
-&lt;p&gt;下面以STM32为例介绍&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h1 id=&quot;独立看门狗&quot;&gt;&lt;a href=&quot;#独立看门狗&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="嵌入式概念扫盲" scheme="https://xianren-wrd.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E6%A6%82%E5%BF%B5%E6%89%AB%E7%9B%B2/"/>
-    
-    
-    <category term="看门狗" scheme="https://xianren-wrd.github.io/tags/%E7%9C%8B%E9%97%A8%E7%8B%97/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>中断扫盲</title>
-    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-e79f52ee8adb/"/>
-    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-e79f52ee8adb/</id>
-    <published>2025-10-25T14:35:09.000Z</published>
-    <updated>2025-10-25T15:00:33.521Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;什么是中断&quot;&gt;&lt;a href=&quot;#什么是中断&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="嵌入式概念扫盲" scheme="https://xianren-wrd.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E6%A6%82%E5%BF%B5%E6%89%AB%E7%9B%B2/"/>
-    
-    
-    <category term="中断" scheme="https://xianren-wrd.github.io/tags/%E4%B8%AD%E6%96%AD/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>数据通信</title>
-    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-c32fb0d47bf1/"/>
-    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-c32fb0d47bf1/</id>
-    <published>2025-10-25T14:06:48.000Z</published>
-    <updated>2025-10-25T14:42:00.825Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;基本组成&quot;&gt;&lt;a href=&quot;#基本组成&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="嵌入式概念扫盲" scheme="https://xianren-wrd.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E6%A6%82%E5%BF%B5%E6%89%AB%E7%9B%B2/"/>
-    
-    
-    <category term="通信" scheme="https://xianren-wrd.github.io/tags/%E9%80%9A%E4%BF%A1/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MPU扫盲</title>
-    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-f119c37d2168/"/>
-    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-f119c37d2168/</id>
-    <published>2025-10-20T14:04:34.000Z</published>
-    <updated>2025-10-20T14:17:49.987Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;什么是MPU&quot;&gt;&lt;a href=&quot;#什么是MPU&quot; class=&quot;headerlink&quot; title=&quot;什么是MPU&quot;&gt;&lt;/a&gt;什么是MPU&lt;/h1&gt;&lt;p&gt;MPU：Memory Protection</summary>
-        
-      
-    
-    
-    
-    <category term="嵌入式概念扫盲" scheme="https://xianren-wrd.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E6%A6%82%E5%BF%B5%E6%89%AB%E7%9B%B2/"/>
-    
-    
-    <category term="MPU" scheme="https://xianren-wrd.github.io/tags/MPU/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Cache扫盲</title>
-    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-b53a9b624865/"/>
-    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-b53a9b624865/</id>
-    <published>2025-10-20T14:04:13.000Z</published>
-    <updated>2025-10-20T15:12:53.419Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;什么是Cache&quot;&gt;&lt;a href=&quot;#什么是Cache&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="嵌入式概念扫盲" scheme="https://xianren-wrd.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E6%A6%82%E5%BF%B5%E6%89%AB%E7%9B%B2/"/>
-    
-    
-    <category term="Cache" scheme="https://xianren-wrd.github.io/tags/Cache/"/>
+    <category term="TI AM62A" scheme="https://xianren-wrd.github.io/tags/TI-AM62A/"/>
     
   </entry>
   
   <entry>
     <title>Cache引发的数据一致性问题</title>
-    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-a7530e697474/"/>
-    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-a7530e697474/</id>
-    <published>2025-10-20T13:41:01.000Z</published>
-    <updated>2025-10-20T15:12:26.363Z</updated>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-b56154e70c92/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-b56154e70c92/</id>
+    <published>2025-11-20T13:41:01.000Z</published>
+    <updated>2026-06-13T15:53:47.901Z</updated>
     
     
       
@@ -380,58 +150,6 @@
   </entry>
   
   <entry>
-    <title>IPC共享内存调试</title>
-    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-25bc31419109/"/>
-    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-25bc31419109/</id>
-    <published>2025-10-18T12:34:48.000Z</published>
-    <updated>2025-10-18T14:32:24.796Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;由于 RPMsg 一次只能传递 496</summary>
-        
-      
-    
-    
-    
-    <category term="异构多核通信" scheme="https://xianren-wrd.github.io/categories/%E5%BC%82%E6%9E%84%E5%A4%9A%E6%A0%B8%E9%80%9A%E4%BF%A1/"/>
-    
-    
-    <category term="共享内存" scheme="https://xianren-wrd.github.io/tags/%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98/"/>
-    
-    <category term="TI AM62A" scheme="https://xianren-wrd.github.io/tags/TI-AM62A/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>LIN总线介绍</title>
-    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-bf0b42ffbba4/"/>
-    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-bf0b42ffbba4/</id>
-    <published>2025-10-17T14:13:50.000Z</published>
-    <updated>2025-10-17T15:02:59.434Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h1&gt;&lt;p&gt;LIN（Local Interconnect Network）总线是在汽车内广泛应用的串行通信协议，它的第一个完整版本 V1.3 发布于</summary>
-        
-      
-    
-    
-    
-    <category term="汽车与工业网络" scheme="https://xianren-wrd.github.io/categories/%E6%B1%BD%E8%BD%A6%E4%B8%8E%E5%B7%A5%E4%B8%9A%E7%BD%91%E7%BB%9C/"/>
-    
-    
-    <category term="LIN" scheme="https://xianren-wrd.github.io/tags/LIN/"/>
-    
-  </entry>
-  
-  <entry>
     <title>ASPICE文档编写笔记</title>
     <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-728c68a67aa9/"/>
     <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-728c68a67aa9/</id>
@@ -483,11 +201,240 @@
   </entry>
   
   <entry>
-    <title>报文回放</title>
-    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-76f0d30e8b43/"/>
-    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-76f0d30e8b43/</id>
-    <published>2025-10-16T14:33:42.000Z</published>
-    <updated>2025-10-16T15:21:54.344Z</updated>
+    <title>使用Curl排查HTTP问题的经历</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-92342a72fd01/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-92342a72fd01/</id>
+    <published>2025-10-16T10:16:05.000Z</published>
+    <updated>2025-10-16T15:19:03.400Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="其他" scheme="https://xianren-wrd.github.io/categories/%E5%85%B6%E4%BB%96/"/>
+    
+    
+    <category term="Curl" scheme="https://xianren-wrd.github.io/tags/Curl/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CCS使用笔记</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-0d2b6ccd334f/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-0d2b6ccd334f/</id>
+    <published>2025-10-16T08:53:03.000Z</published>
+    <updated>2025-10-16T09:50:14.305Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;文档&quot;&gt;&lt;a href=&quot;#文档&quot; class=&quot;headerlink&quot; title=&quot;文档&quot;&gt;&lt;/a&gt;文档&lt;/h1&gt;&lt;p&gt;TI 官方文档：&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="嵌入式IDE" scheme="https://xianren-wrd.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8FIDE/"/>
+    
+    
+    <category term="Code Composer Studio" scheme="https://xianren-wrd.github.io/tags/Code-Composer-Studio/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>PNC和VFC介绍</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-1c8e705f2245/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-1c8e705f2245/</id>
+    <published>2025-05-01T14:12:02.000Z</published>
+    <updated>2026-06-13T15:51:31.165Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;PNC与VFC：从功能到网络&quot;&gt;&lt;a href=&quot;#PNC与VFC：从功能到网络&quot; class=&quot;headerlink&quot; title=&quot;PNC与VFC：从功能到网络&quot;&gt;&lt;/a&gt;PNC与VFC：从功能到网络&lt;/h1&gt;&lt;p&gt;PNC（Partial Network</summary>
+        
+      
+    
+    
+    
+    <category term="汽车与工业网络" scheme="https://xianren-wrd.github.io/categories/%E6%B1%BD%E8%BD%A6%E4%B8%8E%E5%B7%A5%E4%B8%9A%E7%BD%91%E7%BB%9C/"/>
+    
+    
+    <category term="PNC" scheme="https://xianren-wrd.github.io/tags/PNC/"/>
+    
+    <category term="VFC" scheme="https://xianren-wrd.github.io/tags/VFC/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>OBD诊断介绍</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-a8d6a8adb342/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-a8d6a8adb342/</id>
+    <published>2025-04-30T14:09:36.000Z</published>
+    <updated>2026-06-13T15:51:20.141Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;OBD诊断&quot;&gt;&lt;a href=&quot;#OBD诊断&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="汽车与工业网络" scheme="https://xianren-wrd.github.io/categories/%E6%B1%BD%E8%BD%A6%E4%B8%8E%E5%B7%A5%E4%B8%9A%E7%BD%91%E7%BB%9C/"/>
+    
+    
+    <category term="诊断" scheme="https://xianren-wrd.github.io/tags/%E8%AF%8A%E6%96%AD/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>A2L文件生成</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-d156a3e208c9/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-d156a3e208c9/</id>
+    <published>2025-03-01T13:34:54.000Z</published>
+    <updated>2026-06-13T15:47:49.653Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;A2L文件是什么？&quot;&gt;&lt;a href=&quot;#A2L文件是什么？&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="汽车与工业网络" scheme="https://xianren-wrd.github.io/categories/%E6%B1%BD%E8%BD%A6%E4%B8%8E%E5%B7%A5%E4%B8%9A%E7%BD%91%E7%BB%9C/"/>
+    
+    
+    <category term="A2L" scheme="https://xianren-wrd.github.io/tags/A2L/"/>
+    
+    <category term="XCP" scheme="https://xianren-wrd.github.io/tags/XCP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>E2E介绍</title>
+    <link href="https://xianren-wrd.github.io/2024/prefix%20remember%20to%20change!!!-4d41615f7db0/"/>
+    <id>https://xianren-wrd.github.io/2024/prefix%20remember%20to%20change!!!-4d41615f7db0/</id>
+    <published>2024-11-30T13:15:02.000Z</published>
+    <updated>2026-06-13T15:46:41.807Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;E2E-的核心定义与目标&quot;&gt;&lt;a href=&quot;#E2E-的核心定义与目标&quot; class=&quot;headerlink&quot; title=&quot;E2E 的核心定义与目标&quot;&gt;&lt;/a&gt;E2E 的核心定义与目标&lt;/h1&gt;&lt;p&gt;E2E 是</summary>
+        
+      
+    
+    
+    
+    <category term="汽车与工业网络" scheme="https://xianren-wrd.github.io/categories/%E6%B1%BD%E8%BD%A6%E4%B8%8E%E5%B7%A5%E4%B8%9A%E7%BD%91%E7%BB%9C/"/>
+    
+    
+    <category term="E2E" scheme="https://xianren-wrd.github.io/tags/E2E/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MPU扫盲</title>
+    <link href="https://xianren-wrd.github.io/2024/prefix%20remember%20to%20change!!!-b53991953c44/"/>
+    <id>https://xianren-wrd.github.io/2024/prefix%20remember%20to%20change!!!-b53991953c44/</id>
+    <published>2024-10-20T14:04:34.000Z</published>
+    <updated>2026-06-13T15:45:46.353Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;什么是MPU&quot;&gt;&lt;a href=&quot;#什么是MPU&quot; class=&quot;headerlink&quot; title=&quot;什么是MPU&quot;&gt;&lt;/a&gt;什么是MPU&lt;/h1&gt;&lt;p&gt;MPU：Memory Protection</summary>
+        
+      
+    
+    
+    
+    <category term="嵌入式概念扫盲" scheme="https://xianren-wrd.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E6%A6%82%E5%BF%B5%E6%89%AB%E7%9B%B2/"/>
+    
+    
+    <category term="MPU" scheme="https://xianren-wrd.github.io/tags/MPU/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Cache扫盲</title>
+    <link href="https://xianren-wrd.github.io/2024/prefix%20remember%20to%20change!!!-f69a5bb74b58/"/>
+    <id>https://xianren-wrd.github.io/2024/prefix%20remember%20to%20change!!!-f69a5bb74b58/</id>
+    <published>2024-10-20T14:04:13.000Z</published>
+    <updated>2026-06-13T15:47:17.956Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;什么是Cache&quot;&gt;&lt;a href=&quot;#什么是Cache&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="嵌入式概念扫盲" scheme="https://xianren-wrd.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E6%A6%82%E5%BF%B5%E6%89%AB%E7%9B%B2/"/>
+    
+    
+    <category term="Cache" scheme="https://xianren-wrd.github.io/tags/Cache/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>LIN总线介绍</title>
+    <link href="https://xianren-wrd.github.io/2024/prefix%20remember%20to%20change!!!-70015d0e55c4/"/>
+    <id>https://xianren-wrd.github.io/2024/prefix%20remember%20to%20change!!!-70015d0e55c4/</id>
+    <published>2024-10-17T14:13:50.000Z</published>
+    <updated>2026-06-13T15:45:54.738Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h1&gt;&lt;p&gt;LIN（Local Interconnect Network）总线是在汽车内广泛应用的串行通信协议，它的第一个完整版本 V1.3 发布于</summary>
+        
+      
+    
+    
+    
+    <category term="汽车与工业网络" scheme="https://xianren-wrd.github.io/categories/%E6%B1%BD%E8%BD%A6%E4%B8%8E%E5%B7%A5%E4%B8%9A%E7%BD%91%E7%BB%9C/"/>
+    
+    
+    <category term="LIN" scheme="https://xianren-wrd.github.io/tags/LIN/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CAN报文回放</title>
+    <link href="https://xianren-wrd.github.io/2024/prefix%20remember%20to%20change!!!-76a910a81c72/"/>
+    <id>https://xianren-wrd.github.io/2024/prefix%20remember%20to%20change!!!-76a910a81c72/</id>
+    <published>2024-10-16T14:33:42.000Z</published>
+    <updated>2026-06-13T15:44:30.893Z</updated>
     
     
       
@@ -509,10 +456,10 @@
   
   <entry>
     <title>同星UDS刷写工程搭建</title>
-    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-68598371f033/"/>
-    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-68598371f033/</id>
-    <published>2025-10-16T10:53:59.000Z</published>
-    <updated>2025-10-16T15:14:30.178Z</updated>
+    <link href="https://xianren-wrd.github.io/2024/prefix%20remember%20to%20change!!!-217df0f37907/"/>
+    <id>https://xianren-wrd.github.io/2024/prefix%20remember%20to%20change!!!-217df0f37907/</id>
+    <published>2024-10-16T10:53:59.000Z</published>
+    <updated>2026-06-13T15:43:30.295Z</updated>
     
     
       
@@ -529,6 +476,56 @@
     
     
     <category term="TSMaster" scheme="https://xianren-wrd.github.io/tags/TSMaster/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SPI介绍</title>
+    <link href="https://xianren-wrd.github.io/2023/prefix%20remember%20to%20change!!!-686ac33f803e/"/>
+    <id>https://xianren-wrd.github.io/2023/prefix%20remember%20to%20change!!!-686ac33f803e/</id>
+    <published>2023-10-25T15:21:31.000Z</published>
+    <updated>2026-06-13T15:44:55.952Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;什么是SPI&quot;&gt;&lt;a href=&quot;#什么是SPI&quot; class=&quot;headerlink&quot; title=&quot;什么是SPI&quot;&gt;&lt;/a&gt;什么是SPI&lt;/h1&gt;&lt;p&gt;SPI 是英语Serial Peripheral</summary>
+        
+      
+    
+    
+    
+    <category term="板级通信协议" scheme="https://xianren-wrd.github.io/categories/%E6%9D%BF%E7%BA%A7%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/"/>
+    
+    
+    <category term="SPI" scheme="https://xianren-wrd.github.io/tags/SPI/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>IIC介绍</title>
+    <link href="https://xianren-wrd.github.io/2023/prefix%20remember%20to%20change!!!-598213f1eb25/"/>
+    <id>https://xianren-wrd.github.io/2023/prefix%20remember%20to%20change!!!-598213f1eb25/</id>
+    <published>2023-10-25T15:21:15.000Z</published>
+    <updated>2026-06-13T15:46:32.566Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;什么是IIC&quot;&gt;&lt;a href=&quot;#什么是IIC&quot; class=&quot;headerlink&quot; title=&quot;什么是IIC&quot;&gt;&lt;/a&gt;什么是IIC&lt;/h1&gt;&lt;p&gt;I2C(IIC,Inter－Integrated</summary>
+        
+      
+    
+    
+    
+    <category term="板级通信协议" scheme="https://xianren-wrd.github.io/categories/%E6%9D%BF%E7%BA%A7%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE/"/>
+    
+    
+    <category term="IIC" scheme="https://xianren-wrd.github.io/tags/IIC/"/>
     
   </entry>
   
