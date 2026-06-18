@@ -3898,7 +3898,7 @@
 </li>
 </ul>
 <h2 id="信息安全"><a href="#信息安全" class="headerlink" title="信息安全"></a>信息安全</h2><p>为确保数据存储安全，并严格限定仅接收经认证的文件，升级包一般会实施加密及数字签名机制。</p>
-<p>解密的公钥是明文存放的，为了安全考虑，需要用一个动态数据去加密这个公钥。确保每一个ECU加密后的文件都是不一样的。</p>
+<p>解密用的公钥是明文存放的，为了安全考虑，需要用一个动态数据去加密这个公钥。确保每一个ECU加密后的密钥都是不一样的。</p>
 <h1 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h1><h2 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h2><p>为优化传输效率，可以对传输数据进行压缩处理以缩短编程时间。</p>
 <p>当使用系统内置的工具将文件夹压缩成ZIP文件时，通常使用的是Deflate算法。</p>
 <blockquote>
@@ -3906,9 +3906,9 @@
 </blockquote>
 <p>使用7z打开压缩包，可以查看使用的压缩算法。</p>
 <p>注意：不同类型的文件，压缩率是不一样的，文本文件的压缩率会比较高。</p>
-<h2 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h2><p>RPMsg可以用于Linux与MCU之间的通信。它是一种标准化的IPC协议。RPMsg一次只能传递 496 字节的数据，而升级过程中需要传输的数据量是很大的，这样会很影响升级速率。因此，考虑通过共享内存传递升级包数据，这样会更加高效。</p>
+<h2 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h2><p>RPMsg可以用于Linux与MCU之间的通信。它是一种标准化的IPC协议。RPMsg一次只能传递 496 字节的数据，而升级过程中需要传输的数据量是很大的，这样会很影响升级速率。因此，通过共享内存传递升级包数据，这样会更加高效。</p>
 <p>两个核同时访问同一个共享内存区域，如何实现同步，实现资源互斥访问是一个需要重点考虑的问题。</p>
-<p>注意：使用共享内存的通讯方式，数据是不通过 RPMsg通道交换的，RPMsg主要起通知作用，并传递共享内存描述的相关信息，例如，物理地址。</p>
+<p>注意：使用共享内存的通讯方式，数据是不通过 RPMsg通道交换的，RPMsg主要起通知作用，并传递描述共享内存的相关信息，例如，物理地址。</p>
 <p><strong>关于物理地址：</strong></p>
 <ol>
 <li>共享内存划分给升级的区域，SOC驱动不能随便改，要确保两边地址一致。</li>
@@ -3920,26 +3920,26 @@
 <li>关于双缓冲机制：使用双缓冲，保证读写操作互不影响。例如，当R5F核写入时，A53核可以读取另一块缓冲区，减少读写等待的时间。但是SOC端的处理也只是拷贝数据，花不了多少时间，可预见提升不大，因为实际上的升级速度瓶颈不是卡在这里。</li>
 </ol>
 <h2 id="IVD"><a href="#IVD" class="headerlink" title="IVD"></a>IVD</h2><p>完整性校验。</p>
-<h2 id="Flash操作"><a href="#Flash操作" class="headerlink" title="Flash操作"></a>Flash操作</h2><p>不同的文件需要写入到不同的位置，所以我们需要对存储空间进行划分。在进行FLASH空间划分时，需要知道编写的程序占用FLASH空间大小。在实际设计过程中，可以先编写部分程序，代码编译之后会生成一个map文件，根据这个文件，可以预估程序最终会占用的空间大<br>小。在实际空间分配过程中，可以稍微大一点，以便于后续的功能扩展。</p>
+<h2 id="Flash操作"><a href="#Flash操作" class="headerlink" title="Flash操作"></a>Flash操作</h2><p>不同的文件需要写入到不同的位置，所以我们需要对存储空间进行划分。在进行FLASH空间划分时，需要知道编写的程序占用FLASH空间大小。在实际设计过程中，可以先编写部分程序，代码编译之后会生成一个map文件，根据这个文件，可以预估程序最终会占用的空间大小。在实际空间分配过程中，可以稍微大一点，以便于后续的功能扩展。</p>
 <h3 id="MCU升级处理"><a href="#MCU升级处理" class="headerlink" title="MCU升级处理"></a>MCU升级处理</h3><p>升级包还原后，如果有SOC(A53)的部分，先升级SOC。升级完成后，如果有MCU(R5F)的部分，有两种处理方案：</p>
 <ol>
 <li>由SOC直接写到NorFlash，需要做NorFlash互斥，升级的时候SOC发送IPC通知MCU关闭flash驱动，升级完再通知MCU打开。</li>
 <li>SOC将MCU的升级数据，写入共享内存，写完后通知MCU去取，MCU自己写到norflash里面。</li>
 </ol>
 <p><strong>方案一：SOC直接写到NorFlash</strong></p>
-<p>优点</p>
+<p>优点：</p>
 <ol>
-<li>简化流程: SOC直接将数据写入NorFlash，避免了通过R5F Core中转，数据传输路径最短。</li>
+<li>简化流程: SOC直接将数据写入NorFlash，避免了通过R5F中转，数据传输路径最短。</li>
 <li>提高效率: 直接写入NorFlash可以减少中间环节，升级效率有一定提升。</li>
 </ol>
-<p>缺点</p>
+<p>缺点：</p>
 <ol>
 <li>需要互斥机制: 在升级过程中，SOC需要通过IPC通知MCU关闭flash驱动，升级完成后再次通知MCU打开。需要确保NorFlash操作的可靠性。</li>
 </ol>
-<p>SOC端处理</p>
+<p>SOC端处理如下：</p>
 <ol>
 <li>u-boot的dts不匹配 flash 节点，u-boot代码无初始化ospi；</li>
-<li>配置设备树和<code>CONFIG_SPI_CADENCE_QUADSPI=m</code>(flash动态加载)后，load linuxapp.image，内核启动过程中不会初始化 OSPI 控制器或操作 Flash，收到IPC消息，执行加载驱动后内核才会根据设备树 &amp;ospi0 节点初始化 OSPI 控制器，此时才会去操作 Flash 并注册 MTD 设备，可通过<code>/dev/mtd0</code> 进行读写。</li>
+<li>配置设备树和<code>CONFIG_SPI_CADENCE_QUADSPI=m</code>(flash动态加载)后，内核启动过程中不会初始化 OSPI 控制器或操作 Flash。收到IPC消息，执行加载驱动后内核才会根据设备树 &amp;ospi0 节点初始化 OSPI 控制器，此时才会去操作 Flash 并注册 MTD 设备，然后可以通过<code>/dev/mtd0</code> 进行读写。</li>
 </ol>
 <p><strong>方案二：SOC将MCU的升级部分写入共享内存</strong></p>
 <p>优点：</p>
@@ -3957,9 +3957,8 @@
 <p><strong>目前，MCU的升级处理采用的是方案1。主要考虑两个方面：</strong></p>
 <ol>
 <li>软件实现简单，数据链路短。</li>
-<li>MCU升级数据总共有2M左右，目前擦除Norflash比较耗时。</li>
+<li>MCU升级数据总共有2M左右，目前擦除Norflash比较耗时。实际测试Norflash读1K 1ms，擦除256K 952ms，写1K 15ms。</li>
 </ol>
-<p>备注：实际测试Norflash读1K 1ms，擦除256K 952ms，写1K 15ms。</p>
 <h1 id="升级流程"><a href="#升级流程" class="headerlink" title="升级流程"></a>升级流程</h1><p>升级流程参考ISO 15765-3:2004。</p>
 <p>对于升级数据(UDS $36)的处理流程，属于内部流程，我们自己决定即可，客户不关心这部分，流程合理即可。</p>
 <p>比如，升级包是先压缩–》加密–》签名–》压缩，那么还原的时候需要先解压–》验签–》解密–》解压。</p>
@@ -3972,7 +3971,8 @@
 <h2 id="Panel"><a href="#Panel" class="headerlink" title="Panel"></a>Panel</h2><ol>
 <li><p>定义环境变量<br>根据需要定义不同类型的环境变量，主要用于在用户界面（Panel）和CAPL脚本之间传递数据或触发事件，从而实现动态交互。</p>
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619022632.png"></p>
-<p>以下是其核心作用及具体应用：<br><strong>数据传递与同步</strong></p>
+<p>以下是其核心作用及具体应用：</p>
+<p><strong>数据传递与同步</strong></p>
 <p>作用：在 Panel 的控件（如输入框、按钮、滑动条）与 CAPL 脚本之间传递实时数据。<br>比如：</p>
 <ul>
 <li><p>用户在 Panel 的输入框中输入数值，通过环境变量传递给 CAPL 脚本，控制某个 CAN 信号的发送值。</p>
@@ -4007,7 +4007,7 @@
 <ul>
 <li><p>确保安装了Visual Studio（如VS2010、VS2019等）</p>
 </li>
-<li><p>获取Vector提供的示例工程文件夹 KeyGenDll_GenerateKeyEx ，以canoe 10.0为例，工程位于：</p>
+<li><p>获取Vector提供的示例工程文件夹 <code>KeyGenDll_GenerateKeyEx </code>，以canoe 10.0为例，工程位于：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">C:\Users\Public\Documents\Vector\CANoe\10.0 (x64)\CANoe Sample</span><br><span class="line">Configurations\CAN\Diagnostics\UDSSystem\SecurityAccess\Sources</span><br></pre></td></tr></table></figure></li>
 </ul>
 </li>
@@ -4051,7 +4051,7 @@
 </ol>
 <h3 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h3><p>在工作中，有时候需要将CANoe工程外发，如果不想让别人查看我们编写的CAPL源码，那么这个时候就可以通过CAPL Browser的加密功能对源码进行加密。</p>
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619025915.png"></p>
-<p>加密完成后，先备份<code>.can</code>源文件，再将<code>.can</code>文件删除。当外发工程时，想要编辑或者查看时，就会提示capl已加密，但是不影响capl的功能执行。</p>
+<p>编译并加密完成后，先备份<code>.can</code>源文件，再将<code>.can</code>文件删除。当外发工程时，想要编辑或者查看时，就会提示capl已加密，但是不影响capl的功能执行。</p>
 <p>注意：出现下图的提示才说明是ok的。</p>
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619030013.png"></p>
 <h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><ol>
