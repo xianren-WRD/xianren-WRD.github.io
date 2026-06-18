@@ -6,7 +6,7 @@
   <link href="https://xianren-wrd.github.io/atom.xml" rel="self"/>
   
   <link href="https://xianren-wrd.github.io/"/>
-  <updated>2026-06-18T17:31:34.150Z</updated>
+  <updated>2026-06-18T19:00:23.868Z</updated>
   <id>https://xianren-wrd.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CAN升级设计</title>
+    <link href="https://xianren-wrd.github.io/2026/prefix%20remember%20to%20change!!!-df46e012a7aa/"/>
+    <id>https://xianren-wrd.github.io/2026/prefix%20remember%20to%20change!!!-df46e012a7aa/</id>
+    <published>2026-06-18T17:35:48.000Z</published>
+    <updated>2026-06-18T19:00:23.868Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;相关知识&quot;&gt;&lt;a href=&quot;#相关知识&quot; class=&quot;headerlink&quot; title=&quot;相关知识&quot;&gt;&lt;/a&gt;相关知识&lt;/h1&gt;&lt;h2 id=&quot;程序下载&quot;&gt;&lt;a href=&quot;#程序下载&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="汽车与工业网络" scheme="https://xianren-wrd.github.io/categories/%E6%B1%BD%E8%BD%A6%E4%B8%8E%E5%B7%A5%E4%B8%9A%E7%BD%91%E7%BB%9C/"/>
+    
+    
+    <category term="SWDL" scheme="https://xianren-wrd.github.io/tags/SWDL/"/>
+    
+  </entry>
   
   <entry>
     <title>Vector SIP替换</title>
@@ -502,31 +527,6 @@
     
     
     <category term="LIN" scheme="https://xianren-wrd.github.io/tags/LIN/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CAN报文回放</title>
-    <link href="https://xianren-wrd.github.io/2024/prefix%20remember%20to%20change!!!-76a910a81c72/"/>
-    <id>https://xianren-wrd.github.io/2024/prefix%20remember%20to%20change!!!-76a910a81c72/</id>
-    <published>2024-10-16T14:33:42.000Z</published>
-    <updated>2026-06-13T15:44:30.893Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;在线回放&quot;&gt;&lt;a href=&quot;#在线回放&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="CAN总线工具" scheme="https://xianren-wrd.github.io/categories/CAN%E6%80%BB%E7%BA%BF%E5%B7%A5%E5%85%B7/"/>
-    
-    
-    <category term="报文分析与回放" scheme="https://xianren-wrd.github.io/tags/%E6%8A%A5%E6%96%87%E5%88%86%E6%9E%90%E4%B8%8E%E5%9B%9E%E6%94%BE/"/>
     
   </entry>
   

@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://xianren-wrd.github.io/2026/prefix%20remember%20to%20change!!!-df46e012a7aa/</loc>
+    
+    <lastmod>2026-06-18</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://xianren-wrd.github.io/2026/prefix%20remember%20to%20change!!!-f6d43061ddaa/</loc>
     
     <lastmod>2026-06-18</lastmod>
@@ -563,6 +572,13 @@
   
   <url>
     <loc>https://xianren-wrd.github.io/tags/Davinci/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://xianren-wrd.github.io/tags/SWDL/</loc>
     <lastmod>2026-06-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
