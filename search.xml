@@ -3779,10 +3779,11 @@
 <h1 id="Developer"><a href="#Developer" class="headerlink" title="Developer"></a>Developer</h1><p>Developer的代码生成不了，app的swc删了，本来也不用生成了。</p>
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619010043.png"></p>
 <h1 id="BSW"><a href="#BSW" class="headerlink" title="BSW"></a>BSW</h1><p>替换所有的静态代码，旧的sip包有部分文件在新的包已经找不到了，而且新的包也添加了一些文件。<br>所以，将之前所有模块的静态代码文件删掉，再从新的包把对应模块的全部文件复制过去就行了。</p>
-<h1 id="BRE介绍"><a href="#BRE介绍" class="headerlink" title="BRE介绍"></a>BRE介绍</h1><p>MICROSAR Classic BRE 是 AUTOSAR RTE的一个子集，被称为基础运行环境。由于 RTE 在 AUTOSAR 架构中是强制性的，BRE 提供了 RTE 的基本功能集，简化了不使用<br>AUTOSAR 软件组件（SWC）架构的项目创建。</p>
+<h1 id="BRE介绍"><a href="#BRE介绍" class="headerlink" title="BRE介绍"></a>BRE介绍</h1><p>MICROSAR Classic BRE 是 AUTOSAR RTE的一个子集，被称为基础运行环境。由于 RTE 在 AUTOSAR 架构中是强制性的，BRE 提供了 RTE 的基本功能集，简化了不使用AUTOSAR 软件组件（SWC）架构的项目创建。</p>
 <p>BRE 基于 MICROSAR Classic RTE，但功能集被限制在了更少的特性上。因此，许多 API 和实现本身继续引用“RTE”。</p>
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619011357.png"></p>
-<h2 id="功能描述"><a href="#功能描述" class="headerlink" title="功能描述"></a>功能描述</h2><h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><p>BRE功能概述：为服务SWCs，生成应用程序头文件<br>SchM功能概述：</p>
+<h2 id="功能描述"><a href="#功能描述" class="headerlink" title="功能描述"></a>功能描述</h2><h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><p>BRE功能概述：为服务SWCs，生成应用程序头文件。</p>
+<p>SchM功能概述：</p>
 <ul>
 <li><p>SchM负责执行周期性任务和由后台事件触发的任务，这些任务是基础软件层（BSW）的主要功能。</p>
 </li>
@@ -3804,17 +3805,17 @@
 <li>配置BRE<br>Task Mapping of BSW Main-Functions<br>Exclusive Area handling</li>
 <li>使用 RTE generator生成 BRE</li>
 <li>在应用程序中实现对BSW的调用</li>
-<li>通过实现BSW所需的RTE API来修复链接错误。 Rte*.c 文件可以用作实现的基础。</li>
+<li>通过实现BSW所需的RTE API来修复链接错误。<code> Rte*.c</code> 文件可以用作实现的基础。</li>
 </ol>
 <h1 id="编译报错"><a href="#编译报错" class="headerlink" title="编译报错"></a>编译报错</h1><p><strong>重定义</strong></p>
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619010729.png"></p>
 <p><code>Com_Unity.c</code> 里面include了一堆的C文件。当使用 <code>#include</code> 包含一个 .c 文件时，实际上是将该文件的内容直接复制到包含它的文件中。这里我的做法是，BSW不包含这个 <code>Com_Unity.c </code>文件。<code>PduR_Unity.c</code> 也是一样的处理。</p>
-<h1 id="链接报错"><a href="#链接报错" class="headerlink" title="链接报错"></a>链接报错</h1><p>搜索 BRE_ENABLE_UNCONNECTED_RTE_APIS 宏定义，可以发现有很多空函数体，如下图。这些函数体需要我们自己实现，原因参见Bre章节。</p>
+<h1 id="链接报错"><a href="#链接报错" class="headerlink" title="链接报错"></a>链接报错</h1><p>搜索 <code>BRE_ENABLE_UNCONNECTED_RTE_APIS </code>宏定义，可以发现有很多空函数体，如下图。这些函数体需要我们自己实现，原因参见Bre章节。</p>
 <p>我的做法是新增了一个 bre.c ，用于实现上述函数。具体做法是</p>
 <ol>
 <li><code>#define RTE_CORE</code></li>
 <li>include之前SWC的头文件</li>
-<li>将以前的Rte.c部分接口复制过来（主要是队列的实现，以及报文收发接口），不需要的部分删掉</li>
+<li>将以前的<code>Rte.c</code>部分接口复制过来（主要是队列的实现，以及报文收发接口），不需要的部分删掉</li>
 <li>服务类的swc的port，复制之前生成的接口，并传参调用</li>
 </ol>
 ]]></content>
