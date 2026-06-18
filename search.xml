@@ -3662,4 +3662,167 @@
         <tag>AUTOSAR</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Vector Davinci替换DBC</title>
+    <url>/2026/prefix%20remember%20to%20change!!!-7636ddb3a760/</url>
+    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>项目开发过程中会有一些CR，增&#x2F;删了一些信号或者报文，会释放新的DBC文件给到我们，我们需要替换客户提供的DBC。这里主要记录DBC替换的方法。</p>
+<h1 id="替换DBC文件"><a href="#替换DBC文件" class="headerlink" title="替换DBC文件"></a>替换DBC文件</h1><ol>
+<li>选择要替换的文件，选择和之前一样的节点。并修改文件路径为相对路径(DBC在原来的基础上增加了一个发送，一个接收报文)</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619000436.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619000814.png"></p>
+<ol start="2">
+<li>打开configurator，更新配置，并解决报错问题</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619001318.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619001359.png"></p>
+<p>Update Options</p>
+<ul>
+<li><p>第一个更新config和develop</p>
+</li>
+<li><p>第二个只更新config</p>
+</li>
+<li><p>第三个是更新config且只考虑cdd的变更</p>
+</li>
+</ul>
+<p>查看生成的报告文件，可以看下修改了哪些模块，变更了什么东西。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619001656.png"></p>
+<p>因为增加了一个接收报文，所以要修改接收过滤器。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619001734.png"></p>
+<h1 id="Data-mapping"><a href="#Data-mapping" class="headerlink" title="Data mapping"></a>Data mapping</h1><h2 id="方式一：从信号端mapping到port"><a href="#方式一：从信号端mapping到port" class="headerlink" title="方式一：从信号端mapping到port"></a>方式一：从信号端mapping到port</h2><ol>
+<li><p>在developer的data mapping界面，选中要mapping的信号，然后右键<code>Create Port Prototypes</code></p>
+</li>
+<li><p>设置如下，生成port</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619001944.png"></p>
+</li>
+<li><p>然后修改一下port的名字，改成报文名，这样生成的代码可读性好。注意：ecu层级和swc层级，两个地方都要改。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619002139.png">第一个是ecu层级的，改了之后mapping里的名字才会变。</p>
+</li>
+<li><p>给runnable增加port access</p>
+</li>
+<li><p>新建一个runnable，这一步根据需要创建，不是必需的。</p>
+</li>
+</ol>
+<h2 id="方式二：从port端mapping到信号端"><a href="#方式二：从port端mapping到信号端" class="headerlink" title="方式二：从port端mapping到信号端"></a>方式二：从port端mapping到信号端</h2><ol>
+<li><p>每个信号创建一个IDT</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619002502.png"></p>
+</li>
+<li><p>创建port类型，把data element手动加进去，关联需要的信号</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619002626.png"></p>
+</li>
+<li><p>swc实例化刚刚创建的port，设置初始值，然后需要两次设置把port暴露出去，否则不可见。<br><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619002703.png"></p>
+</li>
+<li><p>最后从port端mapping到信号端</p>
+</li>
+</ol>
+<p>    <img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619002825.png"></p>
+<h1 id="代码生成"><a href="#代码生成" class="headerlink" title="代码生成"></a>代码生成</h1><ol>
+<li><p>保存developer的修改之后，在config同步配置。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619002923.png"></p>
+</li>
+<li><p>因为前面新建了一个runnable，所以要做一下Task mapping。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619003043.png"></p>
+</li>
+<li><p>生成swc代码，生成代码会修改相关的头文件。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619003135.png"></p>
+<p>说明：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619003222.png"></p>
+<p>第一个button是用来生成Configure的代码，第二个用来生成Developer的代码。</p>
+</li>
+<li><p>生成config的代码，选中第二步报告涉及的模块，RTE模块，还有错误修改涉及到的模块。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619003532.png"></p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>AUTOSAR实战</category>
+      </categories>
+      <tags>
+        <tag>Davinci</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vector SIP替换</title>
+    <url>/2026/prefix%20remember%20to%20change!!!-f6d43061ddaa/</url>
+    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>项目前期开发，正式包还没有拿到，使用的其他项目的代码包。拿到了正式包后，需要做替换。然后，根据具体情况解决报错。</p>
+<h1 id="DaVinci工程配置更新"><a href="#DaVinci工程配置更新" class="headerlink" title="DaVinci工程配置更新"></a>DaVinci工程配置更新</h1><h2 id="Dpa工程SipId变更"><a href="#Dpa工程SipId变更" class="headerlink" title="Dpa工程SipId变更"></a>Dpa工程SipId变更</h2><p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619004649.png"></p>
+<h2 id="Can模块配置变更"><a href="#Can模块配置变更" class="headerlink" title="Can模块配置变更"></a>Can模块配置变更</h2><ol>
+<li><p>需要新建一个vCan模块，并引用。按照提示删除无法解析的配置，然后重新加载。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619005002.png"></p>
+</li>
+</ol>
+<p>其他说明：</p>
+<ul>
+<li><p>应用报文：一般配置成FULL CAN类型，因为不需要缓存，使用最新接收的数据就行。但是，J1939的Canid有优先级的概念，如果发送方更改了报文的优先级，这个报文仍然是同一报文，不得以不同方式进行解释，所以实际上是一个范围的CanId，只能配BASIC CAN。</p>
+</li>
+<li><p>诊断报文：配置成BASIC CAN类型，因为诊断报文的请求&#x2F;响应不能错序，需按照顺序处理，且数据不能覆盖。</p>
+</li>
+<li><p>网络报文：接收的选择配置成BASIC CAN类型。</p>
+</li>
+</ul>
+<h2 id="vCan模块新增"><a href="#vCan模块新增" class="headerlink" title="vCan模块新增"></a>vCan模块新增</h2><p>有一部分配置，从之前的CAN模块分到了vCan。控制器选择MCAN0，其他配置大部分都修改不了，保持默认值。</p>
+<h2 id="CanIf配置变更"><a href="#CanIf配置变更" class="headerlink" title="CanIf配置变更"></a>CanIf配置变更</h2><p>所有CanIfRxPduType 配置为static。</p>
+<h2 id="Dem模块配置变更"><a href="#Dem模块配置变更" class="headerlink" title="Dem模块配置变更"></a>Dem模块配置变更</h2><ol>
+<li><p>扩展数据记录（ExtendedDataRecords）的存储和更新触发条件配置为TEST_FAILED</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619005456.png"></p>
+</li>
+<li><p>DemDebounceAlgorithmClass从DemEventClass容器拆分出来了，需要重新配置Debounce的引用</p>
+</li>
+</ol>
+<h2 id="J1939Tp模块配置变更"><a href="#J1939Tp模块配置变更" class="headerlink" title="J1939Tp模块配置变更"></a>J1939Tp模块配置变更</h2><p>配置发送的源地址</p>
+<h2 id="Rte模块配置变更"><a href="#Rte模块配置变更" class="headerlink" title="Rte模块配置变更"></a>Rte模块配置变更</h2><p>因为该项目不用AUTOSAR OS模块，所以不存在所谓的Rte。下面这个配置是必须勾选的，激活Bre。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619005712.png"></p>
+<p>Rte出现了三种错误，后面两个错误断开前期创建的swc port连接可以解决，但是第一个错误尝试了只能删swc。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619005914.png"></p>
+<p>service的swc没问题，app的要在software design删掉实例化对象。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619005948.png"></p>
+<h1 id="Developer"><a href="#Developer" class="headerlink" title="Developer"></a>Developer</h1><p>Developer的代码生成不了，app的swc删了，本来也不用生成了。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619010043.png"></p>
+<h1 id="BSW"><a href="#BSW" class="headerlink" title="BSW"></a>BSW</h1><p>替换所有的静态代码，旧的sip包有部分文件在新的包已经找不到了，而且新的包也添加了一些文件。<br>所以，将之前所有模块的静态代码文件删掉，再从新的包把对应模块的全部文件复制过去就行了。</p>
+<h1 id="BRE介绍"><a href="#BRE介绍" class="headerlink" title="BRE介绍"></a>BRE介绍</h1><p>MICROSAR Classic BRE 是 AUTOSAR RTE的一个子集，被称为基础运行环境。由于 RTE 在 AUTOSAR 架构中是强制性的，BRE 提供了 RTE 的基本功能集，简化了不使用<br>AUTOSAR 软件组件（SWC）架构的项目创建。</p>
+<p>BRE 基于 MICROSAR Classic RTE，但功能集被限制在了更少的特性上。因此，许多 API 和实现本身继续引用“RTE”。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619011357.png"></p>
+<h2 id="功能描述"><a href="#功能描述" class="headerlink" title="功能描述"></a>功能描述</h2><h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><p>BRE功能概述：为服务SWCs，生成应用程序头文件<br>SchM功能概述：</p>
+<ul>
+<li><p>SchM负责执行周期性任务和由后台事件触发的任务，这些任务是基础软件层（BSW）的主要功能。</p>
+</li>
+<li><p>SchM提供对BSW模块的独占区域处理，确保在访问共享资源时避免冲突，提供类似互斥锁的保护机制。</p>
+</li>
+<li><p>SchM负责生成操作系统任务体，这涉及到任务的调度和同步，确保任务按照预定的顺序和时间执行。</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619011600.png"></p>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>BRE是AUTOSAR架构中的一个组件，它通过调用 <code>Rte_Start </code>函数来初始化。</p>
+<p>SchM是负责调度任务执行的组件，它通过调用 <code>SchM_Init </code>函数来初始化。</p>
+<p>这个初始化过程是由ECU状态管理器（EcuM）负责执行的。</p>
+<h2 id="BRE集成"><a href="#BRE集成" class="headerlink" title="BRE集成"></a>BRE集成</h2><p>在使用 BRE（基础软件运行环境）时，没有可用的SWC设计，因此应用程序必须直接实现BSW 调用的 RTE API。</p>
+<p>注意：BRE生成了由BRE调用且需要应用程序实现的API的空函数体。这些函数体可以在 <code>Rte*.c</code> 文件中找到，并通过 <code>#ifdef BRE_ENABLE_UNCONNECTED_RTE_APIS</code> 从编译中排除。</p>
+<p><strong>集成步骤</strong></p>
+<ol>
+<li>配置并启用 BSW modules</li>
+<li>激活BRE</li>
+<li>配置BRE<br>Task Mapping of BSW Main-Functions<br>Exclusive Area handling</li>
+<li>使用 RTE generator生成 BRE</li>
+<li>在应用程序中实现对BSW的调用</li>
+<li>通过实现BSW所需的RTE API来修复链接错误。 Rte*.c 文件可以用作实现的基础。</li>
+</ol>
+<h1 id="编译报错"><a href="#编译报错" class="headerlink" title="编译报错"></a>编译报错</h1><p><strong>重定义</strong></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260619010729.png"></p>
+<p><code>Com_Unity.c</code> 里面include了一堆的C文件。当使用 <code>#include</code> 包含一个 .c 文件时，实际上是将该文件的内容直接复制到包含它的文件中。这里我的做法是，BSW不包含这个 <code>Com_Unity.c </code>文件。<code>PduR_Unity.c</code> 也是一样的处理。</p>
+<h1 id="链接报错"><a href="#链接报错" class="headerlink" title="链接报错"></a>链接报错</h1><p>搜索 BRE_ENABLE_UNCONNECTED_RTE_APIS 宏定义，可以发现有很多空函数体，如下图。这些函数体需要我们自己实现，原因参见Bre章节。</p>
+<p>我的做法是新增了一个 bre.c ，用于实现上述函数。具体做法是</p>
+<ol>
+<li><code>#define RTE_CORE</code></li>
+<li>include之前SWC的头文件</li>
+<li>将以前的Rte.c部分接口复制过来（主要是队列的实现，以及报文收发接口），不需要的部分删掉</li>
+<li>服务类的swc的port，复制之前生成的接口，并传参调用</li>
+</ol>
+]]></content>
+      <categories>
+        <category>AUTOSAR实战</category>
+      </categories>
+      <tags>
+        <tag>Davinci</tag>
+      </tags>
+  </entry>
 </search>
