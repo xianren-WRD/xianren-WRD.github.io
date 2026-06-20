@@ -4545,7 +4545,7 @@
   <entry>
     <title>Autosar CAN协议栈移植</title>
     <url>/2026/prefix%20remember%20to%20change!!!-413ea4bdee2b/</url>
-    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>项目使用的芯片是AM62A7，MCU是它的协处理器（单核 Arm Cortex-R5F）。对于AM62这<br>款芯片vector的回复是之前没有做过Canbedded，且同意开发新芯片的CBD的可能性是比较小的，因此需要将Autosar的CAN协议栈移植到项目上来。</p>
+    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>项目使用的芯片是AM62A7，MCU是它的协处理器（单核 Arm Cortex-R5F）。对于AM62这款芯片vector的回复是之前没有做过Canbedded，且同意开发新芯片的CBD的可能性是比较小的，因此需要将Autosar的CAN协议栈移植到项目上来。</p>
 <p>AM62x是德州仪器（Texas Instruments）推出的一款高性能嵌入式处理器系列。</p>
 <h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><p>MCAL下载：不涉及。如果需要，参考：<a href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-0d2b6ccd334f/">CCS使用笔记 | 仙人</a></p>
 <h1 id="协议栈移植"><a href="#协议栈移植" class="headerlink" title="协议栈移植"></a>协议栈移植</h1><h2 id="往工程添加需要的文件"><a href="#往工程添加需要的文件" class="headerlink" title="往工程添加需要的文件"></a>往工程添加需要的文件</h2><p>基于SIP包的Demo做修改，删掉多余的无关文件，剩下的就是需要参与编译的文件了。</p>
@@ -4621,7 +4621,7 @@
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621040558.png"></p>
 <p>实际实现如下，在操作系统启动后立即调用此函数一次：</p>
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621040624.png"></p>
-<h2 id="协议栈运行"><a href="#协议栈运行" class="headerlink" title="协议栈运行"></a>协议栈运行</h2><p>创建一个任务，运行协议栈相关主函数，参照 <code>Rte.c</code> 的 <code>Default_BSW_Async_Task</code>。</p>
+<h2 id="协议栈运行"><a href="#协议栈运行" class="headerlink" title="协议栈运行"></a>协议栈运行</h2><p>创建一个FreeRTOS的任务，运行协议栈相关主函数，参照 <code>Rte.c</code> 的<code>Default_BSW_Async_Task</code>。</p>
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621040738.png"></p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">can_thread</span><span class="params">(<span class="type">void</span> *args)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span>(;;)</span><br><span class="line">    &#123;</span><br><span class="line">        CanTp_MainFunction();</span><br><span class="line">        Dcm_MainFunction();</span><br><span class="line">        ...</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -4646,12 +4646,12 @@
 <h1 id="Linker"><a href="#Linker" class="headerlink" title="Linker"></a>Linker</h1><ol>
 <li><code>linker.cmd</code>增加自定义段。<strong>示例如下</strong></li>
 </ol>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* This is used to store memory segments related to the AUTOSAR. */</span></span><br><span class="line">GROUP</span><br><span class="line">&#123;</span><br><span class="line">    .text.Autosar: &#123;&#125; palign(<span class="number">8</span>)</span><br><span class="line">    .rodata.Autosar: &#123;&#125; palign(<span class="number">8</span>)</span><br><span class="line">&#125; &gt; MSRAM</span><br><span class="line"></span><br><span class="line"><span class="comment">/* This is used to store memory segments related to the TI SDK library files.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">GROUP</span><br><span class="line">&#123;</span><br><span class="line">    .text.ti_lib: &#123;<span class="string">&quot;freertos.am62ax.r5f.ti-arm-clang.release.lib&quot;</span>&lt;*.obj&gt;(.text)&#125; align(<span class="number">8</span>)</span><br><span class="line">&#125; &gt; MSRAM</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* This is used to store memory segments related to the AUTOSAR. */</span></span><br><span class="line">GROUP</span><br><span class="line">&#123;</span><br><span class="line">    .text.Autosar: &#123;&#125; palign(<span class="number">8</span>)</span><br><span class="line">    .rodata.Autosar: &#123;&#125; palign(<span class="number">8</span>)</span><br><span class="line">&#125; &gt; MSRAM</span><br><span class="line"></span><br><span class="line"><span class="comment">/* This is used to store memory segments related to the TI SDK library files.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">GROUP</span><br><span class="line">&#123;</span><br><span class="line">    .text.ti_lib: &#123;<span class="string">&quot;freertos.am62ax.r5f.ti-arm-clang.release.lib&quot;</span>&lt;*.obj&gt;(.text)&#125; align(<span class="number">8</span>)</span><br><span class="line">&#125; &gt; MSRAM</span><br></pre></td></tr></table></figure>
 
 <ol start="2">
 <li>修改MemMap配置。<strong>示例如下</strong></li>
 </ol>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> clang section text = <span class="string">&quot;.text.Autosar&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> clang section text = <span class="string">&quot;&quot;</span> <span class="comment">// Restore default![](https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621043015.png)</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> clang section text = <span class="string">&quot;.text.Autosar&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> clang section text = <span class="string">&quot;&quot;</span> <span class="comment">// Restore default</span></span></span><br></pre></td></tr></table></figure>
 
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621043015.png"></p>
 ]]></content>
