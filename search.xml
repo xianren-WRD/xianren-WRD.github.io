@@ -4399,7 +4399,7 @@
 <li><p><code>CanNm_NetworkRequest </code>：不仅负责CanNM状态机的切换，还负责节点通信状态的切换。</p>
 </li>
 </ul>
-<h2 id="ECU-上下电"><a href="#ECU-上下电" class="headerlink" title="ECU 上下电"></a>ECU 上下电</h2><h3 id="ECU如何上电？"><a href="#ECU如何上电？" class="headerlink" title="ECU如何上电？"></a>ECU如何上电？</h3><p>由于对静态电流有要求，因此对于断电系统，硬件上BAT（KL30）给收发器常供电，当CAN总线上有数据时，或者有其他唤醒事件发生时，INH引脚被拉高，3V3和5V电源芯片使能，进而给主芯片&#x2F;收发器供电，当主芯片供电以后，程序开始运行，但此时网络处于Bus Sleep Mode，ECU并不能立马外发报文，需要对唤醒事件进行有效性验证，避免因总线抖动或者其他干扰造成的ECU无效唤醒。</p>
+<h2 id="ECU-上下电"><a href="#ECU-上下电" class="headerlink" title="ECU 上下电"></a>ECU 上下电</h2><h3 id="ECU如何上电？"><a href="#ECU如何上电？" class="headerlink" title="ECU如何上电？"></a>ECU如何上电？</h3><p>一些ECU对静态电流有要求，因此要求是断电系统，硬件上BAT（KL30）给收发器常供电，当CAN总线上有数据时，或者有其他唤醒事件发生时，INH引脚被拉高，3V3和5V电源芯片使能，进而给主芯片&#x2F;收发器供电，当主芯片供电以后，程序开始运行，但此时网络处于Bus Sleep Mode，ECU并不能立马外发报文，需要对唤醒事件进行有效性验证，避免因总线抖动或者其他干扰造成的ECU无效唤醒。</p>
 <p>eg：收发器在handler中检查唤醒源，判断到上电或者CAN总线干扰事件时，会通知EcuM有唤醒事件，EcuM通过CanIf模块调用 <code>CanTrcv_CheckWakeup </code>检查唤醒源。如果EcuM使能了唤醒源的检查，则EcuM调用 <code>EcuM_StartWakeupSources </code>接口，使得Controller进入Start状态，至此，ECU具备了收发报文的能力。</p>
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621023008.png"></p>
 <h3 id="ECU如何下电？"><a href="#ECU如何下电？" class="headerlink" title="ECU如何下电？"></a>ECU如何下电？</h3><p>当ECU需要下电的时候，即需要切断Vcc时，会通过SPI给收发器发送进入Sleep Mode的指令，如果收发器在Sleep Mode，<strong>INH Pin脚会处于高阻状态，此时与收发器连接的电源芯片禁能</strong>，即无法给主芯片提供Vcc电，也无法给收发器提供Vcc和Vio电。所以主芯片会完全的断电，实现了最大程度的节能。</p>
@@ -4407,7 +4407,7 @@
 <p><strong>如何Check唤醒事件</strong></p>
 <p>控制器和收发器可以使用中断或轮询来检测唤醒事件，当有Can Bus的唤醒事件时，EcuM分不清楚是谁发现的，通过 <code>EcuM_CheckWakeup</code> 一查，是控制器还是收发器，EcuM就清楚了。实际还是依靠CanIf，确定是Controller还是Trcv。</p>
 <ul>
-<li><p>中断方式Check唤醒事件：外部中断唤醒事件到来时，可以是Controller中断，也可以是<br>Transceiver中断。中断例程中主动调用EcuM的 <code>EcuM_CheckWakeup</code></p>
+<li><p>中断方式Check唤醒事件：外部中断唤醒事件到来时，可以是Controller中断，也可以是Transceiver中断。中断例程中主动调用EcuM的 <code>EcuM_CheckWakeup</code></p>
 </li>
 <li><p>轮询方式Check唤醒事件：EcuM在自己的Task，调用 <code>EcuM_CheckWakeup</code></p>
 </li>
@@ -4453,7 +4453,7 @@
 <p>对于Flexible EcuM，条件由BswM调用 <code>ComM_CommunicationAllowed</code>控制。BswM是先模式仲裁，后执行对应的动作。模式仲裁请求包括：Requests和Indications。</p>
 <p>前面提到有效的唤醒事件已确认，EcuM会调用 <code>BswM_EcuM_CurrentWakeup</code> 告知BswM(属于Indication)。同时，检查是否收到网络管理报文，如果这两个Rule满足，则允许通信，之后BswM执行对应的ActionList，其中就包括 <code>ComM_CommunicationAllowed</code> 的调用，即设置CommunicationAllowed &#x3D; True。</p>
 <p><strong>谁请求COMM_FULL_COMMUNICATION？</strong></p>
-<p>在唤醒源验证有效时，EcuM调用 <code>ComM_EcuM_WakeUpIndication</code>，EcuM就请求了 <code>COMM_FULL_COMMUNICATION::COMM_FULL_COM_READY_SLEEP</code> 状态。</p>
+<p>在唤醒源验证有效时，EcuM调用 <code>ComM_EcuM_WakeUpIndication</code>，EcuM就请求了<code>COMM_FULL_COMMUNICATION::COMM_FULL_COM_READY_SLEEP</code> 状态。</p>
 <p>然后ComM可以在 <code>ComM_MainFunction </code>中进行状态的切换，此时ComM会干两件事：</p>
 <ul>
 <li>打开通信栈，即请求对应的CanSM模块进入<code>FULL_COMMUNICATION</code>状态，</li>
@@ -4461,15 +4461,15 @@
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">CanSM_RequestComMode( Channel, COMM_FULL_COMMUNICATION );</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>切换网络状态，即调用接口 <code>Nm_PassiveStartUp</code> ，网络进入<br><code>NetworkMode::RepeatMessageState</code></li>
+<li>切换网络状态，即调用接口 <code>Nm_PassiveStartUp</code> ，网络进入<code>NetworkMode::RepeatMessageState</code></li>
 </ul>
-<h1 id="Passive-NM配置"><a href="#Passive-NM配置" class="headerlink" title="Passive NM配置"></a>Passive NM配置</h1><p>CanNm配置channel的passive mode：</p>
+<h1 id="Passive-NM配置"><a href="#Passive-NM配置" class="headerlink" title="Passive NM配置"></a>Passive NM配置</h1><p>CanNm配置使能channel的passive mode：</p>
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621025412.png"></p>
 <p>ComM配置Nm类型为PASSIVE：</p>
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621025444.png"></p>
 <p>ComM配置No Com：</p>
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621025519.png"></p>
-<p>Nm配置channel的passive mode：</p>
+<p>Nm配置使能channel的passive mode：</p>
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621025638.png"></p>
 <p>NmGlobal也配置passive mode。</p>
 <h1 id="唤醒源配置"><a href="#唤醒源配置" class="headerlink" title="唤醒源配置"></a>唤醒源配置</h1><p><strong>收发器支持wakeup，增加CanTrcv模块，并关联上唤醒源，具体配置如下：</strong></p>
@@ -4527,12 +4527,12 @@
 </li>
 <li><p>异常电源状态的处理。比如：高低压，高低温时，是否要执行一些动作？</p>
 </li>
-<li><p>特殊场景。比如：产线下线时，快速休眠，下电逻辑是否合理。</p>
+<li><p>特殊场景。比如：产线下线时，快速休眠，下电逻辑是否合理？</p>
 </li>
 </ol>
-<h1 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h1><p>现象：停发网络报文进入BusSleep后，MCU没有走下电流程，还在正常工作，再重新恢复网络报文发送，会报错误帧，且无法恢复通信，需要手动重新上下电恢复。</p>
-<p>原因：网络睡眠后，Ecu State状态机走到了shutdown状态，执行了BswM反初始化。此时，CAN控制器处于Sleep状态，收发器处于Standby。<strong>MCU电源管理不使用autosar提供的机制，还在正常工作中</strong>。由于BswM反初始化了， <code>BswM_MainFunction </code>不会再执行。即使后面发送报文，也执行了<code>CanIf_CheckWakeup </code>，唤醒事件通知不到BswM了，Ecu State状态机不会跳转，CAN控制器不会打开，所以收不到报文。</p>
-<p>解决：一直维持PendingRequests即可，这样就不走autosar的ecu状态机，就不会shutdown了。网络睡眠，通知MCU Power模块，走内部的下电流程。</p>
+<h1 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h1><p>现象：停发模拟的网络报文，ECU进入BusSleep后，MCU没有走下电流程，还在正常工作，再重新恢复模拟的网络报文，CAN工具会报错误帧，且无法恢复通信，需要ECU手动重启恢复。</p>
+<p>原因：网络睡眠后，Ecu State状态机走到了shutdown状态，执行了BswM反初始化。此时，CAN控制器处于Sleep状态，收发器处于Standby状态。<strong>MCU电源管理不使用autosar提供的机制，还在正常工作中</strong>。由于BswM反初始化了， <code>BswM_MainFunction </code>不会再执行。即使后面发送报文，也执行了<code>CanIf_CheckWakeup </code>，唤醒事件通知不到BswM了，Ecu State状态机不会跳转，CAN控制器不会打开，所以收不到报文。</p>
+<p>解决：网络睡眠一直维持PendingRequests即可，这样就不走autosar的Ecu State状态机，就不会shutdown了。然后，通知MCU Power模块，走内部的下电流程。</p>
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621031011.png"></p>
 ]]></content>
       <categories>
@@ -4540,6 +4540,126 @@
       </categories>
       <tags>
         <tag>Passive Nm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Autosar CAN协议栈移植</title>
+    <url>/2026/prefix%20remember%20to%20change!!!-413ea4bdee2b/</url>
+    <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>项目使用的芯片是AM62A7，MCU是它的协处理器（单核 Arm Cortex-R5F）。对于AM62这<br>款芯片vector的回复是之前没有做过Canbedded，且同意开发新芯片的CBD的可能性是比较小的，因此需要将Autosar的CAN协议栈移植到项目上来。</p>
+<p>AM62x是德州仪器（Texas Instruments）推出的一款高性能嵌入式处理器系列。</p>
+<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><p>MCAL下载：不涉及。如果需要，参考：<a href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-0d2b6ccd334f/">CCS使用笔记 | 仙人</a></p>
+<h1 id="协议栈移植"><a href="#协议栈移植" class="headerlink" title="协议栈移植"></a>协议栈移植</h1><h2 id="往工程添加需要的文件"><a href="#往工程添加需要的文件" class="headerlink" title="往工程添加需要的文件"></a>往工程添加需要的文件</h2><p>基于SIP包的Demo做修改，删掉多余的无关文件，剩下的就是需要参与编译的文件了。</p>
+<ul>
+<li><p>删除无关的canoe工程等调试文件</p>
+</li>
+<li><p>Appl 删掉 ti 和 RteAnalyzer 文件夹</p>
+</li>
+<li><p>Appl\GenData 删掉无关模块文件，以及启动链接等相关文件。</p>
+</li>
+<li><p>在Configurator里面把与CAN协议栈无关的模块删掉，增加缺少的模块，如CanTrcv模块。然后，重新生成代码。<br>如何删除模块，可以参考下图：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621034741.png"></p>
+</li>
+<li><p>添加需要的BSW模块的静态代码到项目工程里</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621035108.png"></p>
+</li>
+</ul>
+<h3 id="关于OS模块"><a href="#关于OS模块" class="headerlink" title="关于OS模块"></a>关于OS模块</h3><p><mark>项目跑FreeRTOS，不用AUTOSAR OS模块（为了省钱）。</mark></p>
+<p>所以，生成代码后把OS相关文件去掉。其中需要注意的是，为了访问OS API，RTE包含了<code>Os.h</code>头文件。所以 Appl\GenData 下面生成的这几个文件要保留，否则编译会报错：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621035211.png"></p>
+<p>同样，OS静态代码要添加头文件如下。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621035232.png"></p>
+<p>除此之外，还会缺少一些OS相关的接口。可以建一个<code>Usr_Common</code>文件夹，放一些自定义内容，其中<code>Os_User.c</code>文件是为了适配OS相关的接口，需要自己实现，需要实现的内容如下：</p>
+<ol>
+<li><p>Hardware Loop Check，具体实现：</p>
+<ul>
+<li><p>只开关CAN中断</p>
+</li>
+<li><p>使用systick实现Hardware Loop check</p>
+</li>
+</ul>
+</li>
+<li><p>增加临界区保护机制</p>
+<ul>
+<li><p>任务侧：通过调用 <code>SuspendAllInterrupts</code>禁用CAN中断并挂起调度器，确保自身独占访问共享变量。没有采用互斥信号量，因为会存在上下文切换的开销，实测对报文周期影响比较大。</p>
+</li>
+<li><p>中断侧：CAN中断处理程序仅在中断未被禁用时执行，而任务的临界区会禁用中断，故二者不会冲突访问。</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>代码要点：</p>
+<ul>
+<li><p>嵌套处理：使用 <code>os_user_suspend_nesting_counter </code>跟踪嵌套，确保只有最外层调用实际开关中断。</p>
+</li>
+<li><p>调度器挂起：通过 <code>vTaskSuspendAll </code>和 <code>xTaskResumeAll </code>防止多任务竞争静态变量。</p>
+</li>
+<li><p>中断状态保存与恢复： <code>HwiP_disableInt </code>和 <code>HwiP_restoreInt </code>确保仅CAN中断受控，不影响其他中断。</p>
+</li>
+</ul>
+<p>说明：</p>
+<ul>
+<li><p>中断处理中的访问：CAN中断执行时任务未处于临界区（因中断未被禁用），故无需额外保护。</p>
+</li>
+<li><p>调度器挂起的作用：防止任务切换，但不影响中断。结合禁用CAN中断，确保单任务访问且不被中断打断。</p>
+</li>
+</ul>
+<h2 id="协议栈初始化"><a href="#协议栈初始化" class="headerlink" title="协议栈初始化"></a>协议栈初始化</h2><p>根据TR文档的描述，EcuM的初始化分为两部分：一部分是在操作系统启动运行之前进行的初始化，第二部分在操作系统启动后执行。</p>
+<ul>
+<li><p>第一部分将由函数 <code>EcuM_Init</code>执行。这个函数执行DriverInitLists的“EcuMDriverInitListZero”和“EcuMDriverInitListOne”，进行基本驱动初始化。然后，<code>EcuM_Init</code> 通过调用 <code>StartOS</code> 函数来启动OS。</p>
+</li>
+<li><p>初始化序列的第二部分将由 <code>EcuM_StartupTwo</code> 执行。在操作系统启动后立即调用此函数一次。</p>
+</li>
+</ul>
+<p><strong>何时调用这两个函数?</strong></p>
+<p>ECU上电之后程序开始执行：启动文件-&gt;BootLoader-&gt;Application，进入“main”函数，也就是我们熟知的用户代码程序。这里主要分析EcuM管理的上电到程序运行过程。</p>
+<p>如下图所示，C Init Code一般是应用程序的main函数，即 <code>EcuM_Init </code>在应用程序的 main 函数被调用，EcuM将控制ECU的启动流程，EcuM调用<code>StartOS</code>，让Os完成Task的激活。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621040359.png"></p>
+<p>实际实现如下：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621040431.png"></p>
+<p>前面提到了， <code>EcuM_Init </code>并不能完成MCU所有的初始化动作，在StartPreOS Sequence阶段主要完成DET模块（最先完成初始化，便于其它模块可以上报错误）以及一些硬件外设的初始化，如Port、Watchdog等。</p>
+<p>在StartPostOS Sequence阶段 <code>EcuM_StartupTwo </code>将完成SchM（Os），BSW模块的初始化，其中各个模块的初始化（<code>Can_Init</code>、<code>CanIf_Init</code>等）在BswM中完成。程序所需的所有外设、模块初始化之后，启动Scheduler定时，即周期性的执行BSW&#x2F;SWCs任务，至此App程序得以运行。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621040558.png"></p>
+<p>实际实现如下，在操作系统启动后立即调用此函数一次：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621040624.png"></p>
+<h2 id="协议栈运行"><a href="#协议栈运行" class="headerlink" title="协议栈运行"></a>协议栈运行</h2><p>创建一个任务，运行协议栈相关主函数，参照 <code>Rte.c</code> 的 <code>Default_BSW_Async_Task</code>。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621040738.png"></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">can_thread</span><span class="params">(<span class="type">void</span> *args)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span>(;;)</span><br><span class="line">    &#123;</span><br><span class="line">        CanTp_MainFunction();</span><br><span class="line">        Dcm_MainFunction();</span><br><span class="line">        ...</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h2><ol>
+<li><p><strong>mcu跑飞</strong></p>
+<p>最终定位到是执行到 <code>Can_EccInit </code>挂的。原因是Demo工程用的是MCAN2，实际用的是MCAN0，查看datasheet这款芯片R5F核，最多到MCAN1，按照电路图修改Autosar里面的配置为MCAN0就好了。</p>
+</li>
+<li><p><strong>DET：<code>BswM_MainFunction</code>函数，errorid是1</strong></p>
+<p>这个DET代表BswM未初始化，实际上是有调用初始化的。出现这个DET是因为没有及时请求通信，Ecu State状态机走到了shutdown状态，执行了BswM反初始化，但是实际上ECU还在正常运行。因为，该项目只有CAN协议栈是用的Autosar，Power模块不使用Autosar机制，所以出现该问题。</p>
+</li>
+</ol>
+<h1 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h1><p>R5F的中断是通过 <code>HwiP_irq_handler </code>统一处理的， <code>HwiP_irq_handler </code>调用<code>vApplicationIRQHandlerConst</code>，然后根据 <code>HwiP_construct </code>注册的中断号和处理函数，执行对应的中断服务函数。</p>
+<p>对于上层应用来说，调用 <code>HwiP_construct</code>注册需要的中断就行了。</p>
+<h2 id="问题记录-1"><a href="#问题记录-1" class="headerlink" title="问题记录"></a>问题记录</h2><ol>
+<li><p>使用中断收发报文的话， <code>GetElapsedValue </code>函数的传入传出参数需要赋值，比如<code>*ElapsedValue = 0; </code>，否则是随机数的话接收会有问题，因为传入的参数在外面没有初始化。<strong>代码包的问题，vector的正式包解决了这个问题。</strong></p>
+</li>
+<li><p>基于ti给的demo将报文收发改为中断方式，测试的时候发现，如果关掉canoe再重新打开，ECU发不出报文，mcu没有任何打印，已知不是进入DET。也就是说进入noack状态，再恢复后，报文不会恢复发送。</p>
+<p>原因在于，ti的demo使能了所有can相关的中断，但是autosar生成的中断服务函数，只处理了部分中断。如果触发了autosar接口没有处理的中断，那么中断标志会清不掉，导致其他中断也处理不了。所以应该基于<code>CanInterrupt_30_Mcan</code>的处理情况，在调用<code>MCAN_enableIntr</code>时，只使能部分中断。</p>
+</li>
+</ol>
+<h1 id="NM"><a href="#NM" class="headerlink" title="NM"></a>NM</h1><p><a href="https://xianren-wrd.github.io/2026/prefix%20remember%20to%20change!!!-f83f9f50fe0c/">Passive Autosar Nm设计 | 仙人</a></p>
+<h1 id="Linker"><a href="#Linker" class="headerlink" title="Linker"></a>Linker</h1><ol>
+<li><code>linker.cmd</code>增加自定义段。<strong>示例如下</strong></li>
+</ol>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* This is used to store memory segments related to the AUTOSAR. */</span></span><br><span class="line">GROUP</span><br><span class="line">&#123;</span><br><span class="line">    .text.Autosar: &#123;&#125; palign(<span class="number">8</span>)</span><br><span class="line">    .rodata.Autosar: &#123;&#125; palign(<span class="number">8</span>)</span><br><span class="line">&#125; &gt; MSRAM</span><br><span class="line"></span><br><span class="line"><span class="comment">/* This is used to store memory segments related to the TI SDK library files.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">GROUP</span><br><span class="line">&#123;</span><br><span class="line">    .text.ti_lib: &#123;<span class="string">&quot;freertos.am62ax.r5f.ti-arm-clang.release.lib&quot;</span>&lt;*.obj&gt;(.text)&#125; align(<span class="number">8</span>)</span><br><span class="line">&#125; &gt; MSRAM</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>修改MemMap配置。<strong>示例如下</strong></li>
+</ol>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> clang section text = <span class="string">&quot;.text.Autosar&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> clang section text = <span class="string">&quot;&quot;</span> <span class="comment">// Restore default![](https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621043015.png)</span></span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621043015.png"></p>
+]]></content>
+      <categories>
+        <category>AUTOSAR实战</category>
+      </categories>
+      <tags>
+        <tag>协议栈移植</tag>
       </tags>
   </entry>
 </search>

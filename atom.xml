@@ -6,7 +6,7 @@
   <link href="https://xianren-wrd.github.io/atom.xml" rel="self"/>
   
   <link href="https://xianren-wrd.github.io/"/>
-  <updated>2026-06-20T19:27:18.523Z</updated>
+  <updated>2026-06-20T20:37:16.813Z</updated>
   <id>https://xianren-wrd.github.io/</id>
   
   <author>
@@ -17,11 +17,36 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Autosar CAN协议栈移植</title>
+    <link href="https://xianren-wrd.github.io/2026/prefix%20remember%20to%20change!!!-413ea4bdee2b/"/>
+    <id>https://xianren-wrd.github.io/2026/prefix%20remember%20to%20change!!!-413ea4bdee2b/</id>
+    <published>2026-06-20T19:28:34.000Z</published>
+    <updated>2026-06-20T20:37:16.813Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h1&gt;&lt;p&gt;项目使用的芯片是AM62A7，MCU是它的协处理器（单核 Arm</summary>
+        
+      
+    
+    
+    
+    <category term="AUTOSAR实战" scheme="https://xianren-wrd.github.io/categories/AUTOSAR%E5%AE%9E%E6%88%98/"/>
+    
+    
+    <category term="协议栈移植" scheme="https://xianren-wrd.github.io/tags/%E5%8D%8F%E8%AE%AE%E6%A0%88%E7%A7%BB%E6%A4%8D/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Passive Autosar Nm设计</title>
     <link href="https://xianren-wrd.github.io/2026/prefix%20remember%20to%20change!!!-f83f9f50fe0c/"/>
     <id>https://xianren-wrd.github.io/2026/prefix%20remember%20to%20change!!!-f83f9f50fe0c/</id>
     <published>2026-06-20T18:16:55.000Z</published>
-    <updated>2026-06-20T19:27:18.523Z</updated>
+    <updated>2026-06-20T19:41:21.198Z</updated>
     
     
       
@@ -503,31 +528,6 @@
     
     
     <category term="E2E" scheme="https://xianren-wrd.github.io/tags/E2E/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MPU扫盲</title>
-    <link href="https://xianren-wrd.github.io/2024/prefix%20remember%20to%20change!!!-b53991953c44/"/>
-    <id>https://xianren-wrd.github.io/2024/prefix%20remember%20to%20change!!!-b53991953c44/</id>
-    <published>2024-10-20T14:04:34.000Z</published>
-    <updated>2026-06-13T15:45:46.353Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;什么是MPU&quot;&gt;&lt;a href=&quot;#什么是MPU&quot; class=&quot;headerlink&quot; title=&quot;什么是MPU&quot;&gt;&lt;/a&gt;什么是MPU&lt;/h1&gt;&lt;p&gt;MPU：Memory Protection</summary>
-        
-      
-    
-    
-    
-    <category term="嵌入式概念扫盲" scheme="https://xianren-wrd.github.io/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F%E6%A6%82%E5%BF%B5%E6%89%AB%E7%9B%B2/"/>
-    
-    
-    <category term="MPU" scheme="https://xianren-wrd.github.io/tags/MPU/"/>
     
   </entry>
   
