@@ -4202,11 +4202,11 @@
 <ol>
 <li>元数据的定义：元数据是29位CAN ID的可配置部分，用于存储额外的信息，如源地址和&#x2F;或目标地址。</li>
 <li>接收消息：通常，CanIf将消息的有效载荷（payload）复制到接收缓冲区。上层模块通过定义的句柄（handles）访问这些数据。</li>
-<li>元数据的使用：使用元数据时，CanIf会检查一个预配置的参数 MetaDataLength ，如果<br>MetaDataLength 大于0，表示正在使用元数据。CanIf会从CAN ID中复制预定义的信息（元数据）到接收缓冲区的末尾，紧接在有效载荷之后。</li>
+<li>元数据的使用：使用元数据时，CanIf会检查一个预配置的参数 MetaDataLength ，如果MetaDataLength 大于0，表示正在使用元数据。CanIf会从CAN ID中复制预定义的信息（元数据）到接收缓冲区的末尾，紧接在有效载荷之后。</li>
 <li>访问元数据：为了允许上层模块通过接收缓冲区访问元数据，需要重新计算接收缓冲区的长度。通过在原有长度基础上加上元数据的长度来实现。</li>
 <li>发送消息：上层模块在传输缓冲区中设置元数据。CanIf将传输缓冲区的内容（包括元数据）复制到CAN总线上。</li>
 </ol>
-<p><strong>元数据将由canif或J1939Tp组件添加到有效负载数据后面。</strong></p>
+<p><strong>元数据将由CanIf或J1939Tp组件添加到有效负载数据后面。</strong></p>
 <p><strong>J1939Dcm中的元数据长度最多可达4字节。</strong></p>
 <p>下表显示了元数据中存储在不同位置的元素：</p>
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621010218.png"></p>
@@ -4215,8 +4215,8 @@
 <p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621010428.png"></p>
 <h2 id="涉及模块"><a href="#涉及模块" class="headerlink" title="涉及模块"></a>涉及模块</h2><p><strong>CANIf</strong></p>
 <p><code>CanIfRxPduCanIdMask </code>用于过滤进入的消息。这是一种位掩码，用于确定哪些CAN ID的消息应该被接收。</p>
-<p>过滤机制：过滤通过比较接收的CAN ID和存储的CAN ID来完成。在比较之前，会将<br><code>CanIfRxPduCanIdMask </code>应用到两个ID上。这种方法不仅允许将一个特定的CAN ID值分配给一个PDU，还可以定义CAN ID的范围，以便将它们分配给特定的PDU。</p>
-<p>掩码特性支持动态接收和传输PDU。当接收带有元数据的PDU时，接收到的CAN ID的低位<br>MetaDataLength字节将被放置在PDU的有效载荷中（小端序），同时PDU长度相应增加。</p>
+<p>过滤机制：过滤通过比较接收的CAN ID和存储的CAN ID来完成。在比较之前，会将<code>CanIfRxPduCanIdMask </code>应用到两个ID上。这种方法不仅允许将一个特定的CAN ID值分配给一个PDU，还可以定义CAN ID的范围，以便将它们分配给特定的PDU。</p>
+<p>掩码特性支持动态接收和传输PDU。当接收带有元数据的PDU时，接收到的CAN ID的低位<code>MetaDataLength</code>字节将被放置在PDU的有效载荷中（小端序），同时PDU长度相应增加。</p>
 <p><strong>J1939Tp</strong></p>
 <p>J1939Tp模块根据PDU的 <code>MetaDataLength </code>值处理PDUs，如果与传输PDU（Tx PDU）关联的<code>MetaDataLength </code>值为2，这意味着在运行时可以提供消息的目标地址。</p>
 <p>J1939Tp模块则根据这个值来确定使用CMDT还是BAM。</p>
@@ -4247,7 +4247,7 @@
 </ul>
 <h1 id="请求机制"><a href="#请求机制" class="headerlink" title="请求机制"></a>请求机制</h1><p><strong>J1939Rm的职责</strong></p>
 <ul>
-<li><p>负责将传入的请求路由到正确的目的地，负责监控响应的超时，包括但不限于确认消息<br>（ACKM）。</p>
+<li><p>负责将传入的请求路由到正确的目的地，负责监控响应的超时，包括但不限于确认消息（ACKM）。</p>
 </li>
 <li><p>提供基础设施用于发送请求参数组（RQST PGs），提供基础设施用于发送确认参数组（ACKM PGs）</p>
 </li>
@@ -4356,13 +4356,190 @@
 <p><strong>解决方法</strong></p>
 <p>对于CanNm是passive NM的项目，如果你的J1939项目不需要使用J1939Nm的功能，那么就加一个J1939Nm标准模块就行，不用生成代码，主要是解决模块之间的关联报错。</p>
 <p>Configurator报错解决后，还要把BSW以及之前Appl下面生成的所有和J1939Nm相关的文件删掉有关。由于删掉了J1939Nm模块，J1939Rm和J1939Dcm无法正常工作，BSW management会减少一些port，表达式条件判断也少了，需要手动加回去。</p>
-<p>这时候去编译，会有报错，参考J1939Dcm TR文档第6章，自己定义头文件解决。</p>
+<p>这时候去编译，会有报错，参考J1939Dcm TR文档，自己定义头文件解决。</p>
 ]]></content>
       <categories>
         <category>AUTOSAR实战</category>
       </categories>
       <tags>
         <tag>J1939</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Passive Autosar Nm设计</title>
+    <url>/2026/prefix%20remember%20to%20change!!!-f83f9f50fe0c/</url>
+    <content><![CDATA[<h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><p>网络类型是Passive的，网络管理是passive autosar nm。表现为不发送Nm报文，只接收Nm报文。</p>
+<h1 id="相关知识"><a href="#相关知识" class="headerlink" title="相关知识"></a>相关知识</h1><h2 id="唤醒源"><a href="#唤醒源" class="headerlink" title="唤醒源"></a>唤醒源</h2><p><strong>主动唤醒源</strong>：承担着主动唤醒网络责任的唤醒源，称为主动唤醒源。比如：</p>
+<ol>
+<li>KL15硬线：通过KL15硬线唤醒网络，说明当前网络没有节点参与通信，为了快速将网络唤醒，建立通信功能，被KL15硬线唤醒的节点，需要主动地去唤醒网络，进而将网络上其他节点唤醒。类似的其他硬线唤醒方式，或定时器唤醒，也可以看作主动唤醒源；</li>
+<li>User请求：User请求，是指通过 <code>ComM_RequestComMode</code> 接口请求通信的方式，发起点为SWC，由于功能需要，节点需要在某些工况下主动拉起其他节点通信；</li>
+<li>ERA信号：ERA信号的使用，说明当前节点有多个物理Channel，PNC信息需要在不同的Channel之间路由，以实现不同网络唤醒的目的。</li>
+</ol>
+<p><strong>被动唤醒源</strong>：不需要承担唤醒网络责任的唤醒源，称为被动唤醒源。比如：收到NM Msg。</p>
+<ol>
+<li>网络管理没有PN功能：节点收到的网络管理报文没有PNC信息，此时网络管理报文看作被动唤醒源。</li>
+<li>网络管理具有PN功能：如果对应的ECU充当Gateway角色，且有多个物理Channel，PNC关联多个Channel，网络管理报文可看作主动唤醒源（前面提到的ERA信号）；如果PNC 仅关联本Channel，不需要路由，网络管理报文看作被动唤醒源。</li>
+</ol>
+<p><strong>网络主动唤醒</strong>：由主动唤醒源触发，调用 <code>CanNm_NetworkRequest</code> 接口唤醒网络的方式。</p>
+<p><strong>网络被动唤醒</strong>：由被动唤醒源触发，调用 <code>CanNm_PassiveStartUp</code> 接口唤醒网络的方式。</p>
+<h2 id="网络和通信状态"><a href="#网络和通信状态" class="headerlink" title="网络和通信状态"></a>网络和通信状态</h2><p>ECU上电，CanNM初始化完后，CanNM处于Bus-Sleep Mode，通信处于released状态。</p>
+<ul>
+<li><p>如果网络类型是Passive的，则不会外发网络管理报文，调用 <code>CanNm_PassiveStartup</code>，CanNM状态机进入Repeat Message State，此时可以发送应用报文，但通信状态依然是released，所以之后进入Ready Sleep State。</p>
+</li>
+<li><p>如果网络类型不是Passive的，通过调用 <code>CanNm_NetworkRequest</code>进入Repeat Message State，此时既可以发送网络管理报文，也可以发送应用报文，之后进入Normal Operation State。</p>
+</li>
+<li><p>如果某节点想要主动请求网络通信，则该节点需要有主动外发网络管理报文的能力，这样才有唤醒其他节点的可能。这也意味着此节点对应ECU的网络类型不能是Passive的。</p>
+</li>
+</ul>
+<p><strong>通信状态</strong></p>
+<p>网络通信的requested&#x2F;released。需要调用接口<code>CanNm_NetworkRequest</code> &#x2F; <code>CanNm_NetworkRelease</code>进行切换。</p>
+<ul>
+<li><p><code>CanNm_PassiveStartUp</code>：只负责CanNM状态机的切换，即：由Bus-Sleep Mode&#x2F;Prepare Bus-Sleep Mode切换到Network Mode::Repeat Message State。</p>
+</li>
+<li><p><code>CanNm_NetworkRequest </code>：不仅负责CanNM状态机的切换，还负责节点通信状态的切换。</p>
+</li>
+</ul>
+<h2 id="ECU-上下电"><a href="#ECU-上下电" class="headerlink" title="ECU 上下电"></a>ECU 上下电</h2><h3 id="ECU如何上电？"><a href="#ECU如何上电？" class="headerlink" title="ECU如何上电？"></a>ECU如何上电？</h3><p>由于对静态电流有要求，因此对于断电系统，硬件上BAT（KL30）给收发器常供电，当CAN总线上有数据时，或者有其他唤醒事件发生时，INH引脚被拉高，3V3和5V电源芯片使能，进而给主芯片&#x2F;收发器供电，当主芯片供电以后，程序开始运行，但此时网络处于Bus Sleep Mode，ECU并不能立马外发报文，需要对唤醒事件进行有效性验证，避免因总线抖动或者其他干扰造成的ECU无效唤醒。</p>
+<p>eg：收发器在handler中检查唤醒源，判断到上电或者CAN总线干扰事件时，会通知EcuM有唤醒事件，EcuM通过CanIf模块调用 <code>CanTrcv_CheckWakeup </code>检查唤醒源。如果EcuM使能了唤醒源的检查，则EcuM调用 <code>EcuM_StartWakeupSources </code>接口，使得Controller进入Start状态，至此，ECU具备了收发报文的能力。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621023008.png"></p>
+<h3 id="ECU如何下电？"><a href="#ECU如何下电？" class="headerlink" title="ECU如何下电？"></a>ECU如何下电？</h3><p>当ECU需要下电的时候，即需要切断Vcc时，会通过SPI给收发器发送进入Sleep Mode的指令，如果收发器在Sleep Mode，<strong>INH Pin脚会处于高阻状态，此时与收发器连接的电源芯片禁能</strong>，即无法给主芯片提供Vcc电，也无法给收发器提供Vcc和Vio电。所以主芯片会完全的断电，实现了最大程度的节能。</p>
+<h2 id="唤醒源的Check、Set和Valid"><a href="#唤醒源的Check、Set和Valid" class="headerlink" title="唤醒源的Check、Set和Valid"></a>唤醒源的Check、Set和Valid</h2><p>对唤醒源的操作，一般需要经过Check、Set、Valid三步。</p>
+<p><strong>如何Check唤醒事件</strong></p>
+<p>控制器和收发器可以使用中断或轮询来检测唤醒事件，当有Can Bus的唤醒事件时，EcuM分不清楚是谁发现的，通过 <code>EcuM_CheckWakeup</code> 一查，是控制器还是收发器，EcuM就清楚了。实际还是依靠CanIf，确定是Controller还是Trcv。</p>
+<ul>
+<li><p>中断方式Check唤醒事件：外部中断唤醒事件到来时，可以是Controller中断，也可以是<br>Transceiver中断。中断例程中主动调用EcuM的 <code>EcuM_CheckWakeup</code></p>
+</li>
+<li><p>轮询方式Check唤醒事件：EcuM在自己的Task，调用 <code>EcuM_CheckWakeup</code></p>
+</li>
+</ul>
+<p>不管轮询还是中断方式，谁发现了唤醒事件，谁有责任告诉EcuM，即调用<code>EcuM_CheckWakeup</code></p>
+<p>注意： <code>EcuM_CheckWakeup</code>这个接口属于Autosar的Callout函数，此函数的实现由User定义。</p>
+<p><strong>Set唤醒源</strong></p>
+<p>唤醒事件既可以使用Trcv检查，也可以使用Controller检查。假设用Trcv中断方式检查唤醒事件，当Trcv接收到一帧报文时，与Controller相连的Rx Pin拉低，触发中断(设置下降沿或者双边沿触发)，之后进入ICU中断处理程序。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621023312.png"></p>
+<p>通过上图，可以看出，Trcv通过调用 <code>EcuM_SetWakeupEvent</code> 接口告知EcuM，是谁唤醒ECU。Set的主要目的是把唤醒事件挂起，以便EcuM (<code>EcuM_MainFunction</code> )后续检查唤醒事件的有效性。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* #34 Add this source to the global pending wakeups variable. */</span></span><br><span class="line">EcuM_PendingWakeups |= WakeupSourc</span><br></pre></td></tr></table></figure>
+
+<p><strong>如何Validate唤醒事件</strong></p>
+<p>如果想进一步的分析唤醒事件是不是有效的总线唤醒源（比如：网络管理报文），需要ECU有正常的收发报文能力，想要收发报文，Transceiver和Controller两个模块均需要启动。</p>
+<p>所以，在验证唤醒事件之前，需要将Trcv和Controller切换到工作模式，通过<code>EcuM_StartWakeupSources</code> 即可完成，会进一步调用 <code>CanSM_StartWakeupSources</code>接口。<code>CanSM_StartWakeupSources</code> 会调用 <code>CanIf_SetControllerMode</code> ，让Controller进入Started Mode。</p>
+<p>和Check一样，谁发现谁验证。下图以WakeupSource&#x3D;&#x3D;CanIf说明</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621023742.png"></p>
+<p>如果唤醒事件有效，EcuM需要：</p>
+<ul>
+<li><p>通知ComM唤醒事件有效，通过 <code>ComM_EcuM_WakeUpIndication</code> </p>
+</li>
+<li><p>通知BswM唤醒事件有效，如果BswM还没有初始化，EcuM将信息通过一个全局变量缓存。如果EcuM状态大于<code>ECUM_STATE_STARTUP_TWO</code>，则调用<code>BswM_EcuM_CurrentWakeUp</code></p>
+</li>
+</ul>
+<p>如果唤醒事件无效：</p>
+<ul>
+<li><p>EcuM通知BswM，执行对应的ActionList</p>
+</li>
+<li><p>一般来说，会在EcuM模块配置两个时间参数，CheckWakeup和ValidateWakeup时间，如果CheckWakeup时间走完，没有判断到有效的唤醒源，则调用<code>EcuM_StopWakeupSources </code>去关闭Trcv和Controller，之后Ecu失去通信能力。</p>
+</li>
+</ul>
+<h2 id="Passive-Wakeup过程"><a href="#Passive-Wakeup过程" class="headerlink" title="Passive Wakeup过程"></a>Passive Wakeup过程</h2><p>当没有User主动请求通信时，唤醒过程被认为是Passive Wakeup，比如：收到网络管理报文就属于Passive Wakeup过程，如果CanNM模块在Bus-Sleep Mode收到网络管理报文，会调用<code>Nm_NetworkStartIndication</code>通知NM模块，之后NM模块通过<code>ComM_Nm_NetworkStartIndication</code> 通知ComM。</p>
+<p>注意：</p>
+<p><strong>不要和网络类型混淆，不管节点的网络类型是被动的还是主动的，都可以被动唤醒。被动网络节点被动唤醒不会外发网络管理报文，主动网络节点被动唤醒会外发网络管理报文。</strong></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621024328.png">注意：</p>
+<p>ComM从 <code>COMM_NO_COM_REQUEST_PENDING </code>子状态想要进入<code>COMM_FULL_COM_NETWORK_REQUESTED </code>，需要满足两个条件：</p>
+<ol>
+<li>通信允许，即CommunicationAllowed &#x3D; True。</li>
+<li>CanSM请求<code>COMM_FULL_COMMUNICATION</code></li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621024805.png"></p>
+<p><strong>CommunicationAllowed &#x3D; True，谁控制这个条件呢？</strong></p>
+<p>对于Flexible EcuM，条件由BswM调用 <code>ComM_CommunicationAllowed</code>控制。BswM是先模式仲裁，后执行对应的动作。模式仲裁请求包括：Requests和Indications。</p>
+<p>前面提到有效的唤醒事件已确认，EcuM会调用 <code>BswM_EcuM_CurrentWakeup</code> 告知BswM(属于Indication)。同时，检查是否收到网络管理报文，如果这两个Rule满足，则允许通信，之后BswM执行对应的ActionList，其中就包括 <code>ComM_CommunicationAllowed</code> 的调用，即设置CommunicationAllowed &#x3D; True。</p>
+<p><strong>谁请求COMM_FULL_COMMUNICATION？</strong></p>
+<p>在唤醒源验证有效时，EcuM调用 <code>ComM_EcuM_WakeUpIndication</code>，EcuM就请求了 <code>COMM_FULL_COMMUNICATION::COMM_FULL_COM_READY_SLEEP</code> 状态。</p>
+<p>然后ComM可以在 <code>ComM_MainFunction </code>中进行状态的切换，此时ComM会干两件事：</p>
+<ul>
+<li>打开通信栈，即请求对应的CanSM模块进入<code>FULL_COMMUNICATION</code>状态，</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">CanSM_RequestComMode( Channel, COMM_FULL_COMMUNICATION );</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>切换网络状态，即调用接口 <code>Nm_PassiveStartUp</code> ，网络进入<br><code>NetworkMode::RepeatMessageState</code></li>
+</ul>
+<h1 id="Passive-NM配置"><a href="#Passive-NM配置" class="headerlink" title="Passive NM配置"></a>Passive NM配置</h1><p>CanNm配置channel的passive mode：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621025412.png"></p>
+<p>ComM配置Nm类型为PASSIVE：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621025444.png"></p>
+<p>ComM配置No Com：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621025519.png"></p>
+<p>Nm配置channel的passive mode：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621025638.png"></p>
+<p>NmGlobal也配置passive mode。</p>
+<h1 id="唤醒源配置"><a href="#唤醒源配置" class="headerlink" title="唤醒源配置"></a>唤醒源配置</h1><p><strong>收发器支持wakeup，增加CanTrcv模块，并关联上唤醒源，具体配置如下：</strong></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621025802.png"></p>
+<p>Dio定义收发器对于的port引脚。</p>
+<p><strong>CANIF增加容器，关联收发器，开启对收发器唤醒源的Check和Set相关配置。</strong></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621025916.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621030016.png"></p>
+<p><strong>CANSM关联收发器</strong></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621030100.png"></p>
+<h2 id="唤醒源验证"><a href="#唤醒源验证" class="headerlink" title="唤醒源验证"></a>唤醒源验证</h2><p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621030132.png"></p>
+<p>这个配置参数用于控制CAN控制器在检测到唤醒事件时，是否仅通过接收网络管理（NM）消息来验证该事件。具体解释如下：</p>
+<ul>
+<li><p>当设置为 true 时，只有接收到网络管理（NM）消息才会验证检测到的唤醒事件。这意味着只有在接收到特定的NM消息后，系统才会确认这是一个有效的唤醒事件。</p>
+</li>
+<li><p>当设置为 false 时，任何来自对应CAN控制器的消息都会验证检测到的唤醒事件。这意味着只要接收到任何消息，无论其类型如何，系统都会认为这是一个有效的唤醒事件。</p>
+</li>
+</ul>
+<p><strong>启用唤醒源的验证</strong></p>
+<p>相关知识参加之前章节。</p>
+<p>这里我们设置CheckWakeup和ValidateWakeup时间，就会启用唤醒源的验证。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621030310.png"></p>
+<h2 id="Coding"><a href="#Coding" class="headerlink" title="Coding"></a>Coding</h2><ol>
+<li>修改 <code>EcuM_Callout_Stubs.c </code>唤醒源验证相关接口如下：</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621030525.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621030610.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621030644.png"></p>
+<ol start="2">
+<li>修改 <code>EcuM_Callout_Stubs.c </code>唤醒源check接口</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621030744.png"></p>
+<h1 id="收发器远程唤醒序列"><a href="#收发器远程唤醒序列" class="headerlink" title="收发器远程唤醒序列"></a>收发器远程唤醒序列</h1><p>如果抖动导致总线电平跳变，但没有形成有效CAN帧，收发器会将噪声过滤。</p>
+<p>通过严格的时序和过滤机制，避免因总线噪声、强制拉低（Dominant Clamped）等导致的误唤醒事件。</p>
+<p><code>TJA1043</code>通过CAN总线实现远程唤醒的序列过滤逻辑总结如下：</p>
+<ol>
+<li><p>有效唤醒模式：需包含显性-隐性-显性三个阶段，各阶段持续时间分别至少为twake(busdom)、twake(busrec)、twake(busdom)，且整个模式需在tto(wake)bus时间内接收完成。</p>
+</li>
+<li><p>唤醒事件无效情况：</p>
+<ul>
+<li><p>唤醒序列传输时<code>TJA1043</code>切换到正常模式。</p>
+</li>
+<li><p>完整唤醒模式未在tto(wake)bus时间内接收完成。</p>
+</li>
+<li><p>接收唤醒序列时检测到 VIO欠压(VIO &lt; Vuvd (VIO))。</p>
+</li>
+</ul>
+</li>
+<li><p>内部逻辑重置：上述无效情况发生时，内部唤醒逻辑重置，需重新传输完整唤醒序列才能触发唤醒事件。</p>
+</li>
+</ol>
+<h1 id="设计考虑点"><a href="#设计考虑点" class="headerlink" title="设计考虑点"></a>设计考虑点</h1><p>这里列举一些和网络管理相关的，需要考虑的点或者说是checklist：</p>
+<ol>
+<li><p>CAN网络相关的条件。比如：点火信号获取，NM睡眠状态获取，收发器的操作等，是否合理？</p>
+</li>
+<li><p>异常电源状态的处理。比如：高低压，高低温时，是否要执行一些动作？</p>
+</li>
+<li><p>特殊场景。比如：产线下线时，快速休眠，下电逻辑是否合理。</p>
+</li>
+</ol>
+<h1 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h1><p>现象：停发网络报文进入BusSleep后，MCU没有走下电流程，还在正常工作，再重新恢复网络报文发送，会报错误帧，且无法恢复通信，需要手动重新上下电恢复。</p>
+<p>原因：网络睡眠后，Ecu State状态机走到了shutdown状态，执行了BswM反初始化。此时，CAN控制器处于Sleep状态，收发器处于Standby。<strong>MCU电源管理不使用autosar提供的机制，还在正常工作中</strong>。由于BswM反初始化了， <code>BswM_MainFunction </code>不会再执行。即使后面发送报文，也执行了<code>CanIf_CheckWakeup </code>，唤醒事件通知不到BswM了，Ecu State状态机不会跳转，CAN控制器不会打开，所以收不到报文。</p>
+<p>解决：一直维持PendingRequests即可，这样就不走autosar的ecu状态机，就不会shutdown了。网络睡眠，通知MCU Power模块，走内部的下电流程。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621031011.png"></p>
+]]></content>
+      <categories>
+        <category>AUTOSAR实战</category>
+      </categories>
+      <tags>
+        <tag>Passive Nm</tag>
       </tags>
   </entry>
 </search>
