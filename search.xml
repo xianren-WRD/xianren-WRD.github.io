@@ -4078,4 +4078,291 @@
         <tag>SWDL</tag>
       </tags>
   </entry>
+  <entry>
+    <title>AUTOSAR J1939介绍</title>
+    <url>/2026/prefix%20remember%20to%20change!!!-a60c9258df72/</url>
+    <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p><strong>MICROSAR Classic支持J1939功能</strong></p>
+<ul>
+<li><p>接收和发送标准报文（J1939-71）</p>
+</li>
+<li><p>J1939网络管理（J1939-81）</p>
+</li>
+<li><p>使用动态分配的地址进行定向通信（J1939-81）</p>
+</li>
+<li><p>从其他ECU请求信息（J1939-21&#x2F;22）</p>
+</li>
+<li><p>超过8字节数据的消息（TP，J1939-21&#x2F;22）</p>
+</li>
+<li><p>J1939诊断（J1939-73）</p>
+</li>
+<li><p>CAN FD上的J1939（J1939-22）</p>
+</li>
+</ul>
+<p><strong>ISO-OSI Model and J1939</strong></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621004813.png"></p>
+<p><strong>Transport Protocols</strong></p>
+<ul>
+<li><p>CMDT – Connection Mode Data Transfer（点对点）</p>
+</li>
+<li><p>BAM – Broadcast Announce Message（广播）</p>
+</li>
+<li><p>ETP – Extended Transport Protoco（点对点）</p>
+<ul>
+<li><p>定义在ISO 11783-3中，用于消息大小超过CMDT能力的情况</p>
+</li>
+<li><p>可以发送的最大PG有效载荷是117,440,512字节</p>
+</li>
+</ul>
+</li>
+<li><p>FP – Fast Packet Protocol（点对点和广播）</p>
+<ul>
+<li>定义在NMEA-2000规范中。它用于J1939和ISO 11783应用中的GPS&#x2F;GNSS数据，以及海事应用中的附加消息</li>
+</ul>
+</li>
+</ul>
+<p><strong>Diagnostic Messages (DMs)</strong></p>
+<ul>
+<li><p>当前故障（DM1）</p>
+</li>
+<li><p>请求诊断（DM5, DM21, DM26, DM31）</p>
+</li>
+<li><p>历史故障（DM2）</p>
+</li>
+<li><p>冻结帧（DM4, DM24, DM25）</p>
+</li>
+<li><p>擦除DTC（DM3, DM11, DM22）</p>
+</li>
+<li><p>执行test routines（DM7, DM8, DM30）</p>
+</li>
+<li><p>写入和读取内存（DM14, DM15, DM16）</p>
+</li>
+<li><p>重编程（DM17, DM18）</p>
+</li>
+<li><p>在诊断会话期间节省总线负载（DM13）</p>
+</li>
+<li><p>校准ECU（DM19）</p>
+</li>
+<li><p>监控发动机数据(On-Board Diagnostics)</p>
+</li>
+<li><p>读取排放相关的DTC（DM6, DM12, DM23, …）</p>
+</li>
+<li><p>读取测量间隔（DM20）</p>
+</li>
+</ul>
+<p><strong>J1939-22 CAN FD</strong></p>
+<p>J1939-22为CAN FD提供了一种与经典CAN的J1939-21数据链路层相比的替代数据链路层概念。主要是通过改变传输协议机制的行为，并引入了Multi-PG概念，用于在容器PG中发送多个PGs，包含在MultiPG中的每个PG被称为包含参数组（C-PG），并带有指定的C-PG头，包含有效载荷长度和PGN。（Multi-PG概念提供了一种传输机制，以在单个CAN FD数据字段内携带多个J1939 PGs）</p>
+<p>J1939-22在Multi-PG帧中传输有效载荷 &lt;&#x3D; 60字节的PGs，&gt; 60字节的PGs通过Tp传输。</p>
+<p>根据寻址方式，可以使用两种CAN帧格式进行Multi-PG传输</p>
+<ul>
+<li><p>FEFF（FD扩展帧格式，29位CAN ID）用于直接寻址传输（点对点）</p>
+</li>
+<li><p>FBFF（FD基本帧格式，11位CAN ID）用于广播传输</p>
+</li>
+</ul>
+<p>TP的BAM和CMDT与经典CAN上的J1939-21相比已经进行了调整。传输协议的使用适用于大于60字节的有效载荷，而不是大于8字节的有效载荷，并且单个帧的长度已增加到适合CAN FD的64字节帧。此外，不同的PGNs被用作协议PG（如FD.TP、FD.CM）。最后，增加了FD.TP.CM.EoMS（消息结束状态）PG，以便发起者指示最后一个FD.TP.DT帧的传输。</p>
+<h1 id="功能实现"><a href="#功能实现" class="headerlink" title="功能实现"></a>功能实现</h1><h2 id="J1939-BSW模块"><a href="#J1939-BSW模块" class="headerlink" title="J1939 BSW模块"></a>J1939 BSW模块</h2><p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621005323.png"></p>
+<h2 id="J1939-报文处理流程"><a href="#J1939-报文处理流程" class="headerlink" title="J1939 报文处理流程"></a>J1939 报文处理流程</h2><p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621005403.png"></p>
+<p>可变长度的PDU也通过J1939Tp传输。J1939Tp会根据PDU的长度决定是否需要进行分段数据传输，或者直接转发到CanIf。</p>
+<p><strong>请求报文</strong></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621005451.png"></p>
+<p>Pdu从CanIf传递给J1939Rm。然后，根据请求的Pdu类型，请求信息被转发到：</p>
+<ul>
+<li><p>J1939Dcm（触发DM传输）</p>
+</li>
+<li><p>J1939Nm</p>
+</li>
+<li><p>Rte（向应用程序指示接收）</p>
+</li>
+<li><p>Com（直接调用Com API，发送被请求的Pdu）</p>
+</li>
+</ul>
+<p><strong>诊断报文</strong></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621005622.png"></p>
+<p>可变长度的PDU（如：DM1），始终传递给J1939Tp</p>
+<p><strong>网络管理报文</strong></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621005712.png"></p>
+<p>接收到的PDU可以是</p>
+<ul>
+<li><p>地址声明（AC，Address Claimed ）</p>
+</li>
+<li><p>命令地址（CA，Commanded Address ）</p>
+</li>
+<li><p>名称管理（NM，NAME Management）</p>
+</li>
+</ul>
+<p>如果是AC或NM，会被传递给J1939Nm。CA则通过J1939Tp和PduR传递给J1939Nm。</p>
+<p><strong>总线和节点状态</strong></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621005848.png"></p>
+<p>节点状态用于切换PduR路由路径组、Com Ipdu组、J1939Rm和J1939Dcm。在发送地址声明后，J1939Nm通知BswM，BswM直接控制J1939Rm和J1939Dcm。</p>
+<h1 id="MetaData"><a href="#MetaData" class="headerlink" title="MetaData"></a>MetaData</h1><p>在J1939协议中，一个ECU必须能够响应来自网络上任何节点的请求（UDS或J1939），即具有不同源地址的CAN ID。ECU还必须能够使用正确的目标地址响应请求节点。因此，在运行时，需要相应地处理CAN ID中的寻址部分。</p>
+<p>在接收端，方法是将PDU ID仅映射到CAN ID的静态部分（如PGN），将变化的部分（如优先级、源地址和目标地址）转发给感兴趣的上层模块。同样的方法适用于传输端，上层模块可以通过向下传递寻址数据到CanIf来操作CAN ID的部分。</p>
+<p>这是通过扩展PduInfoType结构，添加了名为元数据（MetaData）的附加可配置的数据完成的，其中包含CAN ID的部分。每个PDU的元数据大小可以通过EcuC配置参数MetaDataLength（MDL）进行配置。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621010019.png"></p>
+<p><strong>工作原理</strong></p>
+<ol>
+<li>元数据的定义：元数据是29位CAN ID的可配置部分，用于存储额外的信息，如源地址和&#x2F;或目标地址。</li>
+<li>接收消息：通常，CanIf将消息的有效载荷（payload）复制到接收缓冲区。上层模块通过定义的句柄（handles）访问这些数据。</li>
+<li>元数据的使用：使用元数据时，CanIf会检查一个预配置的参数 MetaDataLength ，如果<br>MetaDataLength 大于0，表示正在使用元数据。CanIf会从CAN ID中复制预定义的信息（元数据）到接收缓冲区的末尾，紧接在有效载荷之后。</li>
+<li>访问元数据：为了允许上层模块通过接收缓冲区访问元数据，需要重新计算接收缓冲区的长度。通过在原有长度基础上加上元数据的长度来实现。</li>
+<li>发送消息：上层模块在传输缓冲区中设置元数据。CanIf将传输缓冲区的内容（包括元数据）复制到CAN总线上。</li>
+</ol>
+<p><strong>元数据将由canif或J1939Tp组件添加到有效负载数据后面。</strong></p>
+<p><strong>J1939Dcm中的元数据长度最多可达4字节。</strong></p>
+<p>下表显示了元数据中存储在不同位置的元素：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621010218.png"></p>
+<p>在实际配置过程中，vector会提示创建这两个Metadata：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621010327.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621010428.png"></p>
+<h2 id="涉及模块"><a href="#涉及模块" class="headerlink" title="涉及模块"></a>涉及模块</h2><p><strong>CANIf</strong></p>
+<p><code>CanIfRxPduCanIdMask </code>用于过滤进入的消息。这是一种位掩码，用于确定哪些CAN ID的消息应该被接收。</p>
+<p>过滤机制：过滤通过比较接收的CAN ID和存储的CAN ID来完成。在比较之前，会将<br><code>CanIfRxPduCanIdMask </code>应用到两个ID上。这种方法不仅允许将一个特定的CAN ID值分配给一个PDU，还可以定义CAN ID的范围，以便将它们分配给特定的PDU。</p>
+<p>掩码特性支持动态接收和传输PDU。当接收带有元数据的PDU时，接收到的CAN ID的低位<br>MetaDataLength字节将被放置在PDU的有效载荷中（小端序），同时PDU长度相应增加。</p>
+<p><strong>J1939Tp</strong></p>
+<p>J1939Tp模块根据PDU的 <code>MetaDataLength </code>值处理PDUs，如果与传输PDU（Tx PDU）关联的<code>MetaDataLength </code>值为2，这意味着在运行时可以提供消息的目标地址。</p>
+<p>J1939Tp模块则根据这个值来确定使用CMDT还是BAM。</p>
+<p><strong>J1939Dcm</strong></p>
+<p>J1939Dcm可能需要给Rx和Tx的DMs设置特定的 <code>MetaDataLength </code>值。ECU传输的DM可能在运行时发送到任意Tester的目标地址。这要求J1939Dcm通过MetaData为CanIf提供DA，以便CanIf能够在CAN ID中设置正确的DA。</p>
+<p><strong>J1939Rm</strong></p>
+<p>Request PG通常与MetaData一起接收，通过在Rx掩码中配置，允许一个PDU接收来自不同SA的消息。这样，即使请求来自网络中不同节点，只要它们符合掩码条件，同一个PDU也可以接收这些请求。（只需要为Request PG配置一个PDU，该PDU能够接收来自不同SAs的消息）。为了使这个过程顺利进行，请求PG的PDU必须有适当的 <code>MetaDataLength </code>和Tx掩码配置。</p>
+<ul>
+<li><p>从CanIf 接收，请求 PG。相应的 I-PDU 的元数据长度必须为 4，以便识别发送方、目标地址和请求的优先级。</p>
+</li>
+<li><p>发送，请求PG的I-PDU元数据长度为4，这样才能自由设置优先级、源地址和目的地。</p>
+</li>
+<li><p>接收，确认PG，对应的I-PDU元数据长度为4，这样才能识别优先级和请求的发送者。</p>
+</li>
+</ul>
+<p><strong>Com</strong></p>
+<p>调用 <code>Com_TriggerIPDUSendWithMetaData </code>时，Com模块会更新指定I-PDU的内部元数据，更新元数据后，I-PDU会被触发进行传输。元数据是从指定位置复制的，并且复制的长度会考虑全局配置的元数据长度。</p>
+<p>如果一个I-PDU全局配置了 <code>MetaDataLength </code>大于或等于1，但在发送请求时没有明确提供元数据（例如，使用 <code>Com_TriggerIPDUSend </code>），Com模块将使用其配置的默认元数据进行发送。默认元数据由ECUC参数 <code>ComMetaDataDefault </code>定义。</p>
+<h1 id="动态寻址"><a href="#动态寻址" class="headerlink" title="动态寻址"></a>动态寻址</h1><p>AUTOSAR标准最初是给使用静态通信矩阵的乘用车设计的，但为了支持J1939动态寻址概念，AUTOSAR需要进行相应的调整，主要影响的模块是CanIf和J1939Nm。</p>
+<p>J1939Nm负责管理网络名称和地址，包括在启动和运行期间处理地址声明过程。CanIf模块则负责处理CAN总线上的通信，包括根据动态寻址信息配置CAN ID。</p>
+<ul>
+<li><p>每个ECU可以通过J1939Nm和CanIf管理自己的地址查找表。</p>
+</li>
+<li><p>查找表维护网络中所有内部和外部J1939节点的名称（NAME）与对应地址的映射关系。如果J1939节点的名称或地址需要在运行时更改，这个变更会被注册到查找表中。</p>
+</li>
+<li><p>J1939节点的名称和地址将使用NvM模块存储。</p>
+</li>
+</ul>
+<h1 id="请求机制"><a href="#请求机制" class="headerlink" title="请求机制"></a>请求机制</h1><p><strong>J1939Rm的职责</strong></p>
+<ul>
+<li><p>负责将传入的请求路由到正确的目的地，负责监控响应的超时，包括但不限于确认消息<br>（ACKM）。</p>
+</li>
+<li><p>提供基础设施用于发送请求参数组（RQST PGs），提供基础设施用于发送确认参数组（ACKM PGs）</p>
+</li>
+</ul>
+<p><strong>J1939 规定，对请求的回应需要在请求发送后 1.25 秒内做出。响应节点必须在 200 毫秒内应答。</strong></p>
+<ul>
+<li><p>响应节点的发送要求（200ms）</p>
+<p>这是指响应方（被请求节点）在接收到请求PGN后，必须在200ms内开始发送响应（如数据或NACK）。如果无法提供响应，节点也必须在200ms内发送一个明确的响应（例如NACK）。这个要求是为了保证请求方能够尽快获得反馈，避免长时间等待。</p>
+</li>
+<li><p>请求方的等待窗口（1.25s）</p>
+<p>请求方（发送请求PGN的节点）可以容忍最长1.25秒的等待时间，在这段时间内如果未收到任何响应，可以认为请求超时。这个时间窗口允许考虑网络延迟、消息丢失后的重传、以及多节点环境下的可能冲突。</p>
+</li>
+</ul>
+<h2 id="接收请求"><a href="#接收请求" class="headerlink" title="接收请求"></a>接收请求</h2><p>J1939Rm本身支持处理地址声明的传入请求，并可配置为支持诊断和其他J1939 pgn的传入请求。</p>
+<ul>
+<li><p>对于地址声称PG的请求，它们总是被发送到J1939Nm</p>
+</li>
+<li><p>对于DMx PGs，请求总是被发送到J1939Dcm</p>
+</li>
+<li><p>其他PGN请求可以通过J1939RmUserPGN配置</p>
+</li>
+</ul>
+<p>如果J1939Rm收到一个它无法识别的PGN请求，并且该请求是直接寻址到该ECU的，J1939Rm会自行发送一个否定确认（NACK）(在支持的情况下，不需要发送额外的ACK响应，只需发送正确的数据即可。ACK一般用于其他功能，如传输协议中的控制消息确认，而非数据请求)</p>
+<p>从J1939Rm接收请求的其他模块可以使用 <code>J1939Rm_SendAck </code>应用程序接口（API）来传输J1939标准定义的ACK变体。</p>
+<p>根据J1939-21标准，只有一个I-PDU可用于发送所有类型的确认PG，如果在I-PDU正忙于发送一个确认PG时，另一个确认PG需要发送，那么为了避免丢失，新的确认PG将被排队，J1939Rm负责管理一个队列，以确保所有需要发送的确认PG都可以按照顺序排队等待发送。</p>
+<h2 id="发送请求"><a href="#发送请求" class="headerlink" title="发送请求"></a>发送请求</h2><p>J1939Rm同样支持发送请求、接收响应确认以及对响应进行超时监控。</p>
+<ul>
+<li><p>为了触发请求的传输，提供了 <code>J1939Rm_SendRequest </code>API</p>
+</li>
+<li><p>和接收一样，请求PG也要进行排队</p>
+</li>
+<li><p>通过 <code>J1939Rm_RxIndication </code>从CANif接收确认参数组</p>
+</li>
+</ul>
+<h2 id="Request2-Transfer"><a href="#Request2-Transfer" class="headerlink" title="Request2&#x2F;Transfer"></a>Request2&#x2F;Transfer</h2><p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621011909.png"></p>
+<h1 id="诊断"><a href="#诊断" class="headerlink" title="诊断"></a>诊断</h1><h2 id="接收请求-1"><a href="#接收请求-1" class="headerlink" title="接收请求"></a>接收请求</h2><p>J1939Dcm 通过 J1939Rm 的 <code>J1939Dcm_RequestIndication </code>接收大多数 DMx 请求。命令信息除外。</p>
+<p>根据收到的请求，J1939Dcm生成适当的响应，并通过J1939Rm发送回请求者。（不会调用<br><code>J1939Dcm_RequestIndication </code>的 NACK，因为 J1939Rm 会自行给不支持的 DMx 报文发送NACK）</p>
+<p>如果新收到的DMx在当前模式条件下不允许（根据配置参数<br><code>J1939DcmDiagnosticMessageModeRuleRef </code>），则 J1939Dcm 应忽略当前的广播请求。</p>
+<h2 id="J1939Dcm-Dem交互"><a href="#J1939Dcm-Dem交互" class="headerlink" title="J1939Dcm&#x2F;Dem交互"></a>J1939Dcm&#x2F;Dem交互</h2><p>DTC 不是由 J1939Dcm 自己维护和管理，而是由 Dem 维护和管理。因此，J1939Dcm 使用 Dem API获取有关 DTC 的信息。</p>
+<ul>
+<li><p>对于像 DM1 这样的循环 DM，这是循环进行的。</p>
+</li>
+<li><p>对于请求的 DM，J1939Rm将请求转发给 J1939Dcm，然后 J1939Dcm 再向 Dem 请求相应的 DTC 信息。</p>
+</li>
+</ul>
+<p>此外，Dem 还提供向J1939Dcm 报告 DTC 变化的 API。此外，从故障存储器读取和写入故障存储器的操作并非由J1939Dcm 完成，而是由 Dem 通过与 NvM 模块交互来处理。</p>
+<h1 id="DaVinci配置"><a href="#DaVinci配置" class="headerlink" title="DaVinci配置"></a>DaVinci配置</h1><p>DaVinci工具从输入数据中获取大部分配置设置，这些数据可以是传统的DBC文件或ARXML文件。</p>
+<p>在J1939协议中，某些参数组（PGs）是用于控制协议本身的数据流，这些PGs不需要在数据库中明确定义。相反，它们将在通过DaVinci Configurator中的引导配置过程，由J1939模块的验证器生成。如果在DBC中定义了这些协议PGs，它们将在导入DaVinci Configurator时被忽略。</p>
+<blockquote>
+<p>Example of those PGs are:<br>AC (PGN: 0xEE00), CA (PGN: 0xFED8), NM (PGN: 0x9300), ACKM (PGN: 0xE800), RQST(PGN:0xEA00), RQST2(PGN: 0xC900), TP.DT (PGN: 0xEB00), TP.CM (PGN:0xEC00), FD.TP.DT (PGN:0x4E00), FD.TP.CM(PGN: 0x4D00), ETP.DT (PGN:0xC700), ETP.CM (PGN: 0xC800)</p>
+</blockquote>
+<h2 id="DBC配置"><a href="#DBC配置" class="headerlink" title="DBC配置"></a>DBC配置</h2><ul>
+<li><p>j1939.dbc ：列出 J1939-DA 中的所有节点、消息和信号。</p>
+</li>
+<li><p>iso11783.dbc ：列出 ISO-11783 中定义的所有节点、消息和信号，或 J1939-DA 所需的信号。</p>
+</li>
+<li><p>J1939base.dbc ：包含分析总线所必需的最重要的 J1939 消息，以及 J1939 总线所需的 DBC属性。</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621012512.png"></p>
+<h2 id="Com配置"><a href="#Com配置" class="headerlink" title="Com配置"></a>Com配置</h2><p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621012613.png"></p>
+<h2 id="BswM配置"><a href="#BswM配置" class="headerlink" title="BswM配置"></a>BswM配置</h2><p>报文如果不发送了，但是接收还是正常的。需要配置一下通信控制。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621012841.png"></p>
+<h2 id="Dem配置"><a href="#Dem配置" class="headerlink" title="Dem配置"></a>Dem配置</h2><p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621012952.png"></p>
+<p>DM1配置故障灯如下：</p>
+<ol>
+<li><p>创建Indicator</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621013036.png"></p>
+</li>
+<li><p>关联Indicator</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621013122.png"></p>
+</li>
+<li><p>关联具体DTC</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621013211.png"></p>
+</li>
+</ol>
+<h2 id="J1939Tp配置"><a href="#J1939Tp配置" class="headerlink" title="J1939Tp配置"></a>J1939Tp配置</h2><p>需要多帧发送的报文，比如DM1，在DBC里面修改TpJ1939VarDlc属性为yes。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621013448.png"></p>
+<p>DM1 MetaData为2时，Tp配置如下:</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621013640.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621013739.png"></p>
+<p><strong>其他容器，根据名字选择对应报文去引用即可。如本章开头所述，这里的报文是由J1939模块的验证器生成，DBC里面如果有重复定义，可以删掉DBC的定义。</strong></p>
+<p>J1939TpTxDirectNPdu：配置会自动生成一个CAN ID&#x3D;0的报文，DM1会引用这个报文，发送的时候才确定具体的CAN ID。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621014003.png"></p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>在添加模块的时候，同时选择添加J1939的四个模块会出现如下报错：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621014236.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621014312.png"></p>
+<p>看起来是J1939Tp&#x2F;J1939Nm的配置不兼容，但是如果单独添加各个模块就不会出现问题。</p>
+<h2 id="J1939Rm配置"><a href="#J1939Rm配置" class="headerlink" title="J1939Rm配置"></a>J1939Rm配置</h2><p>设置Ack应答队列的大小为10，这个是默认值。根据Tx报文数量去配置。</p>
+<p>其他要关联报文的配置和Tp的配置方法一样。</p>
+<p>地址声明和DM1的请求自动生成如下：</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621014604.png"></p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621014655.png"></p>
+<p>更多控制可以在Requestable里面查看</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621014848.png"></p>
+<h2 id="J1939Dcm配置"><a href="#J1939Dcm配置" class="headerlink" title="J1939Dcm配置"></a>J1939Dcm配置</h2><p>配置示例</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621015044.png"></p>
+<p>关于DM13的BusType，要和客户确认，一般是可以忽略的。</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621015209.png"></p>
+<h3 id="问题-1"><a href="#问题-1" class="headerlink" title="问题"></a>问题</h3><p>DTC激活时，DM1还是发的默认值，没有按照预期发送。</p>
+<p>研究了一下发现是下面红框的位置如果不填的话，DM1发的全是0</p>
+<p><img src="https://raw.githubusercontent.com/xianren-WRD/Picture/main/img/20260621015352.png"></p>
+<p>最开始在diagnostic event视图是空的，且无法修改(修改后会清空)，要在上面的视图去修改才行，将DTC码转成十进制填写即可，填完后diagnostic event视图会自动识别SPN和FMI。</p>
+<h2 id="J1939Nm配置"><a href="#J1939Nm配置" class="headerlink" title="J1939Nm配置"></a>J1939Nm配置</h2><p>配置也比较简单，但是这里有个问题，一个通道上存在多个BusNms（J1939Nm和CanNm），那么就需要激活Nm Coordinator。</p>
+<p>Nm Coordinate限制，网络类型全部是passive或active，J1939Nm规范要求只能是Active Nm，如果CanNm是passive NM，会冲突报错。</p>
+<p><strong>解决方法</strong></p>
+<p>对于CanNm是passive NM的项目，如果你的J1939项目不需要使用J1939Nm的功能，那么就加一个J1939Nm标准模块就行，不用生成代码，主要是解决模块之间的关联报错。</p>
+<p>Configurator报错解决后，还要把BSW以及之前Appl下面生成的所有和J1939Nm相关的文件删掉有关。由于删掉了J1939Nm模块，J1939Rm和J1939Dcm无法正常工作，BSW management会减少一些port，表达式条件判断也少了，需要手动加回去。</p>
+<p>这时候去编译，会有报错，参考J1939Dcm TR文档第6章，自己定义头文件解决。</p>
+]]></content>
+      <categories>
+        <category>AUTOSAR实战</category>
+      </categories>
+      <tags>
+        <tag>J1939</tag>
+      </tags>
+  </entry>
 </search>
