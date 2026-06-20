@@ -169,31 +169,6 @@
   </entry>
   
   <entry>
-    <title>AUTOSAR学习资料</title>
-    <link href="https://xianren-wrd.github.io/2026/prefix%20remember%20to%20change!!!-4c50e2a8a160/"/>
-    <id>https://xianren-wrd.github.io/2026/prefix%20remember%20to%20change!!!-4c50e2a8a160/</id>
-    <published>2026-06-13T16:31:18.000Z</published>
-    <updated>2026-06-13T16:47:11.736Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;AUTOSAR-是什么？&quot;&gt;&lt;a href=&quot;#AUTOSAR-是什么？&quot; class=&quot;headerlink&quot; title=&quot;AUTOSAR 是什么？&quot;&gt;&lt;/a&gt;AUTOSAR 是什么？&lt;/h1&gt;&lt;p&gt;AUTOSAR</summary>
-        
-      
-    
-    
-    
-    <category term="汽车与工业网络" scheme="https://xianren-wrd.github.io/categories/%E6%B1%BD%E8%BD%A6%E4%B8%8E%E5%B7%A5%E4%B8%9A%E7%BD%91%E7%BB%9C/"/>
-    
-    
-    <category term="AUTOSAR" scheme="https://xianren-wrd.github.io/tags/AUTOSAR/"/>
-    
-  </entry>
-  
-  <entry>
     <title>J1939设计注意点</title>
     <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-c974d95309d9/"/>
     <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-c974d95309d9/</id>
@@ -274,10 +249,10 @@
   
   <entry>
     <title>UART中断中释放信号量引发的HardFault</title>
-    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-c139ec3b5aa2/"/>
-    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-c139ec3b5aa2/</id>
-    <published>2025-10-20T13:13:12.000Z</published>
-    <updated>2025-10-20T13:34:49.458Z</updated>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-7c987734684c/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-7c987734684c/</id>
+    <published>2025-11-20T13:13:12.000Z</published>
+    <updated>2026-06-20T20:39:37.979Z</updated>
     
     
       
@@ -323,6 +298,31 @@
     
     
     <category term="TI AM62Ax" scheme="https://xianren-wrd.github.io/tags/TI-AM62Ax/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>AUTOSAR学习资料</title>
+    <link href="https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-724aa1d43ddf/"/>
+    <id>https://xianren-wrd.github.io/2025/prefix%20remember%20to%20change!!!-724aa1d43ddf/</id>
+    <published>2025-10-19T16:31:18.000Z</published>
+    <updated>2026-06-20T20:39:14.038Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;AUTOSAR-是什么？&quot;&gt;&lt;a href=&quot;#AUTOSAR-是什么？&quot; class=&quot;headerlink&quot; title=&quot;AUTOSAR 是什么？&quot;&gt;&lt;/a&gt;AUTOSAR 是什么？&lt;/h1&gt;&lt;p&gt;AUTOSAR</summary>
+        
+      
+    
+    
+    
+    <category term="汽车与工业网络" scheme="https://xianren-wrd.github.io/categories/%E6%B1%BD%E8%BD%A6%E4%B8%8E%E5%B7%A5%E4%B8%9A%E7%BD%91%E7%BB%9C/"/>
+    
+    
+    <category term="AUTOSAR" scheme="https://xianren-wrd.github.io/tags/AUTOSAR/"/>
     
   </entry>
   

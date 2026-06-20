@@ -2069,7 +2069,7 @@
   </entry>
   <entry>
     <title>UART中断中释放信号量引发的HardFault</title>
-    <url>/2025/prefix%20remember%20to%20change!!!-c139ec3b5aa2/</url>
+    <url>/2025/prefix%20remember%20to%20change!!!-7c987734684c/</url>
     <content><![CDATA[<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>项目需要增加一路串口，用来传输BAP IPC message。</p>
 <blockquote>
 <p>BAP：Operator And Display Protocol(Bedien und Anzeigeprotokoll)，操作和显示协议。BAP是大众汽车上一种ECU之间通信的协议。 BAP通常用于传输各种车辆信息，从而实现泊车交互、空调调节和仪表控制等功能。该协议通常运行在CAN、LIN总线上，但进年来也被部署到了新兴的车载以太网上。</p>
@@ -3499,7 +3499,7 @@
   </entry>
   <entry>
     <title>AUTOSAR学习资料</title>
-    <url>/2026/prefix%20remember%20to%20change!!!-4c50e2a8a160/</url>
+    <url>/2025/prefix%20remember%20to%20change!!!-724aa1d43ddf/</url>
     <content><![CDATA[<h1 id="AUTOSAR-是什么？"><a href="#AUTOSAR-是什么？" class="headerlink" title="AUTOSAR 是什么？"></a>AUTOSAR 是什么？</h1><p>AUTOSAR 全称：</p>
 <p><strong>AUTomotive Open System ARchitecture</strong></p>
 <p>汽车软件标准架构。</p>
